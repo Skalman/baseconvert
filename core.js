@@ -1,10 +1,10 @@
-// TODO make jQuery independent
 (function (window, undefined) {
 	if (!window.log) {
 		window.log = function log(msg) {
 			window.console.log(msg);
 		};
 	}
+
 	function equals(val) {
 		return function (compare) {
 			return val == compare;
@@ -108,6 +108,8 @@
 		function to_internal(from_base, number) {
 			try {
 				if (number != undefined && from_base != undefined) {
+					number += "";
+					from_base += "";
 					var i;
 					for (i = extensions_list.length - 1; i >= 0; i--) {
 						if (extensions_list[i].valid_from(from_base, number)) {
@@ -122,6 +124,7 @@
 		function from_internal(to_base, number) {
 			try {
 				if (number != undefined && to_base != undefined) {
+					to_base += "";
 					var i;
 					for (i = extensions_list.length - 1; i >= 0; i--) {
 						if (extensions_list[i].valid_to(to_base, number)) {
@@ -162,15 +165,15 @@
 				internal = [];
 				if (number_is_array && from_is_array) {
 					for (i = 0; i < length; i++) {
-						internal[i] = to_internal(from[i], number[i]+"");
+						internal[i] = to_internal(from[i], number[i]);
 					}
 				} else if (number_is_array) {
 					for (i = 0; i < length; i++) {
-						internal[i] = to_internal(from, number[i]+"");
+						internal[i] = to_internal(from, number[i]);
 					}
 				} else { // from_is_array
 					for (i = 0; i < length; i++) {
-						internal[i] = to_internal(from[i], number+"");
+						internal[i] = to_internal(from[i], number);
 					}
 				}
 				
@@ -186,7 +189,7 @@
 				}
 			} else {
 				// internal is a single value
-				internal = to_internal(from, number+"");
+				internal = to_internal(from, number);
 				// the results
 				for (i = 0; i < length; i++) {
 					result[i] = from_internal(to[i], internal);
@@ -201,10 +204,11 @@
 			);
 		};
 		Base.from = function Base_from(from_base, number) {
-			return to_internal(from_base, number+"");
+			return to_internal(from_base, number);
 		};
 		Base.valid = function Base_valid(base, number) {
 			var i = extensions_list.length - 1;
+			base += "";
 			if (number == null) {
 				// test only the base
 				for (; i >= 0; i--) {
