@@ -11,3 +11,9 @@ Examples
 	Base(10, 2, "5.3")        // 101.0100110...
 	Base(10, "roman", "2598") // MMDXCVIII
 	Base(2, 13, "110110")     // 42
+
+
+Demo
+----
+
+Either visit [baseconvert.com](http://baseconvert.com/) or check out `docs/demo.htm`.
