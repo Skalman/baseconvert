@@ -20,12 +20,9 @@
 		},
 		// normally takes parameters base and number (it'll always be 10/100 and 1337 respectively)
 		from_internal: function leet_from_internal(to_base, number) {
-			return this.options.uppercase ?
-				(to_base == "10" ? "LEET" : "LE:ET") :
-				(to_base == "10" ? "leet" : "le:et");
+			return to_base == "10" ? "leet" : "le:et";
 		},
 		options: {
-			uppercase: false
 		}
 	});
 })(Base);
