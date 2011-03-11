@@ -36,19 +36,19 @@
 			}
 			return -1;
 		};
-	function tester(tester) {
-		if (tester.test) {
+	function tester(t) {
+		if (t.test) {
 			// RegExp or homebrewed such objects - /^2-4$
 			return function (compare) {
-				return tester.test(compare);
+				return t.test(compare);
 			};
-		} else if (is_array(tester)) {
+		} else if (is_array(t)) {
 			// array - [2, 3, 4]
 			return function (compare) {
-				return index_of(compare, tester) !== -1;
+				return index_of(compare, t) !== -1;
 			};
-		} else if (is_function(tester)) {
-			return tester;
+		} else if (is_function(t)) {
+			return t;
 		} else {
 			// error, but we don't care (for now) TODO
 			throw "Base: tester error.";
@@ -107,7 +107,7 @@
 		*/
 		function to_internal(from_base, number) {
 			try {
-				if (number != undefined && from_base != undefined) {
+				if (number != null && from_base != null) {
 					number += "";
 					from_base += "";
 					var i;
@@ -123,7 +123,7 @@
 		}
 		function from_internal(to_base, number) {
 			try {
-				if (number != undefined && to_base != undefined) {
+				if (number != null && to_base != null) {
 					to_base += "";
 					var i;
 					for (i = extensions_list.length - 1; i >= 0; i--) {
@@ -200,7 +200,7 @@
 		Base.to = function Base_to(to_base, number) {
 			return from_internal(
 				to_base,
-				(number != undefined && Base.Number ? Base.Number(number) : number)
+				(number != null && Base.Number ? Base.Number(number) : number)
 			);
 		};
 		Base.from = function Base_from(from_base, number) {

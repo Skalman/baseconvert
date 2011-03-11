@@ -24,7 +24,7 @@
 				: value == null ? 0 // null or undefined
 				
 				// TODO make sure that the following is the real JavaScript number algorithm
-				: /\-?(\d+|\d*.\d+)([eE][-+]?\d+)?/.test(value) ? value - 0 // valid JavaScript number as a string
+				: /\-?(\d+|\d*.\d+)([eE][\-+]?\d+)?/.test(value) ? value - 0 // valid JavaScript number as a string
 				: throw_message("Can't create a Base.Number with the value '" + value + "'.");
 		},
 		slice = Array.prototype.slice,

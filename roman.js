@@ -12,7 +12,7 @@
 			while (str !== (str = str.replace(search, replace))) {
 			}
 			return str;
-		}
+		};
 	function language(str) {
 		var args = arguments, i;
 		str = messages[str];

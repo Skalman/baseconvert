@@ -13,7 +13,7 @@
 		name: "standard",
 		/* bool valid_base(string) */
 		valid_base: function standard_valid_base(base) {
-			return 2 <= base && base <= 36 && parseInt(base)+"" === base;
+			return 2 <= base && base <= 36 && parseInt(base, 10)+"" === base;
 		},
 		/* bool valid_from(int, string)*/
 		valid_from: function standard_valid_from(base, number) {
@@ -23,7 +23,7 @@
 				
 				// valid base
 				&& 2 <= base && base <= 36
-				&& parseInt(base)+"" === base
+				&& parseInt(base, 10)+"" === base
 				
 				// get the validator RegExp
 				&& (valid_number[base] ? valid_number[base] : get_validator(base))
@@ -37,7 +37,7 @@
 				// any real number is fine
 				// valid base
 				2 <= base && base <= 36
-				&& parseInt(base)+"" === base
+				&& parseInt(base, 10)+"" === base
 			);
 		},
 		fractional: true,
@@ -175,7 +175,7 @@
 		name: "standard_big",
 		/* bool valid_base(string) */
 		valid_base: function standard_valid_base(base) {
-			return 36 < base && parseInt(base)+"" === base;
+			return 36 < base && parseInt(base, 10)+"" === base;
 		},
 		/* bool valid_from(string, string)*/
 		valid_from: function standard_valid_from(base, number) {
@@ -185,12 +185,12 @@
 				
 				// valid base
 				&& 36 < base
-				&& parseInt(base)+"" === base
+				&& parseInt(base, 10)+"" === base
 				
 				&& valid_number_big.test(number)
 			) {
-				number = number.split(/[-\.\:]/);
-				base = parseInt(base);
+				number = number.split(/[\-\.\:]/);
+				base = parseInt(base, 10);
 				for (var i = number.length - 1; i >= 0; i--) {
 					if (number[i] >= base) {
 						return false;
@@ -206,14 +206,14 @@
 				// any real number is fine
 				// valid base
 				36 < base
-				&& parseInt(base)+"" === base
+				&& parseInt(base, 10)+"" === base
 			);
 		},
 		fractional: true,
 		
 		// parameters number and base
 		to_internal: function standard_to_internal(from_base, number) {
-			from_base = parseInt(from_base);
+			from_base = parseInt(from_base, 10);
 			number = number.split(".");
 			var positive = (number[0].charAt(0) !== "-"),
 				i,
@@ -328,17 +328,4 @@
 		}
 	});
 })(Base);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
