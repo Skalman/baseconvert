@@ -8,7 +8,7 @@ test("Basic requirements", function () {
 
 test("Valid base", function () {
 	expect(6);
-	
+
 	strictEqual(Base.valid(" 46"), false, "preceding space");
 	strictEqual(Base.valid(37), true, "37");
 	strictEqual(Base.valid(4.256), false, "4.256");
@@ -19,7 +19,7 @@ test("Valid base", function () {
 
 test("Valid base and number", function () {
 	expect(6);
-	
+
 	strictEqual(Base.valid(" 46", "6"), false, "preceding space");
 	strictEqual(Base.valid(37, "36:4:1:0.1:6:1:000:006"), true, "36:4:1:0.1:6:1:000:006 in base 37");
 	strictEqual(Base.valid(4.256, "1"), false, "1 in base 4.256");
@@ -59,14 +59,14 @@ test("Convert to and from bases", function () {
 				"-.0": "0",
 				"-2.37": undefined
 			},
-			
+
 			{ from: 10, to: 100,
 				"0.61426": "0.61:42:60" // tests rounding
 			}
 		];
-	
+
 	expect(conversions.length);
-	
+
 	function keys_and_values(obj) {
 		var k = [], v = [], i;
 		for (i in obj) {
@@ -78,7 +78,7 @@ test("Convert to and from bases", function () {
 		}
 		return [k, v];
 	}
-	
+
 	for (i = 0; i < conversions.length; i++) {
 		kv = keys_and_values(conversions[i]);
 		to = conversions[i].to;

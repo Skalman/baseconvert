@@ -8,7 +8,7 @@ test("Basic requirements", function () {
 
 test("Valid base", function () {
 	expect(5);
-	
+
 	strictEqual(Base.valid(2), true, "2");
 	strictEqual(Base.valid(" 6"), false, "preceding space");
 	strictEqual(Base.valid("36"), true, "36");
@@ -46,12 +46,12 @@ test("Convert between bases", function () {
 				"0.C5E1C": "0.61426"
 			}
 		];
-	
+
 //	strictEqual(Base("A", 10, 2), undefined, "testing A");
 //	strictEqual(Base("A", 10, 2), undefined, "testing A");
 //	return;
 	expect(conversions.length);
-	
+
 	function keys_and_values(obj) {
 		var k = [], v = [], i;
 		for (i in obj) {
@@ -63,7 +63,7 @@ test("Convert between bases", function () {
 		}
 		return [k, v];
 	}
-	
+
 	for (i = 0; i < conversions.length; i++) {
 		kv = keys_and_values(conversions[i]);
 		to = conversions[i].to;

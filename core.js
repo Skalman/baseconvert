@@ -10,13 +10,13 @@
 			return val == compare;
 		};
 	}
-	
+
 	var extensions_list = [],
 		extensions_map = {},
-		
+
 		// quick reference to useful functions
 		to_string = Object.prototype.toString,
-	
+
 		// functions inspired from jQuery
 		is_array = Array.isArray || function is_array(obj) {
 			return to_string.call(obj) === "[object Array]";
@@ -69,13 +69,13 @@
 				10,
 				2)
 					["101010", "1111"]
-			
+
 			Base(
 				"42",
 				[10, 7],
 				2)
 					["101010", "11110"]
-			
+
 			Base(
 				"42",
 				10,
@@ -95,15 +95,15 @@
 				10,
 				[2, 3])
 					["101010", "120"]
-			
+
 			Base(
 				"42",
 				[10, 7],
 				[2, 3])
 					["101010", "1010"]
-			
 
-			
+
+
 		*/
 		function to_internal(from_base, number) {
 			try {
@@ -147,18 +147,18 @@
 					from_is_array ? from.length :
 					to_is_array ? to.length :
 					undefined;
-			
-			
+
+
 			if (!number_is_array && !from_is_array && !to_is_array) {
 				// this is the only case where we return a single value
 				return from_internal(to, to_internal(from, number+""));
 			} else if (number_is_array && from_is_array && to_is_array) {
 				throw "Max two of the three parameters may be an array.";
 			}
-			
+
 			// ...so the results must be an array
 			result = [];
-			
+
 			// find the internal number(s)
 			if (number_is_array || from_is_array) {
 				// internal is an array
@@ -176,7 +176,7 @@
 						internal[i] = to_internal(from[i], number);
 					}
 				}
-				
+
 				// the results
 				if (to_is_array) {
 					for (i = 0; i < length; i++) {
@@ -236,16 +236,16 @@
 				/*
 				Base.extend({
 					name: "extension name"
-					 
+
 					valid_base: tester | name, // valid base
-	
+
 					valid_number: tester | value, // valid number
-				
+
 					valid_internal_number: tester | value // valid internal number (i.e., it's better with no string testing; default: all)
-				
+
 					from_internal: function(number, base) { ... },
 					to_internal: function(number, base) { ... },
-	
+
 					positional: true, // so that we can use the internationalized decimal symbol
 					fractional: true,
 					options: {}
@@ -263,7 +263,7 @@
 				Base.add_conversion({
 					from_base: tester | extension name,
 					to_base: tester | extension name,
-	
+
 				})
 			}
 			*/

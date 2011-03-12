@@ -24,8 +24,8 @@ test("All roman numerals", function () {
 test("To roman numerals", function () {
 	expect(13);
 	var undefined, N = Base.Number;
-	
-	
+
+
 	strictEqual(Base.to("roman", 0), undefined, "0 > undefined");
 	strictEqual(Base.to("roman", 1.0), "I", "1.0 > I");
 	strictEqual(Base.to("roman", 1.1), undefined, "1.1 > undefined");
@@ -44,7 +44,7 @@ test("To roman numerals", function () {
 test("From roman numerals, bad values", function () {
 	expect(11);
 	var undefined, N = Base.Number;
-	
+
 	strEqual(Base.from("roman", "abc"), undefined, "abc > undefined");
 	strEqual(Base.from("roman", "IIIII"), undefined, "IIIII > undefined (instead of 5)");
 	strEqual(Base.from("roman", "IVII"), undefined, "IVII > undefined (instead of 6)");
@@ -56,13 +56,13 @@ test("From roman numerals, bad values", function () {
 	strEqual(Base.from("roman", "CCCCCC"), undefined, "CCCCCC > undefined (instead of 600)");
 	strEqual(Base.from("roman", "MIMIM"), undefined, "MIMIM > undefined (instead of 2998)");
 	strEqual(Base.from("roman", "MMMM"), undefined, "MMMM > undefined (instead of 4000)");
-	
+
 });
 
 test("From roman numerals, good values", function () {
 	expect(12);
 	var undefined, N = Base.Number;
-	
+
 	strEqual(Base.from("roman", "I"), 1, "I > 1");
 	strEqual(Base.from("roman", "IIII"), 4, "IIII > 4");
 	strEqual(Base.from("roman", "VIIII"), 9, "VIIII > 9");

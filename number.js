@@ -9,11 +9,11 @@
 	function throw_message(message) {
 		throw message;
 	}
-	
+
 	function tried_to_modify_immutable_number() {
 		throw "Can't modify immutable number.";
 	}
-	
+
 	var Base = window.Base,
 		Number = Base.Number = function Base_Number(value) {
 			if (this === window || this === Base) { // called as a function, not a contructor
@@ -22,7 +22,7 @@
 			this.value = (value instanceof Number) ? value.value
 				: typeof value === "number" ? value
 				: value == null ? 0 // null or undefined
-				
+
 				// TODO make sure that the following is the real JavaScript number algorithm
 				: /\-?(\d+|\d*.\d+)([eE][\-+]?\d+)?/.test(value) ? value - 0 // valid JavaScript number as a string
 				: throw_message("Can't create a Base.Number with the value '" + value + "'.");
@@ -65,14 +65,14 @@
 			: typeof x === "number" ? x
 			: new Number(x).value;
 	}
-	
+
 	// add static methods such as Number.add()
 	for (i = 0; i < operations.length; i++) {
 		for (j = 0; j < operations[i].methods.length; j++) {
 			Number[ operations[i].methods[j] ] = operations[i].static_method( operations[i].methods[j] );
 		}
 	}
-	
+
 	Number.prototype = {
 		// private
 		value: 0,

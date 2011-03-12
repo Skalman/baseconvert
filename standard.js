@@ -20,11 +20,11 @@
 			return (
 				// eliminate the strings that the RegExp can't handle
 				number !== "" && number !== "." && number !== "-." && number !== "-"
-				
+
 				// valid base
 				&& 2 <= base && base <= 36
 				&& parseInt(base, 10)+"" === base
-				
+
 				// get the validator RegExp
 				&& (valid_number[base] ? valid_number[base] : get_validator(base))
 					// and test the number on that RegExp
@@ -41,7 +41,7 @@
 			);
 		},
 		fractional: true,
-		
+
 		// parameters number and base
 		to_internal: function standard_to_internal(from_base, number) {
 			if (typeof number !== "string") {
@@ -72,7 +72,7 @@
 					fract_result.mul(from_base).add(dictionary.indexOf( fract.charAt(i) ));
 				}
 				fract_result.mul(Number.pow(from_base, -fract.length));
-				
+
 				// result = result + fract_result
 				result.add(fract_result);
 			}
@@ -81,8 +81,8 @@
 				result :
 				result.neg() );
 		},
-		
-		
+
+
 		// parameters number and base
 		from_internal: function standard_from_internal(to_base, number) {
 			number = number.clone(); // we must work on a copy
@@ -97,13 +97,13 @@
 				significant_digits = 0,
 				max_significant_digits,
 				integer_digits;
-			
+
 			number.floor();
-			
+
 			// number of significant digits we can safely handle (53 bits)
 			// TODO - don't hard code this - perhaps number.PRECISION? How to handle those that do integer part and fractional part separately?
 			max_significant_digits = 53 * Math.log(2) / Math.log(to_base);
-		
+
 
 			// find the integer part of the result
 			if (number.equals(Number.ZERO)) {
@@ -127,11 +127,11 @@
 					fract.sub(tmp);
 					result.push(tmp.get_number());
 				}
-				
+
 				// round (away from zero)
 				if (result.pop() >= to_base / 2) {
 					tmp = result.length;
-					
+
 					// add 1 to the last element, but if it's to_base, we'll have to remove it, and check the next
 					while (++result[--tmp] == to_base) {
 						if (tmp > integer_digits) {
@@ -158,7 +158,7 @@
 				}
 				result = result.join("");
 			}
-			
+
 			if (is_negative) {
 				result = "-" + result;
 			}
@@ -182,11 +182,11 @@
 			if (
 				// eliminate the strings that the RegExp can't handle
 				number !== "" && number !== "." && number !== "-." && number !== "-"
-				
+
 				// valid base
 				&& 36 < base
 				&& parseInt(base, 10)+"" === base
-				
+
 				&& valid_number_big.test(number)
 			) {
 				number = number.split(/[\-\.\:]/);
@@ -210,7 +210,7 @@
 			);
 		},
 		fractional: true,
-		
+
 		// parameters number and base
 		to_internal: function standard_to_internal(from_base, number) {
 			from_base = parseInt(from_base, 10);
@@ -247,8 +247,8 @@
 				result :
 				result.neg() );
 		},
-		
-		
+
+
 		// parameters number and base
 		from_internal: function standard_from_internal(to_base, number) {
 			number = number.clone(); // we must work on a copy
@@ -263,13 +263,13 @@
 				significant_digits = 0,
 				max_significant_digits,
 				integer_digits;
-			
+
 			number.floor();
-			
+
 			// number of significant digits we can safely handle (53 bits)
 			// TODO - don't hard code this - perhaps number.PRECISION? How to handle those that do integer part and fractional part separately?
 			max_significant_digits = 53 * Math.log(2) / Math.log(to_base);
-		
+
 
 			// find the integer part of the result
 			if (number.equals(Number.ZERO)) {
@@ -293,11 +293,11 @@
 					fract.sub(tmp);
 					result.push(tmp.get_number());
 				}
-				
+
 				// round (away from zero)
 				if (result.pop() >= to_base / 2) {
 					tmp = result.length;
-					
+
 					// add 1 to the last element, but if it's to_base, we'll have to remove it, and check the next
 					while (++result[--tmp] == to_base) {
 						if (tmp > integer_digits) {
@@ -318,7 +318,7 @@
 			} else {
 				result = result.join(":");
 			}
-			
+
 			if (is_negative) {
 				result = "-" + result;
 			}

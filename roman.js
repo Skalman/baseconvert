@@ -59,7 +59,7 @@
 			// TODO remove number.is_int() when core supports fractional:false
 			return base === "roman" && number.is_int() && number.cmp(0) > 0 && number.cmp(4000) < 0;
 		},
-		
+
 		// from_base will always be "roman"
 		/*
 			always accept
@@ -85,7 +85,7 @@
 				last_value = 1001, // something greater than M = 1000
 				last_class = 7, // something greater than the greatest class, M : 6
 				repetition_count;
-			
+
 			// tokenize
 			for (i = 0; i < length; i++) {
 				token = number.charAt(i);
@@ -94,7 +94,7 @@
 				if (i+1 < length && conv[token+next]) { // there's another character to look at
 					// yep, this is a token: let's add the next character to i
 					token += next;
-				
+
 					// and skip the next character since it's part of *this* token
 					i++;
 				}
@@ -103,7 +103,7 @@
 				last_value === value ?
 					repetition_count++ :
 					repetition_count = 1;
-				
+
 				if (last_value < value || last_class < klass) {
 					throw language(this.options.strict ? "bad_order" : "bad_order_nonstrict",
 						last_token,
