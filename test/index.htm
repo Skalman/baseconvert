@@ -17,6 +17,11 @@
 		<link rel="shortcut icon" href="../docs/favicon.png" type="image/png"/>
 		<script src="qunit.js"></script>
 		<script src="qunit.extensions.js"></script>
+
+		<!-- save the current list of global variables  -->
+		<script src="unit/globals_init.js"></script>
+
+		<!-- source code to be checked -->
 		<script src="../core.js"></script>
 		<script src="../number.js"></script>
 		<script src="../standard.js"></script>
@@ -30,6 +35,9 @@
 		<script src="unit/standard_big.js"></script>
 		<script src="unit/roman.js"></script>
 		<script src="unit/leet.js"></script>
+
+		<!-- check that the only new global variable is Base -->
+		<script src="unit/globals.js"></script>
 	</head>
 	<body>
 		<p id="menu">
