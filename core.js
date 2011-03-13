@@ -1,10 +1,4 @@
 (function (window, undefined) {
-	if (!window.log) {
-		window.log = function log(msg) {
-			window.console.log(msg);
-		};
-	}
-
 	function equals(val) {
 		return function (compare) {
 			return val == compare;

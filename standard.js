@@ -5,7 +5,6 @@
 		valid_number = [],
 		valid_number_big = /^\-?(\d+(\:\d+)*)?\.?(\d+(\:\d+)*)?$/;
 	function get_validator(base) {
-		//log("getting validator for "+base);
 		var chars = "[" + dictionary.substr(0, base) + "]*";
 		return (valid_number[base] = new RegExp("^\\-?"+chars+"\\.?"+chars+"$", "i"));
 	}
