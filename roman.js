@@ -1,4 +1,5 @@
 (function (Base) {
+	"use strict";
 	var messages = {
 		bad_order: "Found unexpected sorting order: '$1' followed by '$2' (using strict sorting order).",
 		bad_order_nonstrict: "Found unexpected sorting order: '$1' followed by '$2' (using non-strict sorting order)",

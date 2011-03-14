@@ -6,6 +6,7 @@
 	sqrt()
 */
 (function (window, undefined) {
+	"use strict";
 	function throw_message(message) {
 		throw message;
 	}
@@ -16,7 +17,7 @@
 
 	var Base = window.Base,
 		Number = Base.Number = function Base_Number(value) {
-			if (this === window || this === Base) { // called as a function, not a contructor
+			if (this === undefined || this === window || this === Base) { // called as a function, not a contructor
 				return new Number(value);
 			}
 			this.value = (value instanceof Number) ? value.value

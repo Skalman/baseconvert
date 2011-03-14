@@ -1,5 +1,6 @@
 // TODO move from_internal logic to separate file
 (function (Base) {
+	"use strict";
 	var dictionary = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 		Number = Base.Number,
 		valid_number = [],

@@ -1,4 +1,5 @@
 (function (Base) {
+	"use strict";
 	Base.extend({
 		name: "leet",
 		valid_base: function leet_valid_base(base) {

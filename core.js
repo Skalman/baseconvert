@@ -1,4 +1,5 @@
 (function (window, undefined) {
+	"use strict";
 	function equals(val) {
 		return function (compare) {
 			return val == compare;
