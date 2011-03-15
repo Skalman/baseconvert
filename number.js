@@ -17,7 +17,7 @@
 
 	var Base = window.Base,
 		Number = Base.Number = function Base_Number(value) {
-			if (this === undefined || this === window || this === Base) { // called as a function, not a contructor
+			if (!(this instanceof Number)) { // called as a function, not a contructor
 				return new Number(value);
 			}
 			this.value = (value instanceof Number) ? value.value
@@ -25,7 +25,7 @@
 				: value == null ? 0 // null or undefined
 
 				// TODO make sure that the following is the real JavaScript number algorithm
-				: /\-?(\d+|\d*.\d+)([eE][\-+]?\d+)?/.test(value) ? value - 0 // valid JavaScript number as a string
+				: /\-?(\d+|\d*.\d+)([eE][\-+]?\d+)?/.test(value) ? +value // valid JavaScript number as a string
 				: throw_message("Can't create a Base.Number with the value '" + value + "'.");
 		},
 		slice = Array.prototype.slice,
