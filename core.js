@@ -1,4 +1,4 @@
-(function (window, undefined) {
+(function (window) {
 	"use strict";
 	function equals(val) {
 		return function (compare) {
@@ -6,7 +6,8 @@
 		};
 	}
 
-	var extensions_list = [],
+	var undefined,
+		extensions_list = [],
 		extensions_map = {},
 
 		// quick reference to useful functions
@@ -114,7 +115,7 @@
 				}
 			} catch (e) {
 			}
-			// return undefined
+			return undefined;
 		}
 		function from_internal(to_base, number) {
 			try {
@@ -129,7 +130,7 @@
 				}
 			} catch (e) {
 			}
-			// return undefined
+			return undefined;
 		}
 		function get_extension(base, prop) {
 			var i;
@@ -146,7 +147,7 @@
 					}
 				}
 			}
-			// return undefined
+			return undefined;
 		}
 		var Base = window.Base = function Base(from, to, number) {
 			var i,
@@ -244,7 +245,7 @@
 			if (extension) {
 				return extension.get_name(base);
 			}
-			// return undefined
+			return undefined;
 		}
 		Base.extend = function Base_extend(extension) {
 				if (extensions_map[extension.name]) {

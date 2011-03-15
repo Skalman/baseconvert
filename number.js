@@ -5,7 +5,7 @@
 	round() // with precision, like PHP
 	sqrt()
 */
-(function (window, undefined) {
+(function (window) {
 	"use strict";
 	function throw_message(message) {
 		throw message;
