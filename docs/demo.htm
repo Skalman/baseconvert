@@ -55,30 +55,34 @@
 	<body>
 		<h1>Base Convert: Demo</h1>
 		<p>Comma-separated inputs will be treated as arrays.</p>
-		
+
 		<h2>Base(<span class="param">from_base</span>, <span class="param">to_base</span>, <span class="param">number</span>)</h2>
 		<p class="input">Base(<input type="text" id="base_from" placeholder="from_base" title="from_base"/>,
 			<input type="text" id="base_to" placeholder="to_base" title="to_base"/>,
 			<input type="text" id="base_number" class="number" placeholder="number" title="number"/>)</p>
 		<p class="result">Result: <output id="base_result"></output></p>
-		
-		
+
+
 		<h2>Base.to(<span class="param">to_base</span>, <span class="param">number</span>)</h2>
 		<p class="input">Base.to(<input type="text" id="to_to" placeholder="to_base" title="to_base"/>,
 			<input type="text" id="to_number" class="number" placeholder="number" title="number"/>)</p>
 		<p class="result">Result: <output id="to_result"></output></p>
-		
-		
+
+
 		<h2>Base.from(<span class="param">from_base</span>, <span class="param">number</span>)</h2>
 		<p class="input">Base.from(<input type="text" id="from_from" placeholder="from_base" title="from_base"/>,
 			<input type="text" id="from_number" class="number" placeholder="number" title="number"/>)</p>
 		<p class="result">Result: <output id="from_result"></output></p>
-		
+
+		<h2>Base.get_name(<span class="param">base</span>)</h2>
+		<p class="input">Base.get_name(<input type="text" id="get_name_base" placeholder="base" title="base"/>)</p>
+		<p class="result">Result: <output id="get_name_result"></output></p>
+
 		<script>
 			function id(id) {
 				return document.getElementById(id);
 			}
-			
+
 			function add_event(obj, evt, fn) {
 				if (Object.prototype.toString.call(obj) === "[object Array]") {
 					for (var i = 0; i < obj.length; i++) {
@@ -146,7 +150,12 @@
 					return Base.from(from, number);
 				});
 			}
-			
+			function calculate_get_name() {
+				output("get_name_result", ["get_name_base"], function (base) {
+					return Base.get_name(base);
+				});
+			}
+
 			var events = ["keypress", "keyup", "focus", "blur"];
 			add_event([
 				id("base_from"),
@@ -161,11 +170,15 @@
 				id("from_from"),
 				id("from_number")
 				], events, calculate_from);
-			
+			add_event([
+				id("get_name_base")
+				], events, calculate_get_name);
+
 			// calculate initial values, if any
 			calculate_base();
 			calculate_to();
 			calculate_from();
+			calculate_get_name();
 		</script>
 	</body>
 </html>

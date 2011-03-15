@@ -4,10 +4,20 @@
 	var dictionary = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 		Number = Base.Number,
 		valid_number = [],
-		valid_number_big = /^\-?(\d+(\:\d+)*)?\.?(\d+(\:\d+)*)?$/;
+		valid_number_big = /^\-?(\d+(\:\d+)*)?\.?(\d+(\:\d+)*)?$/,
+		base_names = {2: "binary", 8: "octal", 10: "decimal", 16: "hexadecimal"},
+		base_name_generic = "base #base#",
+		base_name_specified = "#name# (base #base#)";
 	function get_validator(base) {
 		var chars = "[" + dictionary.substr(0, base) + "]*";
 		return (valid_number[base] = new RegExp("^\\-?"+chars+"\\.?"+chars+"$", "i"));
+	}
+	function standard_get_name(base) {
+		if (base_names[base]) {
+			return base_name_specified.replace("#name#", base_names[base]).replace("#base#", base);
+		} else {
+			return base_name_generic.replace("#base#", base);
+		}
 	}
 	Base.extend({
 		name: "standard",
@@ -164,6 +174,7 @@
 			}
 			return result;
 		},
+		get_name: standard_get_name,
 		options: {
 			uppercase: true
 		}
@@ -324,6 +335,7 @@
 			}
 			return result;
 		},
+		get_name: standard_get_name,
 		options: {
 		}
 	});

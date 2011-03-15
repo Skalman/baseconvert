@@ -131,6 +131,23 @@
 			}
 			// return undefined
 		}
+		function get_extension(base, prop) {
+			var i;
+			if (prop === undefined) {
+				for (i = extensions_list.length - 1; i >= 0; i--) {
+					if (extensions_list[i].valid_base(base)) {
+						return extensions_list[i];
+					}
+				}
+			} else {
+				for (i = extensions_list.length - 1; i >= 0; i--) {
+					if (extensions_list[i][prop] && extensions_list[i].valid_base(base)) {
+						return extensions_list[i];
+					}
+				}
+			}
+			// return undefined
+		}
 		var Base = window.Base = function Base(from, to, number) {
 			var i,
 				internal,
@@ -222,6 +239,13 @@
 			}
 			return false;
 		};
+		Base.get_name = function Base_get_name(base) {
+			var extension = get_extension(base+"", "get_name");
+			if (extension) {
+				return extension.get_name(base);
+			}
+			// return undefined
+		}
 		Base.extend = function Base_extend(extension) {
 				if (extensions_map[extension.name]) {
 					throw "There is already an extension '" + extension.name + "'.";

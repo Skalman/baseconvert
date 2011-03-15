@@ -143,6 +143,9 @@
 				result :
 				result.toLowerCase());
 		},
+		get_name: function roman_get_name(base) {
+			return "roman numerals";
+		},
 		options: {
 			uppercase: true,
 			strict: true
