@@ -83,13 +83,6 @@ test("Edge cases - rounded results accepted", function () {
 					"188900967593046.1",
 					"188900967593046"
 				]
-			},
-			{ from: 16, to: 100,
-				"abcdef12345.1" : [
-					"11:80:63:10:47:45:65.6:25",
-					"11:80:63:10:47:45:65.6",
-					"11:80:63:10:47:45:65"
-				]
 			}
 		];
 	function in_array(elem, arr) {
@@ -112,19 +105,5 @@ test("Edge cases - rounded results accepted", function () {
 				equal(result, conversions[i][j][0], "conversion of '" + j + "' (rounded results accepted)");
 			}
 		}
-	}
-	return;
-	var result = Base(16, 10, "abcdef123456.1") + "";
-	var expected = {
-		"188900967593046.0625": true, // correct value
-		"188900967593046.063": true, // any rounded value is fine too
-		"188900967593046.06": true,
-		"188900967593046.1": true,
-		"188900967593046": true
-	};
-	if (!expected[result]) {
-		ok(false, "expected 188900967593046.0625 or some rounded variant - got '" + result + "'");
-	} else {
-		ok(true, "correct conversion of 'abcdef123456.1'");
 	}
 });

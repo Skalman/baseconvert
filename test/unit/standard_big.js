@@ -86,3 +86,37 @@ test("Convert to and from bases", function () {
 		deepEqual(Base(from, to, kv[0]), kv[1], "base "+from+" > base "+to);
 	}
 });
+
+test("Edge cases - rounded results accepted", function () {
+	var i, j, k, result,
+		conversions = [
+			{ from: 16, to: 100,
+				"abcdef12345.1" : [
+					"11:80:63:10:47:45:65.6:25",
+					"11:80:63:10:47:45:65.6",
+					"11:80:63:10:47:45:65"
+				]
+			}
+		];
+	function in_array(elem, arr) {
+		for (var i = 0; i < arr.length; i++) {
+			if (arr[i] === elem) {
+				return true;
+			}
+		}
+		return false;
+	}
+	for (i = 0; i < conversions.length; i++) {
+		for (j in conversions[i]) {
+			if (j === "from" || j === "to") {
+				continue;
+			}
+			result = Base(conversions[i].from, conversions[i].to, j);
+			if (in_array(result, conversions[i][j])) {
+				ok(true, "correct conversion of '" + j + "'");
+			} else {
+				equal(result, conversions[i][j][0], "conversion of '" + j + "' (rounded results accepted)");
+			}
+		}
+	}
+});
