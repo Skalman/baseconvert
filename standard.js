@@ -161,7 +161,11 @@
 				for (i = result.length - 1; i >= 0; i--) {
 					result[i] = dictionary.charAt(result[i]);
 				}
-				result = result.slice(0, integer_digits).join("") + "." + result.slice(integer_digits).join("");
+				if (integer_digits >= result.length) {
+					result = result.join("");
+				} else {
+					result = result.slice(0, integer_digits).join("") + "." + result.slice(integer_digits).join("");
+				}
 			} else {
 				for (i = result.length - 1; i >= 0; i--) {
 					result[i] = dictionary.charAt(result[i]);
@@ -325,7 +329,11 @@
 						result.pop();
 					}
 				}
-				result = result.slice(0, integer_digits).join(":") + "." + result.slice(integer_digits).join(":");
+				if (integer_digits >= result.length) {
+					result = result.join(":");
+				} else {
+					result = result.slice(0, integer_digits).join(":") + "." + result.slice(integer_digits).join(":");
+				}
 			} else {
 				result = result.join(":");
 			}
