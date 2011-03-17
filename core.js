@@ -1,11 +1,5 @@
 (function (window) {
 	"use strict";
-	function equals(val) {
-		return function (compare) {
-			return val == compare;
-		};
-	}
-
 	var undefined,
 		extensions_list = [],
 		extensions_map = {},
@@ -32,24 +26,6 @@
 			}
 			return -1;
 		};
-	function tester(t) {
-		if (t.test) {
-			// RegExp or homebrewed such objects - /^2-4$
-			return function (compare) {
-				return t.test(compare);
-			};
-		} else if (is_array(t)) {
-			// array - [2, 3, 4]
-			return function (compare) {
-				return index_of(compare, t) !== -1;
-			};
-		} else if (is_function(t)) {
-			return t;
-		} else {
-			// error, but we don't care (for now) TODO
-			throw "Base: tester error.";
-		}
-	}
 		/* each parameter may be an individual value or an array, but at least one of them must *not* be an array
 			// flat values
 			Base(
