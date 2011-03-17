@@ -180,4 +180,4 @@
 
 	};
 	Number.ZERO = new Number().make_immutable();
-}(this));
+})(this);

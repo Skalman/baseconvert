@@ -26,4 +26,4 @@
 		options: {
 		}
 	});
-}(Base));
+})(Base);
