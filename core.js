@@ -246,7 +246,7 @@
 				return extension.get_name(base);
 			}
 			return undefined;
-		}
+		};
 		Base.extend = function Base_extend(extension) {
 				if (extensions_map[extension.name]) {
 					throw "There is already an extension '" + extension.name + "'.";
