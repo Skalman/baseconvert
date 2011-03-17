@@ -1,3 +1,54 @@
+/* each parameter may be an individual value or an array, but at least one of them must *not* be an array
+	// flat values
+	Base(
+		"42",
+		10,
+		2)
+			"101010"
+
+
+	// one array
+	Base(
+		["42", "15"],
+		10,
+		2)
+			["101010", "1111"]
+
+	Base(
+		"42",
+		[10, 7],
+		2)
+			["101010", "11110"]
+
+	Base(
+		"42",
+		10,
+		[2, 3])
+			["101010", "1120"]
+
+
+	// two arrays - they must be of the same length
+	Base(
+		["42", "15"],
+		[10, 7],
+		2)
+			["101010", "1100"]
+
+	Base(
+		["42", "15"],
+		10,
+		[2, 3])
+			["101010", "120"]
+
+	Base(
+		"42",
+		[10, 7],
+		[2, 3])
+			["101010", "1010"]
+
+
+
+*/
 (function (window) {
 	"use strict";
 	var undefined,
@@ -25,59 +76,11 @@
 				}
 			}
 			return -1;
-		};
-		/* each parameter may be an individual value or an array, but at least one of them must *not* be an array
-			// flat values
-			Base(
-				"42",
-				10,
-				2)
-					"101010"
+		},
 
 
-			// one array
-			Base(
-				["42", "15"],
-				10,
-				2)
-					["101010", "1111"]
-
-			Base(
-				"42",
-				[10, 7],
-				2)
-					["101010", "11110"]
-
-			Base(
-				"42",
-				10,
-				[2, 3])
-					["101010", "1120"]
-
-
-			// two arrays - they must be of the same length
-			Base(
-				["42", "15"],
-				[10, 7],
-				2)
-					["101010", "1100"]
-
-			Base(
-				["42", "15"],
-				10,
-				[2, 3])
-					["101010", "120"]
-
-			Base(
-				"42",
-				[10, 7],
-				[2, 3])
-					["101010", "1010"]
-
-
-
-		*/
-		function to_internal(from_base, number) {
+		// private functions
+		to_internal = function to_internal(from_base, number) {
 			try {
 				if (number != null && from_base != null) {
 					number += "";
@@ -92,8 +95,8 @@
 			} catch (e) {
 			}
 			return undefined;
-		}
-		function from_internal(to_base, number) {
+		},
+		from_internal = function from_internal(to_base, number) {
 			try {
 				if (number != null && to_base != null) {
 					to_base += "";
@@ -107,8 +110,8 @@
 			} catch (e) {
 			}
 			return undefined;
-		}
-		function get_extension(base, prop) {
+		},
+		get_extension = function get_extension(base, prop) {
 			var i;
 			if (prop === undefined) {
 				for (i = extensions_list.length - 1; i >= 0; i--) {
@@ -124,8 +127,10 @@
 				}
 			}
 			return undefined;
-		}
-		var Base = window.Base = function Base(from, to, number) {
+		},
+
+		// the Base function
+		Base = window.Base = function Base(from, to, number) {
 			var i,
 				internal,
 				result,
@@ -263,4 +268,4 @@
 				})
 			}
 			*/
-})(this);
+}(this));
