@@ -28,7 +28,7 @@
 			};
 		}
 		number = number.clone(); // we must work on a copy
-		var tmp, i,
+		var tmp, i, integer_length,
 			digits = [],
 			is_negative = number.cmp(0) < 0,
 			integ = Number.floor(number.abs()), // the integer part; make the number non-negative
@@ -37,8 +37,7 @@
 
 			// number of significant digits we can safely handle (53 bits)
 			// TODO - don't hard code this - perhaps number.PRECISION? How to handle those that do integer part and fractional part separately?
-			max_significant_digits = Math.floor( 53 * Math.log(2) / Math.log(to_base) ),
-			integer_length;
+			max_significant_digits = Math.floor( 53 * Math.log(2) / Math.log(to_base) );
 
 		// find the integer part of the result
 		for (; integ.cmp(ZERO) > 0; significant_digits++) {
@@ -141,16 +140,16 @@
 
 		// parameters number and base
 		to_internal: function standard_to_internal(from_base, number) {
+			from_base = +from_base;
 			if (typeof number !== "string") {
 				number += "";
 			}
 			number = number
 				.toUpperCase()
 				.split(".");
-			var positive = (number[0].charAt(0) !== "-"),
-				i,
+			var i, fract_result,
+				positive = (number[0].charAt(0) !== "-"),
 				result = Number(),
-				fract_result,
 				integ = ( positive ? // skip first character or not?
 					number[0] :
 					number[0].substr(1) ),
@@ -158,7 +157,6 @@
 
 			// find the integer part of the result
 			for (i = 0; i < integ.length; i++) {
-				// result = result * from_base + digits.indexOf(integ.charAt(i))
 				result.mul(from_base).add(dictionary.indexOf( integ.charAt(i) ));
 			}
 
@@ -169,8 +167,6 @@
 					fract_result.mul(from_base).add(dictionary.indexOf( fract.charAt(i) ));
 				}
 				fract_result.mul(Number.pow(from_base, -fract.length));
-
-				// result = result + fract_result
 				result.add(fract_result);
 			}
 
@@ -208,11 +204,11 @@
 	Base.extend({
 		name: "standard_big",
 		/* bool valid_base(string) */
-		valid_base: function standard_valid_base(base) {
+		valid_base: function standard_big_valid_base(base) {
 			return 36 < base && parseInt(base, 10)+"" === base;
 		},
 		/* bool valid_from(string, string)*/
-		valid_from: function standard_valid_from(base, number) {
+		valid_from: function standard_big_valid_from(base, number) {
 			if (
 				// eliminate the strings that the RegExp can't handle
 				number !== "" && number !== "." && number !== "-." && number !== "-" &&
@@ -235,7 +231,7 @@
 			return false;
 		},
 		/* bool valid_to(string, internal_number) */
-		valid_to: function standard_valid_to(base, number) {
+		valid_to: function standard_big_valid_to(base, number) {
 			return (
 				// any real number is fine
 				// valid base
@@ -246,34 +242,30 @@
 		fractional: true,
 
 		// parameters number and base
-		to_internal: function standard_to_internal(from_base, number) {
-			from_base = parseInt(from_base, 10);
+		to_internal: function standard_big_to_internal(from_base, number) {
+			from_base = +from_base;
 			number = number.split(".");
-			var positive = (number[0].charAt(0) !== "-"),
-				i,
+			
+			var i, fract_result,
+				positive = (number[0].charAt(0) !== "-"),
 				result = Number(),
-				fract_result,
 				integ = ( positive ? // skip first character or not?
 					number[0] :
 					number[0].substr(1) ),
-				fract = (number[1] ? number[1].split(":") : []);
+				fract = (number[1] ? number[1].split(":") : undefined);
 			integ = (integ ? integ.split(":") : []);
-
-			// TODO put integer and fractional part together
 
 			// find the integer part of the result
 			for (i = 0; i < integ.length; i++) {
-				// result = result * from_base + integ[i]
 				result.mul(from_base).add(integ[i]);
 			}
 			// find the fractional part of the result
-			if (fract.length) {
+			if (fract) {
 				fract_result = Number();
 				for (i = 0; i < fract.length; i++) {
 					fract_result.mul(from_base).add(fract[i]);
 				}
 				fract_result.mul(Number.pow(from_base, -fract.length));
-				// result = result + fract_result
 				result.add(fract_result);
 			}
 
