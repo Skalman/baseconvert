@@ -83,6 +83,17 @@ test("Edge cases - rounded results accepted", function () {
 					"188900967593046.1",
 					"188900967593046"
 				],
+				"ababababababababab" : [
+					"3166763406159644437419",
+					"3166763406159644437420",
+					"3166763406159644437400",
+					"3166763406159644437000",
+					"3166763406159644440000",
+					"3166763406159644400000",
+					"3166763406159644000000",
+					"3166763406159640000000",
+					"3166763406159600000000"
+				],
 				"500.0000000001": [
 					"1280.000000000000909494701772928237915039062",
 					"1280.00000000000090949470177292823791503906",
@@ -131,7 +142,7 @@ test("Edge cases - rounded results accepted", function () {
 			}
 			result = Base(conversions[i].from, conversions[i].to, j);
 			if (in_array(result, conversions[i][j])) {
-				ok(true, "correct conversion of '" + j + "'");
+				equal(result, result, "conversion of '" + j + "' (rounded results accepted)");
 			} else {
 				equal(result, conversions[i][j][0], "conversion of '" + j + "' (rounded results accepted)");
 			}

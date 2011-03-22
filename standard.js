@@ -37,7 +37,7 @@
 
 			// number of significant digits we can safely handle (53 bits)
 			// TODO - don't hard code this - perhaps number.PRECISION? How to handle those that do integer part and fractional part separately?
-			max_significant_digits = 53 * Math.log(2) / Math.log(to_base),
+			max_significant_digits = Math.floor( 53 * Math.log(2) / Math.log(to_base) ),
 			integer_length;
 
 		// find the integer part of the result
@@ -55,32 +55,59 @@
 			digits.push(tmp.get_number());
 		}
 
+		var asdf = digits.join(":");
 		if (significant_digits >= max_significant_digits) {
 			// round (away from zero)
-			if (digits.pop() >= to_base / 2) {
-				tmp = digits.length;
 
-				// add 1 to the last element, but if it's to_base, we'll have to remove it, and check the next
-				while (++digits[--tmp] === to_base) {
-					if (tmp > integer_length) {
-						// we're behind the decimal point, remove the last digit
-						digits.pop();
-					} else {
-						// we're in the integer part - can't remove this digit: instead set it to zero
+			if (significant_digits > integer_length) {
+				// fraction
+				if (digits.pop() >= to_base / 2) {
+					// 3199.9995 -> 3200; 0.129999 -> 0.13
+					// round up
+					tmp = digits.length;
+					// add 1 to the last element, but if it's to_base, we'll have to remove it, and check the next
+					while (++digits[--tmp] === to_base) {
+						digits[tmp] = 0;
+					}
+					digits.length = Math.max(tmp + 1, integer_length); // truncate the array
+				} else {
+					// 3120.0004 -> 3120; 0.120004 -> 0.12
+					// round down
+					tmp = digits.length;
+					while (digits[--tmp] === 0 && tmp >= integer_length) {
+					}
+					digits.length = tmp + 1;
+				}
+				console.log(asdf + " > " + digits.join(":"));
+			} else {
+				// integer
+				if (digits[max_significant_digits] >= to_base / 2) {
+					// 31999995xxxx -> 32000005xxxx; 31234568xxxx -> 31234578xxxx
+					// round up
+					// leave digits[max_significant_digits] alone
+					tmp = max_significant_digits - 1;
+					while (++digits[--tmp] === to_base) {
 						digits[tmp] = 0;
 					}
 				}
-			} else {
-				tmp = digits.length;
-				while (digits[--tmp] === 0 && tmp > integer_length) {
-					digits.pop();
+
+				// xxxxxxx51234 -> xxxxxxx00000; xxxxxxx83333 -> xxxxxxx00000
+				for (i = max_significant_digits; i < digits.length; i++) {
+					digits[i] = 0;
 				}
+				//console.log(asdf + " > " + digits.join(":"));
+				//console.log(max_significant_digits + " - " + digits.length);
 			}
 		}
 		if (integer_length === 0) {
 			// we don't return results with beginning with '.'
 			digits.unshift(0);
 			integer_length++;
+		}
+		if (digits[0] == 4) {
+			console.log(digits);
+			console.log(max_significant_digits);
+			console.log(digits.length);
 		}
 		return {
 			digits: digits,
