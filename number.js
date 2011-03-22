@@ -160,7 +160,7 @@
 				getvalue(other) === this.value);
 		},
 		is_int: function is_int() {
-			return !(this.value % 1);
+			return this.value % 1 === 0;
 		},
 		get_number: function get_number() {
 			return this.value;
