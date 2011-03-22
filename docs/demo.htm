@@ -4,181 +4,75 @@
 		<meta charset="utf-8"/>
 		<title>Base Convert: Demo</title>
 		<link rel="shortcut icon" href="favicon.png" type="image/png"/>
-		<script src="../core.js"></script>
-		<script src="../number.js"></script>
-		<script src="../standard.js"></script>
-		<script src="../roman.js"></script>
-		<script src="../leet.js"></script>
-		<style>
-			html {
-				font-family:Arial, sans-serif;
-				background:#ccc;
-				margin:2em;
-			}
-			body {
-				border:1px solid #999;
-				padding:2em;
-				background:#fff;
-				width:40em;
-				margin:0 auto;
-			}
-			input {
-				font:inherit;
-				border:1px solid #ccc;
-				width:8em;
-				margin:0 0.3em;
-			}
-			.param {
-				border:1px solid #ccc;
-				margin:0 0.3em;
-			}
-			input.number {
-				width:15em;
-			}
-			.result {
-				margin-left:5em;
-			}
-			h1 {
-				margin:0;
-			}
-			h2 {
-				margin:2em 0 0.5em 0;
-			}
-			p {
-				margin:0 0 0.5em 0;
-			}
-			output {
-				font-weight:bold;
-			}
-		</style>
+		<link rel="stylesheet" href="demo.css"/>
 	</head>
 	<body>
 		<h1>Base Convert: Demo</h1>
 		<p>Comma-separated inputs will be treated as arrays.</p>
 
-		<h2>Base(<span class="param">from_base</span>, <span class="param">to_base</span>, <span class="param">number</span>)</h2>
-		<p class="input">Base(<input type="text" id="base_from" placeholder="from_base" title="from_base"/>,
-			<input type="text" id="base_to" placeholder="to_base" title="to_base"/>,
-			<input type="text" id="base_number" class="number" placeholder="number" title="number"/>)</p>
+		<h2>
+			Base(
+				<label>
+					from_base
+					<input type="text" id="base_from"/>
+				</label>,
+				<label>
+					to_base
+					<input type="text" id="base_to"/>
+				</label>,
+				<label>
+					number
+					<input type="text" id="base_number" class="number"/>
+				</label>
+			)
+		</h2>
 		<p class="result">Result: <output id="base_result"></output></p>
 
 
-		<h2>Base.to(<span class="param">to_base</span>, <span class="param">number</span>)</h2>
-		<p class="input">Base.to(<input type="text" id="to_to" placeholder="to_base" title="to_base"/>,
-			<input type="text" id="to_number" class="number" placeholder="number" title="number"/>)</p>
+		<h2>
+			Base.to(
+				<label>
+					to_base
+					<input type="text" id="to_to"/>
+				</label>,
+				<label>
+					number
+					<input type="text" id="to_number" class="number"/>
+				</label>
+			)
+		</h2>
 		<p class="result">Result: <output id="to_result"></output></p>
 
 
-		<h2>Base.from(<span class="param">from_base</span>, <span class="param">number</span>)</h2>
-		<p class="input">Base.from(<input type="text" id="from_from" placeholder="from_base" title="from_base"/>,
-			<input type="text" id="from_number" class="number" placeholder="number" title="number"/>)</p>
+		<h2>
+			Base.from(
+				<label>
+					from_base
+					<input type="text" id="from_from"/>
+				</label>,
+				<label>
+					number
+					<input type="text" id="from_number"/>
+				</label>
+			)
+		</h2>
 		<p class="result">Result: <output id="from_result"></output></p>
 
-		<h2>Base.get_name(<span class="param">base</span>)</h2>
-		<p class="input">Base.get_name(<input type="text" id="get_name_base" placeholder="base" title="base"/>)</p>
+		<h2>
+			Base.get_name(
+				<label>
+					base
+					<input type="text" id="get_name_base"/>
+				</label>
+			)
+		</h2>
 		<p class="result">Result: <output id="get_name_result"></output></p>
 
-		<script>
-			function id(id) {
-				return document.getElementById(id);
-			}
-
-			function add_event(obj, evt, fn) {
-				if (Object.prototype.toString.call(obj) === "[object Array]") {
-					for (var i = 0; i < obj.length; i++) {
-						add_event(obj[i], evt, fn);
-					}
-				} else if (typeof evt === "object") {
-					for (var i in evt) {
-						add_event(obj, evt[i], fn);
-					}
-				} else {
-					// see http://www.quirksmode.org/js/eventSimple.html
-					if (obj.addEventListener) {
-						obj.addEventListener(evt, fn, false);
-					} else if (obj.attachEvent) {
-						obj.attachEvent("on"+evt, fn);
-					}
-				}
-			}
-			function value_to_string(v) {
-				var s = Object.prototype.toString.call(v);
-				if (s == "[object Array]") {
-					s = [];
-					for (var i = 0; i < v.length; i++) {
-						s.push(value_to_string(v[i]));
-					}
-					return s.join(", ");
-				} else {
-					return v + "";
-				}
-			}
-			function input(obj_id) {
-				var v = id(obj_id).value;
-				return v.indexOf(",") === -1 ? v : v.split(/\s*,\s*/);
-			}
-			function output(obj_id, params, fn) {
-				var obj = id(obj_id), i;
-				if (!obj) {
-					throw obj_id + " can't be found"
-				}
-				for (i = 0; i < params.length; i++) {
-					params[i] = id(params[i]).value;
-					if (params[i] === "") {
-						obj.innerHTML = "";
-						return;
-					}
-				}
-				try {
-					obj.innerHTML = value_to_string(fn.apply(this, params));
-				} catch (e) {
-					obj.innerHTML = "Exception: " + e;
-				}
-			}
-			function calculate_base() {
-				output("base_result", ["base_from", "base_to", "base_number"], function (from, to, number) {
-					return Base(from, to, number);
-				});
-			}
-			function calculate_to() {
-				output("to_result", ["to_to", "to_number"], function (to, number) {
-					return Base.to(to, number);
-				});
-			}
-			function calculate_from() {
-				output("from_result", ["from_from", "from_number"], function (from, number) {
-					return Base.from(from, number);
-				});
-			}
-			function calculate_get_name() {
-				output("get_name_result", ["get_name_base"], function (base) {
-					return Base.get_name(base);
-				});
-			}
-
-			var events = ["keypress", "keyup", "focus", "blur"];
-			add_event([
-				id("base_from"),
-				id("base_to"),
-				id("base_number")
-				], events, calculate_base);
-			add_event([
-				id("to_to"),
-				id("to_number")
-				], events, calculate_to);
-			add_event([
-				id("from_from"),
-				id("from_number")
-				], events, calculate_from);
-			add_event([
-				id("get_name_base")
-				], events, calculate_get_name);
-
-			// calculate initial values, if any
-			calculate_base();
-			calculate_to();
-			calculate_from();
-			calculate_get_name();
-		</script>
+		<script src="../core.js"></script>
+		<script src="../number.js"></script>
+		<script src="../standard.js"></script>
+		<script src="../roman.js"></script>
+		<script src="../leet.js"></script>
+		<script src="demo.js"></script>
 	</body>
 </html>
