@@ -1,52 +1,56 @@
 (function (Base) {
 	"use strict";
-	var messages = {
-		bad_order: "Found unexpected sorting order: '$1' followed by '$2' (using strict sorting order).",
-		bad_order_nonstrict: "Found unexpected sorting order: '$1' followed by '$2' (using non-strict sorting order)",
-		bad_repetition: "Found unexpected repetition: '$1' $2 times in a row"
-	};
-	var global_replace = "aa".replace("a", "", "g") === "" ?
-		function (str, search, replace) {
-			return str.replace(search, replace, "g");
-		} :
-		function (str, search, replace) {
-			while (str !== (str = str.replace(search, replace))) {
+	var
+		Number = Base.Number,
+
+		messages = {
+			bad_order: "Found unexpected sorting order: '$1' followed by '$2' (using strict sorting order).",
+			bad_order_nonstrict: "Found unexpected sorting order: '$1' followed by '$2' (using non-strict sorting order)",
+			bad_repetition: "Found unexpected repetition: '$1' $2 times in a row"
+		},
+		global_replace = "aa".replace("a", "", "g") === "" ?
+			function global_replace(str, search, replace) {
+				return str.replace(search, replace, "g");
+			} :
+			function global_replace(str, search, replace) {
+				while (str !== (str = str.replace(search, replace))) {
+				}
+				return str;
+			},
+		language = function language(str) {
+			var i,
+				args = arguments;
+			str = messages[str];
+			for (i = 1; i < args.length; i++) {
+				str = global_replace(str, "$"+i, args[i]);
 			}
 			return str;
+		},
+
+		strict_conversions = {
+			M: 1000, CM: 900, D: 500, CD: 400,
+			C: 100, XC: 90, L: 50, XL: 40,
+			X: 10, IX: 9, V: 5, IV: 4, I: 1
+		},
+		repetition_allowed = {
+			M: 3, C: 4, X: 4, I: 4
+		},
+		classes = {
+			M: 6,
+			D: 5, C: 5,
+			CM: 4, CD: 4,
+			LM: 3, LD: 3, L: 3, X: 3,
+			XM: 2, XD: 2, XC: 2, XL: 2,
+			VM: 1, VD: 1, VC: 1, VL: 1, V: 1, I: 1,
+			IM: 0, ID: 0, IC: 0, IL: 0, IX: 0, IV: 0
+		},
+		nonstrict_conversions = {
+			M: 1000, IM: 999, VM: 995, XM: 990, LM: 950, CM: 900,
+			D: 500, ID: 499, VD: 495, XD: 490, LD: 450, CD: 400,
+			C: 100, IC: 99, VC: 95, XC: 90,
+			L: 50, IL: 49, VL: 45, XL: 40,
+			X: 10, IX: 9, V: 5, IV: 4, I: 1
 		};
-	function language(str) {
-		var args = arguments, i;
-		str = messages[str];
-		for (i = 1; i < args.length; i++) {
-			str = global_replace(str, "$"+i, args[i]);
-		}
-		return str;
-	}
-	var strict_conversions = {
-		M: 1000, CM: 900, D: 500, CD: 400,
-		C: 100, XC: 90, L: 50, XL: 40,
-		X: 10, IX: 9, V: 5, IV: 4, I: 1
-	};
-	var repetition_allowed = {
-		M: 3, C: 4, X: 4, I: 4
-	};
-	var classes = {
-		M: 6,
-		D: 5, C: 5,
-		CM: 4, CD: 4,
-		LM: 3, LD: 3, L: 3, X: 3,
-		XM: 2, XD: 2, XC: 2, XL: 2,
-		VM: 1, VD: 1, VC: 1, VL: 1, V: 1, I: 1,
-		IM: 0, ID: 0, IC: 0, IL: 0, IX: 0, IV: 0
-	};
-	var nonstrict_conversions = {
-		M: 1000, IM: 999, VM: 995, XM: 990, LM: 950, CM: 900,
-		D: 500, ID: 499, VD: 495, XD: 490, LD: 450, CD: 400,
-		C: 100, IC: 99, VC: 95, XC: 90,
-		L: 50, IL: 49, VL: 45, XL: 40,
-		X: 10, IX: 9, V: 5, IV: 4, I: 1
-	};
-	var Number = Base.Number;
 	Base.extend({
 		name: "roman",
 		fractional: false,
