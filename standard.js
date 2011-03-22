@@ -55,7 +55,6 @@
 			digits.push(tmp.get_number());
 		}
 
-		var asdf = digits.join(":");
 		if (significant_digits >= max_significant_digits) {
 			// round (away from zero)
 
@@ -78,7 +77,6 @@
 					}
 					digits.length = tmp + 1;
 				}
-				console.log(asdf + " > " + digits.join(":"));
 			} else {
 				// integer
 				if (digits[max_significant_digits] >= to_base / 2) {
@@ -95,19 +93,12 @@
 				for (i = max_significant_digits; i < digits.length; i++) {
 					digits[i] = 0;
 				}
-				//console.log(asdf + " > " + digits.join(":"));
-				//console.log(max_significant_digits + " - " + digits.length);
 			}
 		}
 		if (integer_length === 0) {
 			// we don't return results with beginning with '.'
 			digits.unshift(0);
 			integer_length++;
-		}
-		if (digits[0] == 4) {
-			console.log(digits);
-			console.log(max_significant_digits);
-			console.log(digits.length);
 		}
 		return {
 			digits: digits,
