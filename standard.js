@@ -1,6 +1,7 @@
 (function (Base) {
 	"use strict";
 	var dictionary = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+		dictionary_arr = dictionary.split(""),
 		Number = Base.Number,
 		ZERO = Number.ZERO,
 		valid_number = [],
@@ -182,7 +183,7 @@
 				digits = result.digits,
 				pt = result.pt;
 			for (i = 0, length = digits.length; i < length; i++) {
-				digits[i] = dictionary[ digits[i] ];
+				digits[i] = dictionary_arr[ digits[i] ];
 			}
 			return (
 				(result.neg ? "-" : "") +
@@ -252,7 +253,7 @@
 				integ = ( positive ? // skip first character or not?
 					number[0] :
 					number[0].substr(1) ),
-				fract = (number[1] ? number[1].split(":") : undefined);
+				fract = (number[1] ? number[1].split(":") : false);
 			integ = (integ ? integ.split(":") : []);
 
 			// find the integer part of the result
