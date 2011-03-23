@@ -1,6 +1,7 @@
 (function (Base) {
 	"use strict";
-	var dictionary = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+	var undefined,
+		dictionary = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 		dictionary_arr = dictionary.split(""),
 		Number = Base.Number,
 		ZERO = Number.ZERO,
@@ -9,6 +10,7 @@
 		base_names = {2: "binary", 8: "octal", 10: "decimal", 16: "hexadecimal"},
 		base_name_generic = "base #base#",
 		base_name_specified = "#name# (base #base#)";
+
 	function get_validator(base) {
 		var chars = "[" + dictionary.substr(0, base) + "]*";
 		return (valid_number[base] = new RegExp("^\\-?"+chars+"\\.?"+chars+"$", "i"));
@@ -19,6 +21,17 @@
 		} else {
 			return base_name_generic.replace("#base#", base);
 		}
+	}
+	function standard_suggest_base(base, tester) {
+		var i, tmp,
+			matches = [];
+		for (i in base_names) {
+			tmp = base_name_specified.replace("#name#", base_names[i]).replace("#base#", i);
+			if (tester.test(tmp)) {
+				matches.push([i, tmp]);
+			}
+		}
+		return matches;
 	}
 	function standard_from_internal_generic(to_base, number) {
 		if (number.equals(ZERO)) {
@@ -47,6 +60,7 @@
 			integ.sub(tmp).div(to_base);
 		}
 		integer_length = digits.length;
+		
 		// find the fractional part of the result
 		for (; significant_digits < max_significant_digits && !fract.equals(ZERO); significant_digits++) {
 			fract.mul(to_base);
@@ -61,7 +75,7 @@
 			if (significant_digits > integer_length) {
 				// fraction
 				if (digits.pop() >= to_base / 2) {
-					// 3199.9995 -> 3200; 0.129999 -> 0.13
+					// 3199.9995 -> 3200; 0.129999 -> 0.13; 9999.9999 -> 10000
 					// round up
 					tmp = digits.length;
 					// add 1 to the last element, but if it's to_base, we'll have to remove it, and check the next
@@ -80,7 +94,7 @@
 			} else {
 				// integer
 				if (digits[max_significant_digits] >= to_base / 2) {
-					// 31999995xxxx -> 32000005xxxx; 31234568xxxx -> 31234578xxxx
+					// 31999995xxxx -> 32000005xxxx; 31234568xxxx -> 31234578xxxx; 99999 -> 100000
 					// round up
 					// leave digits[max_significant_digits] alone
 					tmp = max_significant_digits - 1;
@@ -95,8 +109,12 @@
 				}
 			}
 		}
+		if (digits[-1] !== undefined) {
+			digits.unshift(1);
+			integer_length++;
+		}
 		if (integer_length === 0) {
-			// we don't return results with beginning with '.'
+			// .16 -> 0.16
 			digits.unshift(0);
 			integer_length++;
 		}
@@ -195,6 +213,7 @@
 			);
 		},
 		get_name: standard_get_name,
+		suggest_base: standard_suggest_base,
 		options: {
 			uppercase: true
 		}

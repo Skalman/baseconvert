@@ -73,7 +73,7 @@ test("Convert between bases", function () {
 });
 
 test("Edge cases - rounded results accepted", function () {
-	var i, j, k, result,
+	var i, j, k, result, good,
 		conversions = [
 			{ from: 16, to: 10,
 				"abcdef123456.1" : [
@@ -124,6 +124,14 @@ test("Edge cases - rounded results accepted", function () {
 					"1280.0000000000009",
 					"1280.000000000001",
 					"1280",
+				],
+				"5F5E0FF.FFFFFF" : [
+					"100000000"
+				]
+			},
+			{ from: "10", to: "16",
+				"65535.9999999999" : [
+					"10000"
 				]
 			}
 		];
@@ -141,11 +149,9 @@ test("Edge cases - rounded results accepted", function () {
 				continue;
 			}
 			result = Base(conversions[i].from, conversions[i].to, j);
-			if (in_array(result, conversions[i][j])) {
-				equal(result, result, "conversion of '" + j + "' (rounded results accepted)");
-			} else {
-				equal(result, conversions[i][j][0], "conversion of '" + j + "' (rounded results accepted)");
-			}
+			good = in_array(result, conversions[i][j]);
+			equal(result, good ? result : conversions[i][j][0],
+				"converting '" + j + "' (" + conversions[i].from + " > " + conversions[i].to + "; rounded results accepted)");
 		}
 	}
 });
