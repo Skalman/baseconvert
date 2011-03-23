@@ -128,6 +128,11 @@
 			}
 			return undefined;
 		},
+		// by jQuery UI
+		escape_regexp = function escape_regexp(value) {
+			return value.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&");
+		},
+
 
 		// the Base function
 		Base = window.Base = function Base(from, to, number) {
@@ -227,6 +232,19 @@
 				return extension.get_name(base);
 			}
 			return undefined;
+		};
+		Base.suggest = function Base_suggest(base) {
+			var i,
+				regexp = new RegExp(escape_regexp(base), "i"),
+				suggestions = [];
+			for (i = extensions_list.length - 1; i >= 0; i--) {
+				// console.log(i + " " + extensions_list[i].name + " " + extensions_list[i].suggest_base);
+				if (extensions_list[i].suggest_base) {
+					suggestions.push(extensions_list[i].suggest_base(base, regexp));
+				}
+			}
+			suggestions = [].concat.apply([], suggestions);
+			return suggestions;
 		};
 		Base.extend = function Base_extend(extension) {
 				if (extensions_map[extension.name]) {
