@@ -52,7 +52,7 @@
 				</label>,
 				<label>
 					number
-					<input type="text" id="from_number"/>
+					<input type="text" id="from_number" class="number"/>
 				</label>
 			)
 		</h2>
@@ -67,6 +67,16 @@
 			)
 		</h2>
 		<p class="result">Result: <output id="get_name_result"></output></p>
+
+		<h2>
+			Base.suggest(
+				<label>
+					base
+					<input type="text" id="suggest_base"/>
+				</label>
+			)
+		</h2>
+		<p class="result">Result: <output id="suggest_result"></output></p>
 
 		<script src="../core.js"></script>
 		<script src="../number.js"></script>

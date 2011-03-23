@@ -20,14 +20,18 @@ function add_event(obj, evt, fn) {
 		}
 	}
 }
-function value_to_string(v) {
+function value_to_string(v, recursed) {
 	var s = Object.prototype.toString.call(v);
 	if (s == "[object Array]") {
 		s = [];
 		for (var i = 0; i < v.length; i++) {
-			s.push(value_to_string(v[i]));
+			s.push(value_to_string(v[i], true));
 		}
-		return s.join(", ");
+		if (recursed) {
+			return "[" + s.join(", ") + "]";
+		} else {
+			return s.join(", ");
+		}
 	} else {
 		return v + "";
 	}
@@ -74,6 +78,11 @@ function calculate_get_name() {
 		return Base.get_name(base);
 	});
 }
+function calculate_suggest() {
+	output("suggest_result", ["suggest_base"], function (base) {
+		return Base.suggest(base);
+	});
+}
 
 var events = ["keypress", "keyup", "focus", "blur"];
 add_event([
@@ -92,9 +101,13 @@ add_event([
 add_event([
 	id("get_name_base")
 	], events, calculate_get_name);
+add_event([
+	id("suggest_base")
+	], events, calculate_suggest);
 
 // calculate initial values, if any
 calculate_base();
 calculate_to();
 calculate_from();
 calculate_get_name();
+calculate_suggest();
