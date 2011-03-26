@@ -234,17 +234,26 @@
 			return undefined;
 		};
 		Base.suggest = function Base_suggest(base) {
-			var i,
+			var i, j, length,
 				regexp = new RegExp(escape_regexp(base), "i"),
-				suggestions = [];
+				suggestions = [],
+				result = [];
 			for (i = extensions_list.length - 1; i >= 0; i--) {
 				// console.log(i + " " + extensions_list[i].name + " " + extensions_list[i].suggest_base);
 				if (extensions_list[i].suggest_base) {
 					suggestions.push(extensions_list[i].suggest_base(base, regexp));
 				}
 			}
-			suggestions = [].concat.apply([], suggestions);
-			return suggestions;
+			length = suggestions.length;
+			for (i in {match:true, proposed:true, good:true, other:true}) {
+				for (j = 0; j < length; j++) {
+					if (suggestions[j][i]) {
+						result.push(suggestions[j][i]);
+					}
+				}
+			}
+			result = [].concat.apply([], result);
+			return result;
 		};
 		Base.extend = function Base_extend(extension) {
 				if (extensions_map[extension.name]) {

@@ -7,8 +7,13 @@
 		ZERO = Number.ZERO,
 		valid_number = [],
 		valid_number_big = /^\-?(\d+(\:\d+)*)?\.?(\d+(\:\d+)*)?$/,
-		base_names = {2: "binary", 8: "octal", 10: "decimal", 16: "hexadecimal"},
+		base_names = {2: "binary", 8: "octal", 10: "decimal", 12: "duodecimal", 16: "hexadecimal"},
 		base_name_generic = "base #base#",
+		base_suggestions = {
+			proposed: "2 8 10 12 16".split(" "),
+			good: "20 36 60 100".split(" "),
+			other: "11 13 14 15 18 30 40 50 70 80 90".split(" ")
+		},
 		base_name_specified = "#name# (base #base#)";
 
 	function get_validator(base) {
@@ -23,12 +28,34 @@
 		}
 	}
 	function standard_suggest_base(base, tester) {
-		var i, tmp,
-			matches = [];
+		var i, j, tmp, number, bases,
+			matches = {proposed: []},
+			all = {};
+		number = /(\d+)/.exec(base);
+		if (number) {
+			number = number[1];
+			if (number > 1) {
+				matches.match = [[number, standard_get_name(number)]];
+				all[number] = true;
+			}
+			for (i in base_suggestions) {
+				tmp = base_suggestions[i];
+				for (j = 0; j < tmp.length; j++) {
+					if (tmp[j].indexOf(number) !== -1 && !all[tmp[j]]) {
+						if (!matches[i]) {
+							matches[i] = [];
+						}
+						matches[i].push([tmp[j], standard_get_name(tmp[j])]);
+						all[tmp[j]] = true;
+					}
+				}
+			}
+		}
 		for (i in base_names) {
 			tmp = base_name_specified.replace("#name#", base_names[i]).replace("#base#", i);
-			if (tester.test(tmp)) {
-				matches.push([i, tmp]);
+			if (!all[i] && tester.test(tmp)) {
+				matches.proposed.push([i, tmp]);
+				all[i] = true;
 			}
 		}
 		return matches;
