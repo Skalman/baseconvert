@@ -1,6 +1,6 @@
 (function (Base) {
 	"use strict";
-	var
+	var undefined,
 		Number = Base.Number,
 
 		messages = {
@@ -44,6 +44,11 @@
 			VM: 1, VD: 1, VC: 1, VL: 1, V: 1, I: 1,
 			IM: 0, ID: 0, IC: 0, IL: 0, IX: 0, IV: 0
 		},
+		classes2 = {
+			D: 3, MD: 3,
+			L: 2, XL: 2,
+			V: 1, IV: 1
+		},
 		nonstrict_conversions = {
 			M: 1000, IM: 999, VM: 995, XM: 990, LM: 950, CM: 900,
 			D: 500, ID: 499, VD: 495, XD: 490, LD: 450, CD: 400,
@@ -86,9 +91,11 @@
 				next,
 				value,
 				klass,
+				class2,
 				last_token,
 				last_value = 1001, // something greater than M = 1000
-				last_class = 7, // something greater than the greatest class, M : 6
+				last_class = 7, // something greater than the greatest class, M: 6
+				last_class2 = 4, // something greater than the greatest class, D: 3
 				repetition_count;
 
 			// tokenize
@@ -105,6 +112,7 @@
 				}
 				value = conv[token];
 				klass = classes[token];
+				class2 = classes2[token];
 				last_value === value ?
 					repetition_count++ :
 					repetition_count = 1;
@@ -124,10 +132,15 @@
 							throw language("bad_repetition", token, repetition_count);
 						}
 					}
+				} else if (class2 !== undefined && last_class2 === class2) {
+					throw language(this.options.strict ? "bad_order" : "bad_order_nonstrict",
+						last_token,
+						token);
 				}
 				result += value;
 				last_value = value;
 				last_class = klass;
+				last_class2 = class2;
 			}
 			return Number(result);
 		},
@@ -149,6 +162,13 @@
 		},
 		get_name: function roman_get_name(base) {
 			return "roman numerals";
+		},
+		suggest_base: function roman_suggest_base(base, tester) {
+			if (tester.test("roman numerals")) {
+				return { proposed: [["roman", "roman numerals"]] };
+			} else {
+				return {};
+			}
 		},
 		options: {
 			uppercase: true,

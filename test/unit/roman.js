@@ -13,7 +13,7 @@ test("All roman numerals", function () {
 	for (i = 1; i <= 3999; i++) {
 		roman = Base.to("roman", i);
 		internal = Base.from("roman", roman);
-		if (!internal.equals(i)) {
+		if (!internal || !internal.equals(i)) {
 			ok(false, "Conversion error: "+i+" > "+roman+" > "+internal);
 			return;
 		}
@@ -42,25 +42,27 @@ test("To roman numerals", function () {
 });
 
 test("From roman numerals, bad values", function () {
-	expect(11);
+	expect(13);
 	var undefined, N = Base.Number;
 
 	strEqual(Base.from("roman", "abc"), undefined, "abc > undefined");
 	strEqual(Base.from("roman", "IIIII"), undefined, "IIIII > undefined (instead of 5)");
 	strEqual(Base.from("roman", "IVII"), undefined, "IVII > undefined (instead of 6)");
+	strEqual(Base.from("roman", "VIV"), undefined, "VIV > undefined (instead of 9)");
 	strEqual(Base.from("roman", "VV"), undefined, "VV > undefined (instead of 10)");
 	strEqual(Base.from("roman", "IXI"), undefined, "IXI > undefined (instead of 10)");
 	strEqual(Base.from("roman", "IXIV"), undefined, "IXIV > undefined (instead of 13)");
 	strEqual(Base.from("roman", "IXIX"), undefined, "IXIX > undefined (instead of 18)");
 	strEqual(Base.from("roman", "CCCCC"), undefined, "CCCCC > undefined (instead of 500)");
 	strEqual(Base.from("roman", "CCCCCC"), undefined, "CCCCCC > undefined (instead of 600)");
+	strEqual(Base.from("roman", "DCD"), undefined, "DCD > undefined (instead of 900)");
 	strEqual(Base.from("roman", "MIMIM"), undefined, "MIMIM > undefined (instead of 2998)");
 	strEqual(Base.from("roman", "MMMM"), undefined, "MMMM > undefined (instead of 4000)");
 
 });
 
 test("From roman numerals, good values", function () {
-	expect(12);
+	expect(13);
 	var undefined, N = Base.Number;
 
 	strEqual(Base.from("roman", "I"), 1, "I > 1");
@@ -69,6 +71,7 @@ test("From roman numerals, good values", function () {
 	strEqual(Base.from("roman", "XVII"), 17, "XVII > 17");
 	strEqual(Base.from("roman", "XXIV"), 24, "XXIV > 24");
 	strEqual(Base.from("roman", "CDXCV"), 495, "CDXCV > 495");
+	strEqual(Base.from("roman", "D"), 500, "D > 500");
 	strEqual(Base.from("roman", "DV"), 505, "DV > 505");
 	strEqual(Base.from("roman", "MCMLXXXVIII"), 1988, "MCMLXXXVIII > 1988");
 	strEqual(Base.from("roman", "MCMXCIX"), 1999, "MCMXCIX > 1999");
