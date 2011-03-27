@@ -45,7 +45,7 @@
 			IM: 0, ID: 0, IC: 0, IL: 0, IX: 0, IV: 0
 		},
 		classes2 = {
-			D: 3, MD: 3,
+			D: 3, CD: 3,
 			L: 2, XL: 2,
 			V: 1, IV: 1
 		},
