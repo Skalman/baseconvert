@@ -233,11 +233,11 @@
 			}
 			return undefined;
 		};
-		Base.suggest = function Base_suggest(base) {
+		Base.suggest = function Base_suggest(base, return_categories) {
 			var i, j, length,
 				regexp = new RegExp(escape_regexp(base), "i"),
 				suggestions = [],
-				result = [];
+				result;
 			for (i = extensions_list.length - 1; i >= 0; i--) {
 				// console.log(i + " " + extensions_list[i].name + " " + extensions_list[i].suggest_base);
 				if (extensions_list[i].suggest_base) {
@@ -245,40 +245,54 @@
 				}
 			}
 			length = suggestions.length;
-			for (i in {match:true, proposed:true, good:true, other:true}) {
-				for (j = 0; j < length; j++) {
-					if (suggestions[j][i]) {
-						result.push(suggestions[j][i]);
+			if (!return_categories) {
+				result = [];
+				for (i in { match:true, proposed:true, good:true, other:true }) {
+					for (j = 0; j < length; j++) {
+						if (suggestions[j][i]) {
+							result.push(suggestions[j][i]);
+						}
 					}
 				}
+				result = [].concat.apply([], result);
+			} else {
+				result = { match: [], proposed: [], good: [], other: [] };
+				for (i in result) {
+					for (j = 0; j < length; j++) {
+						if (suggestions[j][i]) {
+							result[i].push(suggestions[j][i]);
+						}
+					}
+					result[i] = [].concat.apply([], result[i]);
+				}
+
 			}
-			result = [].concat.apply([], result);
 			return result;
 		};
+		/**
+			Base.extend({
+				name: "extension name"
+
+				valid_base: tester | name, // valid base
+
+				valid_number: tester | value, // valid number
+
+				valid_internal_number: tester | value // valid internal number (i.e., it's better with no string testing; default: all)
+
+				from_internal: function(number, base) { ... },
+				to_internal: function(number, base) { ... },
+
+				positional: true, // so that we can use the internationalized decimal symbol
+				fractional: true,
+				options: {}
+			})
+		*/
 		Base.extend = function Base_extend(extension) {
 				if (extensions_map[extension.name]) {
 					throw "There is already an extension '" + extension.name + "'.";
 				}
 				extensions_list.push(extension);
 				extensions_map[extension.name] = extension;
-				/*
-				Base.extend({
-					name: "extension name"
-
-					valid_base: tester | name, // valid base
-
-					valid_number: tester | value, // valid number
-
-					valid_internal_number: tester | value // valid internal number (i.e., it's better with no string testing; default: all)
-
-					from_internal: function(number, base) { ... },
-					to_internal: function(number, base) { ... },
-
-					positional: true, // so that we can use the internationalized decimal symbol
-					fractional: true,
-					options: {}
-				})
-				*/
 			};
 		Base.extensions = extensions_map;
 		Base.option = function Base_option(a, b) {
