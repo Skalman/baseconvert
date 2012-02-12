@@ -157,7 +157,7 @@
 		valid_base: function standard_valid_base(base) {
 			return 2 <= base && base <= 36 && parseInt(base, 10)+"" === base;
 		},
-		/* bool valid_from(int, string)*/
+		/* bool valid_from(int, string) */
 		valid_from: function standard_valid_from(base, number) {
 			return (
 				// eliminate the strings that the RegExp can't handle
