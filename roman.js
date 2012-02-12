@@ -63,7 +63,16 @@
 			return base === "roman";
 		},
 		valid_from: function roman_valid_from(base, number) {
-			return base === "roman" && /^[IVXLCDM]+$/i.test(number);
+			var valid = base === "roman" && /^[IVXLCDM]+$/i.test(number);
+			if (valid) {
+				try {
+					// TODO is there a quicker way to do this? a regexp?
+					Base.extensions.roman.to_internal("roman", number);
+				} catch (e) {
+					valid = false;
+				}
+			}
+			return valid;
 		},
 		valid_to: function roman_valid_to(base, number) {
 			// TODO remove number.is_int() when core supports fractional:false
