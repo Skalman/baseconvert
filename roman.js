@@ -173,7 +173,10 @@
 			return "roman numerals";
 		},
 		suggest_base: function roman_suggest_base(base, tester) {
-			if (tester.test("roman numerals")) {
+			if (/^rom/i.test(base)) {
+				// close enough match
+				return { match: [["roman", "roman numerals"]] };
+			} else if (tester.test("roman numerals")) {
 				return { proposed: [["roman", "roman numerals"]] };
 			} else {
 				return {};
