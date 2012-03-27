@@ -7,26 +7,22 @@
 */
 (function (window) {
 	"use strict";
-	function throw_message(message) {
-		throw message;
-	}
-
-	function tried_to_modify_immutable_number() {
-		throw "Can't modify immutable number.";
-	}
-
 	var Base = window.Base,
 		Number = Base.Number = function Base_Number(value) {
 			if (!(this instanceof Number)) { // called as a function, not a contructor
 				return new Number(value);
 			}
-			this.value = (value instanceof Number) ? value.value
+			value = (value instanceof Number) ? value.value
 				: typeof value === "number" ? value
 				: value == null ? 0 // null or undefined
 
 				// TODO make sure that the following is the real JavaScript number algorithm
 				: /\-?(\d+|\d*.\d+)([eE][\-+]?\d+)?/.test(value) ? +value // valid JavaScript number as a string
-				: throw_message("Can't create a Base.Number with the value '" + value + "'.");
+				: false; // error
+			if (value === false) {
+				throw "Can't create a Base.Number with the value '" + value + "'.";
+			}
+			this.value = value;
 		},
 		slice = Array.prototype.slice,
 		operations_x = ["add", "mul"], // operations with x operators
@@ -60,12 +56,6 @@
 			}
 		],
 		i, j;
-
-	function getvalue(x) {
-		return (x instanceof Number) ? x.value
-			: typeof x === "number" ? x
-			: new Number(x).value;
-	}
 
 	// add static methods such as Number.add()
 	for (i = 0; i < operations.length; i++) {
@@ -177,7 +167,17 @@
 			}
 			return this;
 		}
-
 	};
+
 	Number.ZERO = new Number().make_immutable();
+
+	function getvalue(x) {
+		return (x instanceof Number) ? x.value
+			: typeof x === "number" ? x
+			: new Number(x).value;
+	}
+
+	function tried_to_modify_immutable_number() {
+		throw "Can't modify immutable number.";
+	}
 })(this);
