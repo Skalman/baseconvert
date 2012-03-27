@@ -32,7 +32,7 @@ function main() {
 
 	if (!path.existsSync(base + dist)) {
 		console.log("Create directory %s", dist)
-		fs.mkdirSync(base + dist, 0744);
+		fs.mkdirSync(base + dist, 0755);
 	}
 	for (i = 0; i < files.length; i++) {
 		code += fs.readFileSync(base + files[i]);
@@ -40,6 +40,7 @@ function main() {
 
 	console.log("Write %s (concatenated source)", output);
 	fs.writeFileSync(base + output, code);
+	fs.chmodSync(base + output, 0644);
 
 	compile(code, function(err, code_min) {
 		if (err) throw err;
@@ -48,6 +49,7 @@ function main() {
 		console.log("Write %s (minified, saved %d%)", output_min, savings);
 
 		fs.writeFileSync(base + output_min, code_min);
+		fs.chmodSync(base + output_min, 0644);
 	});
 }
 
