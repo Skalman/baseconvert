@@ -14,15 +14,15 @@
 			Base(
 				<label>
 					from_base
-					<input type="text" id="base_from"/>
+					<input type="text" id="base_from" value="36"/>
 				</label>,
 				<label>
 					to_base
-					<input type="text" id="base_to"/>
+					<input type="text" id="base_to" value="2"/>
 				</label>,
 				<label>
 					number
-					<input type="text" id="base_number" class="number"/>
+					<input type="text" id="base_number" class="number" value="LOV.EMI"/>
 				</label>
 			)
 		</h2>
@@ -33,11 +33,11 @@
 			Base.to(
 				<label>
 					to_base
-					<input type="text" id="to_to"/>
+					<input type="text" id="to_to" value="100"/>
 				</label>,
 				<label>
 					number
-					<input type="text" id="to_number" class="number"/>
+					<input type="text" id="to_number" class="number" value="3.1415927"/>
 				</label>
 			)
 		</h2>
@@ -48,11 +48,11 @@
 			Base.from(
 				<label>
 					from_base
-					<input type="text" id="from_from"/>
+					<input type="text" id="from_from" value="roman"/>
 				</label>,
 				<label>
 					number
-					<input type="text" id="from_number" class="number"/>
+					<input type="text" id="from_number" class="number" value="MMLXVIII"/>
 				</label>
 			)
 		</h2>
@@ -62,7 +62,7 @@
 			Base.get_name(
 				<label>
 					base
-					<input type="text" id="get_name_base"/>
+					<input type="text" id="get_name_base" value="12"/>
 				</label>
 			)
 		</h2>
@@ -72,17 +72,17 @@
 			Base.suggest(
 				<label>
 					base
-					<input type="text" id="suggest_base"/>
+					<input type="text" id="suggest_base" value="2"/>
 				</label>
 			)
 		</h2>
 		<p class="result">Result: <output id="suggest_result"></output></p>
 
-		<script src="../core.js"></script>
-		<script src="../number.js"></script>
-		<script src="../standard.js"></script>
-		<script src="../roman.js"></script>
-		<script src="../leet.js"></script>
+		<script src="../src/core.js"></script>
+		<script src="../src/number.js"></script>
+		<script src="../src/standard.js"></script>
+		<script src="../src/roman.js"></script>
+		<script src="../src/leet.js"></script>
 		<script src="demo.js"></script>
 	</body>
 </html>
