@@ -71,9 +71,8 @@
 		toString: function toString() {
 			return this.value + "";
 		},
-		// TODO - check specification of this method - compare with e.g. RegExp (returns empty object), Date (returns number)
 		valueOf: function valueOf() {
-			return this.get_number();
+			return this.value;
 		},
 
 		// operations on the Number, all returning the Number object itself (chainable)
@@ -151,9 +150,6 @@
 		},
 		is_int: function is_int() {
 			return this.value % 1 === 0;
-		},
-		get_number: function get_number() {
-			return this.value;
 		},
 		clone: function clone() {
 			return new Number(this.value);

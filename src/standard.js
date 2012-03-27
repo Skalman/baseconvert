@@ -82,7 +82,7 @@
 
 		// find the integer part of the result
 		for (; integ.cmp(ZERO) > 0; significant_digits++) {
-			tmp = Number.mod(integ, to_base).get_number();
+			tmp = Number.mod(integ, to_base).valueOf(); // sufficiently small
 			digits.unshift(tmp);
 			integ.sub(tmp).div(to_base);
 		}
@@ -93,7 +93,7 @@
 			fract.mul(to_base);
 			tmp = Number.floor(fract);
 			fract.sub(tmp);
-			digits.push(tmp.get_number());
+			digits.push(tmp.valueOf()); // sufficiently small
 		}
 
 		if (significant_digits >= max_significant_digits) {

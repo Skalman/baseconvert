@@ -1,6 +1,7 @@
 /* TODO
 	x.clone()
-	x.get_number()
+	x.valueOf()
+	x.toString()
 	x.abs()
 */
 

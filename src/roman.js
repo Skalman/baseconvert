@@ -154,8 +154,8 @@
 
 		// to_base will always be "roman"
 		from_internal: function roman_from_internal(to_base, number) {
-			// we need to work on a copy
-			number = number.get_number();
+			// the primitive value will always be sufficient for roman numerals
+			number = number.valueOf();
 			var i, result = "";
 			for (i in strict_conversions) {
 				while (number >= strict_conversions[i]) {
