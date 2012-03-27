@@ -3,11 +3,10 @@
 	var undefined,
 		Number = Base.Number,
 
-		messages = {
-			bad_order: "Found unexpected sorting order: '$1' followed by '$2' (using strict sorting order).",
-			bad_order_nonstrict: "Found unexpected sorting order: '$1' followed by '$2' (using non-strict sorting order)",
-			bad_repetition: "Found unexpected repetition: '$1' $2 times in a row"
-		},
+		message_bad_order = "Found unexpected sorting order: '$1' followed by '$2' (using strict sorting order).",
+		message_bad_order_nonstrict = "Found unexpected sorting order: '$1' followed by '$2' (using non-strict sorting order)",
+		message_bad_repetition = "Found unexpected repetition: '$1' $2 times in a row",
+
 		global_replace = "aa".replace("a", "", "g") === "" ?
 			function global_replace(str, search, replace) {
 				return str.replace(search, replace, "g");
@@ -20,7 +19,6 @@
 		language = function language(str) {
 			var i,
 				args = arguments;
-			str = messages[str];
 			for (i = 1; i < args.length; i++) {
 				str = global_replace(str, "$"+i, args[i]);
 			}
@@ -127,22 +125,22 @@
 					repetition_count = 1;
 
 				if (last_value < value || last_class < klass) {
-					throw language(this.options.strict ? "bad_order" : "bad_order_nonstrict",
+					throw language(this.options.strict ? message_bad_order : message_bad_order_nonstrict,
 						last_token,
 						token);
 				} else if (last_class === klass) {
 					if (!repetition_allowed[token]) {
-						throw language(this.options.strict ? "bad_order" : "bad_order_nonstrict",
+						throw language(this.options.strict ? message_bad_order : message_bad_order_nonstrict,
 							last_token,
 							token);
 					} else if (last_value === value) {
 						 if (repetition_count > repetition_allowed[token]) {
 							// we accept repetition 4 times (as in IIII instead of IV), but not 5
-							throw language("bad_repetition", token, repetition_count);
+							throw language(message_bad_repetition, token, repetition_count);
 						}
 					}
 				} else if (class2 !== undefined && last_class2 === class2) {
-					throw language(this.options.strict ? "bad_order" : "bad_order_nonstrict",
+					throw language(this.options.strict ? message_bad_order : message_bad_order_nonstrict,
 						last_token,
 						token);
 				}
