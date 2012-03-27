@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Testing Base</title>
+		<link rel="stylesheet" href="qunit.css" media="screen"/>
+		<link rel="shortcut icon" href="../docs/favicon.png" type="image/png"/>
+		<script src="qunit.js"></script>
+		<script src="qunit.extensions.js"></script>
+
+		<!-- save the current list of global variables  -->
+		<script src="unit/globals_init.js"></script>
+
+		<!-- source code to be checked -->
+		<script src="../src/core.js"></script>
+		<script src="../src/number.js"></script>
+		<script src="../src/standard.js"></script>
+		<script src="../src/roman.js"></script>
+		<script src="../src/leet.js"></script>
+
+		<!-- tests -->
+		<script src="unit/core.js"></script>
+		<script src="unit/number.js"></script>
+		<script src="unit/standard.js"></script>
+		<script src="unit/standard_big.js"></script>
+		<script src="unit/roman.js"></script>
+		<script src="unit/leet.js"></script>
+
+		<!-- check that the only new global variable is Base -->
+		<script src="unit/globals.js"></script>
+	</head>
+	<body>
+		<p id="menu">
+			<a href="index.min.html">Minified version</a>
+			• <a href="index.html">All</a>
+			- <a href="index.html?filter=core">core</a>
+			- <a href="index.html?filter=Base.Number">Base.Number</a>
+			- <a href="index.html?filter=standard:">Standard (2-36)</a>
+			- <a href="index.html?filter=standard_big">Standard (&gt; 36)</a>
+			- <a href="index.html?filter=roman">Roman numerals</a>
+			- <a href="index.html?filter=leet">Leet</a>
+		</p>
+		<div id="qunit"></div>
+		<div id="qunit-fixture"></div>
+	</body>
+</html>
