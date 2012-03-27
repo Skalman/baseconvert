@@ -16,4 +16,4 @@ Examples
 Demo
 ----
 
-Either visit [baseconvert.com](http://baseconvert.com/) or check out `docs/demo.htm`.
+Either visit [baseconvert.com](http://baseconvert.com/) or check out `docs/demo.html`.
