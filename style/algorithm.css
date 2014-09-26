@@ -1,0 +1,61 @@
+.algorithm aside {
+	float:right;
+	margin:0 -1em 0.5em 0;
+	padding:1em;
+	border:1px solid #ddd;
+	border-right-width:0;
+	-moz-box-shadow:0 0 1em #ddd;
+	-webkit-box-shadow:0 0 1em #ddd;
+	box-shadow:0 0 1em #ddd;
+}
+.algorithm aside h3 {
+	font-size:1em;
+}
+
+.algorithm .irrelevant {
+	color:#999;
+}
+
+.algorithm .calculation {
+}
+.algorithm .calculation p {
+	overflow:auto;
+	padding-left:5em;
+	text-indent:-5em;
+}
+.algorithm .calculation span {
+	display:inline-block;
+	text-align:center;
+	width:0.75em;
+	height:1.5em;
+	text-indent:0;
+}
+/*
+.algorithm .calculation span:nth-child(4n) {
+	background:#fff;
+}
+.algorithm .calculation span:nth-child(4n+1) {
+	background:#cff;
+}
+.algorithm .calculation span:nth-child(4n+2) {
+	background:#ffc;
+}
+.algorithm .calculation span:nth-child(4n+3) {
+	background:#cfc;
+}
+*/
+.algorithm .calculation .result {
+	padding-left:5em;
+	text-indent:0;
+	text-align:left;
+	font-weight:bold;
+}
+.algorithm .comment {
+	text-indent:3em;
+	margin:-0.5em 0 0 0;
+	font-style:italic;
+	overflow:visible !important;
+}
+.algorithm .s2 {
+	width:1.6em;
+}

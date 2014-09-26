@@ -1,0 +1,136 @@
+h1, h2, h3 {
+	font-size:2em;
+	margin:0.75em 0 0.25em 0;
+}
+h1:first-child, h2:first-child, h3:first-child {
+	margin-top:0;
+}
+h2 {
+	font-size:1.5em;
+}
+h3 {
+	font-size:1.25em;
+}
+
+img {
+	border:none;
+}
+
+p
+/*, pre*/
+{
+	margin:0 0 0.5em 0;
+}
+p:last-child
+/*, pre:last-child*/
+{
+	margin:0;
+}
+
+.math { font-family:serif; }
+
+a {
+	color:#009;
+	text-decoration:underline;
+	padding:0.2em 0.1em;
+	border:1px solid transparent;
+	border-radius:0.15em;
+}
+a:hover {
+	color:#fff;
+	background:#06f;
+	text-shadow:1px 1px 1px #000000;
+}
+a:focus {
+	border-color:#06f;
+	background-color:inherit;
+	outline:none;
+}
+
+#email {
+	padding:0.2em 0.1em;
+	border:1px solid transparent;
+}
+
+input {
+	border:1px solid #ccc;
+	border-radius:0.15em;
+	padding:0.2em;
+	color:inherit;
+	background:#fff;
+	font-size:inherit;
+
+	-webkit-transition:background-color 0.2s; /* Saf3.2+, Chrome */
+	   -moz-transition:background-color 0.2s; /* FF4+ */
+	    -ms-transition:background-color 0.2s; /* IE10 */
+	     -o-transition:background-color 0.2s; /* Opera 10.5+ */
+	        transition:background-color 0.2s;
+}
+
+.label.focus, input:focus, a:focus {
+	border-color:#06f;
+}
+/*blockquote {
+	clear:both;
+	margin:0.5em 0;
+	padding:1em 1em;
+	-moz-box-shadow:0 0 1em #ddd;
+	-webkit-box-shadow:0 0 1em #ddd;
+	box-shadow:0 0 1em #ddd;
+	text-align:center;
+}
+blockquote {
+	position:relative;
+	quotes:"\"" "\"" "'" "'";
+	font-family:"Times New Roman", serif;
+	font-size:1.2em;
+	font-style:italic;
+	line-height:2em;
+}
+blockquote:lang(en) {
+	quotes:"\201C" "\201D" "\2018" "\2019";
+}
+blockquote:lang(sv) {
+	quotes:"\201D" "\201D" "\2019" "\2019";
+}
+blockquote:lang(fr) {
+	quotes:"\00AB\2005" "\2005\00BB" "\2039\2005" "\2005\203A";
+}
+
+blockquote.short:before, blockquote.short:after {
+	content:open-quote;
+	font-size:2em;
+	color:#666;
+	line-height:0.5em;
+	font-style:normal;
+}
+blockquote.short:after {
+	content:close-quote;
+}*/
+
+/*pre {
+	border:1px dotted #999;
+	background:#f5f5f5;
+	padding:1em;
+	font-size:1.2em;
+}*/
+
+.notice, .warning {
+	margin:1em 0; padding:1em;
+	background:#dfd;
+	border:1px solid #9c9;
+}
+	.warning {
+		background:#f66;
+		border-color:#c00;
+	}
+
+	.notice .close {
+		float:right;
+	}
+
+ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}

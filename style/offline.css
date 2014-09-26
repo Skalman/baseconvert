@@ -1,0 +1,14 @@
+#offline p {
+	margin-top: 1em;
+	font-size: 0.8em;
+	color: #666;
+	text-align: center;
+}
+	#offline img {
+		vertical-align: middle;
+		cursor: pointer;
+		opacity: 0.7;
+	}
+	#offline img:hover {
+		opacity: 1;
+	}

@@ -1,0 +1,42 @@
+#examples p {
+	font-size:0.8em;
+	color:#666;
+}
+#examples ul {
+}
+#examples li {
+	float:left;
+	font-size:1em;
+}
+
+#examples a {
+	display:block;
+	margin:0.2em 0 0.2em 0.5em;
+	color:inherit;
+	text-decoration:none;
+	background:#eff;
+	border-color:#9df #69f #69f #9df;
+	padding:0.1em 0.2em;
+	background-image:-moz-linear-gradient(top, #fff, #def); /* FF3.6 */
+	background-image:-webkit-gradient(linear,left top,left bottom,color-stop(0, #fff),color-stop(1, #def)); /* Saf4+, Chrome */
+	background-image:-webkit-linear-gradient(#fff, #def); /* Chrome 10+, Saf6 */
+	background-image:linear-gradient(top, #fff, #def);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#ddeeff'); /* IE6–IE9 */
+}
+#examples a:focus {
+	border-color:#06f;
+}
+#examples a:hover {
+	text-shadow:none;
+	border-color:#39f #06f #06f #39f;
+}
+#examples a:active {
+	background:#fff;
+}
+
+#convert .row.example {
+	border-color:#0c0;
+}
+	#convert .row.example input:focus {
+		background-color:#6f6;
+	}

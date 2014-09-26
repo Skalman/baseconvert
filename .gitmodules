@@ -1,0 +1,3 @@
+[submodule "scripts/base"]
+	path = scripts/base
+	url = https://github.com/Skalman/Base-Convert.git
