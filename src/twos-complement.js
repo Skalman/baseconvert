@@ -33,7 +33,7 @@
 			number = number.value;
 			var sign;
 			if (number >= 0) {
-				number = Base.to('2', number);
+				number = Base.to('2', number).replace(/ /g, '');
 				sign = '0';
 			} else {
 
@@ -43,7 +43,7 @@
 
 				number = Base.to('2',
 					Math.pow(2, minimum_digits) + number
-				);
+				).replace(/ /g, '');
 
 				while (number.length < minimum_digits)
 					number = '0' + number;

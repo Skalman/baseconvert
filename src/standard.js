@@ -14,7 +14,48 @@
 			good: "20 36 60 100".split(" "),
 			other: "11 13 14 15 18 30 40 50 70 80 90".split(" ")
 		},
-		base_name_specified = "#name# (base #base#)";
+		base_name_specified = "#name# (base #base#)",
+		spacer_re = {
+			3: /.../g,
+			4: /..../g
+		},
+		spacing = {
+			2: 4,
+			4: 4,
+			8: 4,
+			16: 4,
+			10: 3
+		},
+		only_integer = {
+			10: true
+		};
+
+
+	function spacer(input, num_chars, from_beginning) {
+		var edge,
+			diff = input.length % num_chars;
+
+		if (diff) {
+			if (from_beginning) {
+				edge = input.substr(-diff);
+				input = input.substr(0, input.length - diff);
+			} else {
+				edge = input.substr(0, diff);
+				input = input.substr(diff);
+			}
+		}
+
+		input = input.match(spacer_re[num_chars]) || [];
+
+		if (diff) {
+			if (from_beginning)
+				input.push(edge);
+			else
+				input.unshift(edge);
+		}
+
+		return input.join(" ");
+	}
 
 	function get_validator(base) {
 		var chars = "[" + dictionary.substr(0, base) + "]*";
@@ -159,6 +200,7 @@
 		},
 		/* bool valid_from(int, string) */
 		valid_from: function standard_valid_from(base, number) {
+			number = number.replace(/ /g, '');
 			return (
 				// eliminate the strings that the RegExp can't handle
 				number !== "" && number !== "." && number !== "-." && number !== "-" &&
@@ -191,6 +233,7 @@
 				number += "";
 			}
 			number = number
+				.replace(/ /g, '')
 				.toUpperCase()
 				.split(".");
 			var i, fract_result,
@@ -230,13 +273,19 @@
 			for (i = 0, length = digits.length; i < length; i++) {
 				digits[i] = dictionary_arr[ digits[i] ];
 			}
+			var int_part = (pt ? digits.slice(0, pt) : digits).join(""),
+				fract_part = pt ? digits.slice(pt).join("") : "";
+			if (spacing[to_base]) {
+				int_part = spacer(int_part, spacing[to_base]);
+				if (!only_integer[to_base]) {
+					fract_part = fract_part && spacer(fract_part, spacing[to_base], true);
+				}
+			}
+
 			return (
 				(result.neg ? "-" : "") +
-				(pt ?
-					// a decimal point
-					digits.slice(0, pt).join("") + "." + digits.slice(pt).join("") :
-					// no decimal point - just join
-					digits.join(""))
+				int_part +
+				(pt ? "." + fract_part : "")
 			);
 		},
 		get_name: standard_get_name,
