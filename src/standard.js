@@ -305,6 +305,7 @@
 		},
 		/* bool valid_from(string, string)*/
 		valid_from: function standard_big_valid_from(base, number) {
+			number = number.replace(/ /g, '');
 			if (
 				// eliminate the strings that the RegExp can't handle
 				number !== "" && number !== "." && number !== "-." && number !== "-" &&
@@ -380,9 +381,9 @@
 				(result.neg ? "-" : "") +
 				(pt ?
 					// a decimal point
-					digits.slice(0, pt).join(":") + "." + digits.slice(pt).join(":") :
+					digits.slice(0, pt).join(" : ") + " . " + digits.slice(pt).join(" : ") :
 					// no decimal point - just join
-					digits.join(":"))
+					digits.join(" : "))
 			);
 		},
 		get_name: standard_get_name,
