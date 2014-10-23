@@ -1,0 +1,339 @@
+/*! Includes Bootstrap v3.2.0 | (c) 2011-2014 Twitter, Inc. | github.com/twbs/bootstrap/blob/master/LICENSE */
+
+// Minimal normalize
+body {
+	margin: 0;
+}
+header {
+	display: block;
+}
+
+// Core variables and mixins
+@import "../node_modules/bootstrap/less/variables.less";
+@import "../node_modules/bootstrap/less/mixins.less";
+
+@link-color: #009;
+@image-base-url: "../images";
+
+// Core CSS
+@import "../node_modules/bootstrap/less/scaffolding.less";
+@import "../node_modules/bootstrap/less/type.less";
+@import "../node_modules/bootstrap/less/grid.less";
+@import "../node_modules/bootstrap/less/forms.less";
+@import "../node_modules/bootstrap/less/buttons.less";
+
+// Components
+@import "../node_modules/bootstrap/less/input-groups.less";
+@import "../node_modules/bootstrap/less/alerts.less";
+
+// Utility classes
+@import "../node_modules/bootstrap/less/utilities.less";
+@import "../node_modules/bootstrap/less/responsive-utilities.less";
+
+
+
+.u-empty-text:empty::after {
+	content: attr(data-empty-text);
+	font-style: italic;
+	color: rgba(0, 0, 0, 0.7)
+}
+
+.no-js .js-only,
+.js .no-js {
+	display: none !important;
+}
+
+
+header {
+	background: #f5f5ff;
+	background: linear-gradient(135deg,
+		rgba(183,222,237,0.2) 0%,
+		rgba(113,206,239,0.2) 50%,
+		rgba(33,180,226,0.2) 50.3%,
+		rgba(183,222,237,0.2) 100%);
+	margin-bottom: 1em;
+	box-shadow: 0 0 1em rgba(0, 0, 0, 0.05) inset;
+	text-shadow: 0 0 1em #fff;
+}
+
+.has-feedback .form-control-feedback {
+	top: 0;
+	z-index: 2;
+}
+
+.input-group-addon {
+	position: relative;
+}
+
+.conversions {
+	label {
+		font-weight: normal;
+	}
+
+	.input-group-addon {
+		min-width: 12em;
+		text-align: left;
+
+		@media (max-width: @screen-xs-max) {
+				min-width: 0;
+		}
+	}
+}
+
+.isten {
+	.input-group-addon {
+		border-color: #cc6;
+		box-shadow: 0 0 0.5em #ff0;
+		font-weight: bold;
+	}
+	&.has-error .input-group-addon {
+		border-color: currentcolor;
+	}
+}
+
+
+.delete {
+	display: none;
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 2em;
+	font-weight: normal;
+	overflow: hidden;
+	transition: width 0.3s;
+	padding-left: 2em;
+	text-decoration: none;
+	border: 1px solid transparent;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+
+	> span {
+		position: absolute;
+		background: #f6d9d9;
+		border-left: 1px solid rgba(0, 0, 0, 0.1);
+		color: #333;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+
+		> span {
+			position: absolute;
+			top: 50%;
+			left: 2em;
+			line-height: 0;
+		}
+
+		&::after {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			content: "×";
+			display: inline-block;
+			line-height: 0;
+			width: 2em;
+			text-align: center;
+		}
+	}
+
+
+	&:focus,
+	&:active,
+	&:hover {
+		width: 8em;
+		border-color: #600;
+
+		> span {
+			background: #c33;
+			color: #fff;
+		}
+	}
+
+	.form-group:hover &,
+	.form-group.focus &,
+	&:focus {
+		display: block;
+	}
+}
+
+
+.input-group-addon,
+.form-control {
+	transition:
+		border-color 0.15s ease-in-out 0s,
+		box-shadow 0.15s ease-in-out 0s,
+		background-color 0.15s ease-in-out 0s;
+}
+
+.newbase {
+	position: relative;
+
+	.form-control {
+		width: 12em;
+	}
+	.input-group-addon {
+		width: 100%;
+	}
+
+	.suggestions {
+		position: absolute;
+		z-index: 3;
+		width: 15em;
+		top: 33px;
+		background: #fff;
+		border: 1px solid rgba(0, 0, 0, 0.3);
+		box-shadow: 0 0.4em 0.4em rgba(0, 0, 0, 0.3);
+
+		&:empty::after {
+			display: block;
+			padding: 5px;
+			font-style: italic;
+		}
+		li {
+			cursor: pointer;
+			padding: 5px;
+		}
+		.selected {
+			background-color: #9de;
+		}
+	}
+}
+
+.examples {
+	.btn:hover,
+	.btn:focus,
+	.btn:active {
+		border-color: #6c3;
+		background-color: #cf9;
+	}
+	.active .btn {
+		border-color: #6c3;
+		box-shadow: 0 0 0.5em #6c3;
+	}
+}
+
+.base.example {
+	input:focus {
+		background-color: #cf9;
+	}
+
+	.input-group-addon,
+	input {
+		border-color: #6c3;
+	}
+}
+
+
+footer {
+	margin: 3em 0;
+
+	.list-inline {
+		position: relative;
+		margin-left: -20px;
+
+		> li {
+			padding-left: 20px;
+			padding-right: 20px;
+		}
+	}
+}
+
+
+// Share
+.share {
+	position: relative;
+}
+.share-text {
+	border-bottom: 1px dotted #333;
+}
+.share-links {
+	@background: #333;
+
+	display: none;
+	position: absolute;
+	right: 0;
+	bottom: 2em;
+	padding: 1em 2em;
+	background: @background;
+	color: #eee;
+	box-shadow:
+		0 0 0.5em rgba(0, 0, 0, 0.3),
+		0 0.5em 2em rgba(0, 0, 0, 0.5);
+
+	&::before {
+		position: absolute;
+		bottom: -11px;
+		left: 50%;
+		content: "";
+		border: 0 solid transparent;
+		border-width: 11px 10px 0 10px;
+		border-top-color: @background;
+	}
+
+	&::after {
+		content: "";
+		position: absolute;
+		bottom: -2em;
+		left: 0;
+		width: 100%;
+		height: 2em;
+	}
+
+	.share-text:hover + &,
+	&:hover,
+	&.force-show {
+		display: block;
+	}
+
+	li {
+		height: 25px;
+	}
+
+	.activate {
+		height: 1.4em;
+		font-size: 0.9em;
+		margin-bottom: 0.2em;
+		white-space: pre;
+		overflow: hidden;
+		transition: 0.3s;
+
+		&.all-activated {
+			height: 0;
+			visibility: hidden;
+		}
+	}
+
+}
+
+.share-button {
+	display: inline-block;
+	background-repeat: no-repeat;
+	background-size: auto 20px;
+	width: 90px;
+	height: 20px;
+
+	&.disabled {
+		cursor: pointer;
+		opacity: 0.8;
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+}
+.fb-like {
+	background-image: url("@{image-base-url}/facebook-like.png");
+}
+.g-plusone {
+	background-image: url("@{image-base-url}/google-plusone.png");
+}
+
+.offline {
+	cursor: pointer;
+	opacity: 0.8;
+
+	&:hover {
+		opacity: 1;
+	}
+}

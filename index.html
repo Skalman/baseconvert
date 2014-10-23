@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="baseconvertApp" ng-strict-di class="no-js" has-js>
+<head>
+		<meta charset="utf-8">
+		<title>Base Convert: the simple floating point base calculator</title>
+
+		<script src="js/lib/angular.min.js" defer></script>
+		<script src="js/baseconvert/src/core.js" defer></script>
+		<script src="js/baseconvert/src/number.js" defer></script>
+		<script src="js/baseconvert/src/roman.js" defer></script>
+		<script src="js/baseconvert/src/twos-complement.js" defer></script>
+		<script src="js/baseconvert/src/standard.js" defer></script>
+		<script src="js/baseconvert/src/leet.js" defer></script>
+
+		<script src="js/polyfills.js" defer></script>
+		<script src="js/constants.js" defer></script>
+		<script src="js/main.js" defer></script>
+		<script src="js/share.js" defer></script>
+		<script src="js/directives.js" defer></script>
+		<script src="js/filters.js" defer></script>
+
+		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="stylesheet" href="css/main.css">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="description" content="Online base converter. Convert from any base, to any base (binary, hexadecimal, even roman numerals!)">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+
+<header>
+	<div class="container">
+		<h1>Base Convert</h1>
+	</div>
+</header>
+
+
+<div class="container">
+	<!--[if lt IE 9]>
+		<div class="alert alert-danger">
+			You are using an <strong>old browser</strong>. Please upgrade, or download another browser, like <a href="https://mozilla.org/firefox/">Firefox</a>.
+		</div>
+	<![endif]-->
+	<noscript>
+		<div class="alert alert-danger">
+			Please <strong>enable JavaScript</strong> to use this site.
+		</div>
+	</noscript>
+
+	<div class="conversions" ng-controller="ConversionController" is-human="track('human')">
+		<div
+			class="form-group base has-feedback js-only"
+			ng-class="{
+				isten: base.id === '10',
+				example: base === curExample,
+				focus: base.hasFocus,
+				'has-error': base.hasError
+			}"
+			ng-repeat="base in bases"
+			ng-mouseenter="baseMouseenter(base)">
+			<label class="input-group">
+				<div class="input-group-addon">
+					{{base.name|ucFirst}} <small class="hidden-xs" ng-if="base.explanation">({{base.explanation}})</small>
+				</div>
+				<input
+					class="form-control"
+					ng-model="base.number"
+					ng-focus="numberFocus(base)"
+					ng-blur="numberBlur(base)"
+					focus-on="{{base.id}}"
+					ng-change="numberChange(base)"
+					ng-keydown="numberKeydown(base, $event)">
+			</label>
+			<a href=""
+				class="delete form-control-feedback"
+				ng-click="baseDeleteClick(base)"
+				focus-on="{{base.id}}-delete"
+				ng-keydown="baseDeleteKeydown(base, $event)"><span><span>Delete</span></span></a>
+		</div>
+
+		<div class="form-group base no-js">
+			<label class="input-group">
+				<div class="input-group-addon">Binary <small class="hidden-xs">(base 2)</small></div>
+				<input class="form-control">
+			</label>
+		</div>
+		<div class="form-group base no-js">
+			<label class="input-group">
+				<div class="input-group-addon">Octal <small class="hidden-xs">(base 8)</small></div>
+				<input class="form-control">
+			</label>
+		</div>
+		<div class="form-group base isten no-js">
+			<label class="input-group">
+				<div class="input-group-addon">Decimal <small class="hidden-xs">(base 10)</small></div>
+				<input class="form-control">
+			</label>
+		</div>
+		<div class="form-group base no-js">
+			<label class="input-group">
+				<div class="input-group-addon">Hexadecimal <small class="hidden-xs">(base 16)</small></div>
+				<input class="form-control">
+			</label>
+		</div>
+
+
+		<div class="form-group base newbase" ng-class="{example: 'new' === curExample}">
+			<label class="input-group">
+				<input
+					class="form-control"
+					ng-model="newBaseName"
+					ng-focus="newBaseNameFocus()"
+					focus-on="new"
+					ng-blur="newBaseNameBlur()"
+					scroll-into-view-on="suggestions, prio=2, margin=15"
+					ng-keydown="newBaseNameKeydown($event)">
+				<ul
+					class="list-unstyled suggestions u-empty-text js-only"
+					data-empty-text="No matching bases"
+					ng-show="showSuggestions"
+					ng-mousedown="suggestionMousedown()"
+					mousedown-elsewhere="notSuggestionMousedown()"
+					scroll-into-view-on="suggestions, prio=1, margin=15"
+					is-mousedown-elsewhere-active="{{showSuggestions}}"><li
+						ng-repeat="suggestion in suggestions"
+						ng-mouseenter="selectSuggestion(suggestion)"
+						ng-class="{selected: selectedSuggestion === suggestion}"
+						ng-click="addBase(suggestion)">{{suggestion.name | ucFirst}} <small ng-if="suggestion.explanation">({{suggestion.explanation}})</small></li></ul>
+				<div class="input-group-addon">
+					Enter a new base
+				</div>
+			</label>
+		</div>
+
+		<aside class="examples">
+			<p class="hidden-xs">Calculation examples:</p>
+			<p class="visible-xs-block">Calculation example:</p>
+			<ul class="list-inline js-only">
+				<li ng-show="true"
+					ng-repeat="(i, example) in examples"
+					ng-class="{'hidden-xs': i >= 1, 'hidden-sm': i >= 3, active: example.running}">
+					<a href="" class="btn btn-default" ng-click="runExample(example)"><strong>{{example.name}}:</strong> {{example.number|nospace}}</a>
+				</li>
+			</ul>
+
+			<ul class="list-inline no-js">
+				<li><a href="" class="btn btn-default"><strong>fractional binary:</strong> 1100.0101</a></li><!--
+				--><li class="hidden-xs"><a href="" class="btn btn-default"><strong>hexadecimal:</strong> 8BA53</a></li><!--
+				--><li class="hidden-xs"><a href="" class="btn btn-default"><strong>fractions:</strong> 3.14</a></li><!--
+				--><li class="hidden-xs hidden-sm"><a href="" class="btn btn-default"><strong>any base:</strong> 45:1.76:15</a></li>
+			</ul>
+		</aside>
+	</div>
+
+
+	<footer>
+		<hr>
+
+		<ul class="list-inline">
+			<li>Base Convert by <a href="http://danwolff.se/" title="Website of Dan Wolff">Dan Wolff</a> <small>(2011–2014)</small></li>
+			<li ng-controller="ShareController" class="share">
+				If you enjoy this site, <span class="share-text" title="Tell a friend or write about it" ng-mouseenter="mouseenter()" ng-mouseleave="mouseleave()">spread the word</span>
+				<div class="share-links" ng-class="{'force-show': forceShow}" ng-mouseenter="mouseenter()" ng-mouseleave="mouseleave()"><div>
+					<ul class="list-unstyled" ng-init="count=0">
+						<li class="activate" ng-class="{'all-activated': count === 2}">Click to activate</li>
+						<li>
+							<div
+								ng-click="count=count+1"
+								share="g-plusone"
+								share-enable-on-click
+								share-mouseenter="mouseenter()"
+								share-mouseleave="mouseleave(2000)"
+								class="share-button g-plusone disabled"
+								data-size="medium" data-href="http://baseconvert.com/"></div>
+						</li>
+						<li>
+							<div
+								ng-click="count=count+1"
+								share="fb-like"
+								share-enable-on-click
+								class="share-button fb-like disabled"
+								data-href="http://baseconvert.com/" data-width="90" data-layout="button_count" data-show-faces="false" data-send="false"></div>
+							<div id="fb-root"></div>
+						</li>
+					</ul>
+				</div></div>
+			</li>
+			<li><a href="https://github.com/Skalman/baseconvert-ui">Source code</a></li>
+			<li><img
+				src="images/offline.png" alt="Offline enabled"
+				class="offline"
+				onclick="alert(this.title)"
+				title="This website supports offline mode.
+In modern browsers you can use this site also when offline."></li>
+		</ul>
+	</footer>
+</div>
+
+</body>
+</html>

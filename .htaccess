@@ -1,0 +1,5 @@
+RewriteEngine on
+
+RewriteRule ^(track)$ $1.php [last,qsappend]
+
+RewriteRule .log$ / [r=403]

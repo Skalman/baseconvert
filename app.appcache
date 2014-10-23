@@ -1,0 +1,14 @@
+CACHE MANIFEST
+
+# <%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %>
+
+CACHE:
+app.min.js
+favicon.ico
+images/offline.png
+
+images/facebook-like.png
+images/google-plusone.png
+
+NETWORK:
+*

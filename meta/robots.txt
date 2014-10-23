@@ -1,7 +1,0 @@
-User-agent: *
-Disallow: /owa/
-Disallow: /dev/
-Disallow: /logs/
-Disallow: /t*
-Allow: /
-
