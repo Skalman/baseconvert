@@ -13,32 +13,39 @@ test("Valid base", function () {
 });
 
 test("Convert between bases", function () {
-	var i, kv, from, to, undefined,
+	var i, undefined,
 		conversions = [
-			{ from: 2, to: "2-compl",
-				"10 1010 0011": "0010 1010 0011",
-				"-10 1010 0011": "1101 0101 1101",
+			{
+				2: "10 1010 0011",
+				"2-compl": "0010 1010 0011"
+			},
+			{
+				2: "-10 1010 0011",
+				"2-compl": "1101 0101 1101"
+			},
+			{
+				2: "-1",
+				"2-compl": "1111"
+			},
+			{
+				2: "-0.0001",
+				"2-compl": "1111.1111 0000"
+			},
+			{
+				2: "-10.1010 0011",
+				"2-compl": "1101.0101 1101 0000"
 			},
 		];
 
 	expect(conversions.length);
 
-	function keys_and_values(obj) {
-		var k = [], v = [], i;
-		for (i in obj) {
-			if (i === "to" || i === "from") {
-				continue;
-			}
-			k.push(i);
-			v.push(obj[i]);
-		}
-		return [k, v];
-	}
-
 	for (i = 0; i < conversions.length; i++) {
-		kv = keys_and_values(conversions[i]);
-		to = conversions[i].to;
-		from = conversions[i].from;
-		deepEqual(Base(from, to, kv[0]), kv[1], "base "+from+" > base "+to);
+		deepEqual(
+			{
+				2: Base("2-compl", 2, conversions[i]["2-compl"]),
+				"2-compl": Base(2, "2-compl", conversions[i][2])
+			},
+			conversions[i],
+			conversions[i][2] + " <-> " + conversions[i]["2-compl"]);
 	}
 });
