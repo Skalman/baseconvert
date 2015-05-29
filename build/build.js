@@ -12,14 +12,12 @@ var fs = require("fs"),
 		"src/number.js",
 		"src/standard.js",
 		"src/roman.js",
-		"src/leet.js"
+		"src/leet.js",
+		"src/twos_complement.js"
 	],
 	options = {
-		// formatting: "pretty_print",
 		compilation_level: "SIMPLE_OPTIMIZATIONS",
-		// warning_level: "VERBOSE",
-	}
-	js_externs_file = "build/externs.js",
+	},
 	dist = "dist/",
 	output = dist + "base_convert.js",
 	output_min = dist + "base_convert.min.js";
@@ -30,8 +28,8 @@ main();
 function main() {
 	var i, code = "";
 
-	if (!path.existsSync(base + dist)) {
-		console.log("Create directory %s", dist)
+	if (!fs.existsSync(base + dist)) {
+		console.log("Create directory %s", dist);
 		fs.mkdirSync(base + dist, 0755);
 	}
 	for (i = 0; i < files.length; i++) {
@@ -63,7 +61,7 @@ function main() {
 // + next - Function callback that accepts.
 function compile(code, next) {
 	try {
-		var body, post_data, client, req,
+		var body, post_data, req,
 			host = "closure-compiler.appspot.com";
 
 		post_data = {
@@ -78,14 +76,15 @@ function compile(code, next) {
 
 		body = qs.stringify(post_data);
 
-		client = http.createClient(80, host).on("error", next);
-		req = client.request("POST", "/compile", {
-			"Host": host,
-			"Content-Length": body.length,
-			"Content-Type": "application/x-www-form-urlencoded"
+		req = http.request({
+			host: host,
+			path: "/compile",
+			method: "POST",
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			}
 		});
-
-		req.on("error", next).end(body);
+		req.on("error", next);
 
 		req.on("response", function(res) {
 			if (res.statusCode != 200)
@@ -93,6 +92,8 @@ function compile(code, next) {
 			else
 				capture(res, "utf-8", parseResponse);
 		});
+
+		req.end(body);
 
 		function parseResponse(err, data) {
 			err ? next(err) : loadJSON(data, function(err, obj) {

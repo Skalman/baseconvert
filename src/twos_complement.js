@@ -5,7 +5,7 @@
 	};
 
 	Base.extend({
-		name: "two's complement",
+		name: "twos_complement",
 		valid_base: function twos_complement_valid_base(base) {
 			return base === "2-compl";
 		},
@@ -19,36 +19,36 @@
 
 		to_internal: function twos_complement_to_internal(from_base, number) {
 			number = number
-				.replace(/ /g, '')
+				.replace(/ /g, "")
 				// Multiples of the same digit in the beginning of the number don't change anything.
-				.replace(/^(.)\1+/, '$1');
+				.replace(/^(.)\1+/, "$1");
 			var sign = number[0];
-			if (sign === '0') {
-				return Base.from('2', number);
+			if (sign === "0") {
+				return Base.from("2", number);
 			} else {
-				return new Base.Number(-Math.pow(2, number.length) + Base.from('2', number).value);
+				return new Base.Number(-Math.pow(2, number.length) + Base.from("2", number).value);
 			}
 		},
 		from_internal: function twos_complement_from_internal(to_base, number) {
 			number = number.value;
 			var sign;
 			if (number >= 0) {
-				number = Base.to('2', number).replace(/ /g, '');
-				sign = '0';
+				number = Base.to("2", number).replace(/ /g, "");
+				sign = "0";
 			} else {
 
 				var minimum_digits = Math.floor(log2(-number)) + 1;
 
 				var orig = number;
 
-				number = Base.to('2',
+				number = Base.to("2",
 					Math.pow(2, minimum_digits) + number
-				).replace(/ /g, '');
+				).replace(/ /g, "");
 
 				while (number.length < minimum_digits)
-					number = '0' + number;
+					number = "0" + number;
 
-				sign = '1';
+				sign = "1";
 			}
 
 			// Add at least two digits indicating sign
