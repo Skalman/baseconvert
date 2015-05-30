@@ -21,33 +21,41 @@ module.exports = function (grunt) {
 
 		less: {
 			dev: {
-			  files: {
+				files: {
  					'css/main.css': 'css/main.less',
-			  },
+				},
 			},
 			dist: {
-			  options: {
-			    cleancss: true,
-			    modifyVars: {
-			    	'image-base-url': 'images',
-			    },
-			  },
-			  files: {
-			    'dist/app.min.css': 'css/main.less',
-			  },
+				options: {
+					cleancss: true,
+					modifyVars: {
+						'image-base-url': 'images',
+					},
+					plugins: [
+						(function () {
+						var CleanCss = require('less-plugin-clean-css');
+						return new CleanCss({advanced: true});
+						}()),
+					],
+				},
+				files: {
+					'dist/app.min.css': 'css/main.less',
+				},
 			},
 		},
 
 		copy: {
 			simple: {
-				files: {
-					'dist/': [
+				files: [{
+					expand: true,
+					src: [
 						'images/*',
 						'favicon.ico',
 						'*.php',
 						'.htaccess'
 					],
-				},
+					dest: 'dist/'
+				}],
 			},
 
 			appcache: {
