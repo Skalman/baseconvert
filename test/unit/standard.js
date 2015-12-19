@@ -7,13 +7,15 @@ test("Basic requirements", function () {
 });
 
 test("Valid base", function () {
-	expect(5);
+	expect(7);
 
 	strictEqual(Base.valid(2), true, "2");
 	strictEqual(Base.valid(" 6"), false, "preceding space");
 	strictEqual(Base.valid("36"), true, "36");
 	strictEqual(Base.valid(10), true, "10");
 	strictEqual(Base.valid(4.256), false, "4.256");
+	strictEqual(Base.valid(-4), true, "-4");
+	strictEqual(Base.valid(-45), true, "-45");
 });
 
 test("Convert between bases", function () {
@@ -44,6 +46,16 @@ test("Convert between bases", function () {
 			},
 			{ from: 20, to: 10,
 				"0.C5E1C": "0.61426"
+			},
+			{ from: -2, to: 10,
+				"10100100": "-156",
+				"-10100100": "156",
+				"10.1101": "-2.1875"
+			},
+			{ from: 10, to: -10,
+				"1234": "19 374",
+				"-1234": "2 846",
+				"1234.5": undefined
 			}
 		];
 

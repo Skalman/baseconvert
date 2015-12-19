@@ -7,7 +7,7 @@
 		ZERO = Number.ZERO,
 		valid_number = [],
 		valid_number_big = /^\-?(\d+(\:\d+)*)?\.?(\d+(\:\d+)*)?$/,
-		base_names = {2: "binary", 8: "octal", 10: "decimal", 12: "duodecimal", 16: "hexadecimal"},
+		base_names = {2: "binary", 8: "octal", 10: "decimal", 12: "duodecimal", 16: "hexadecimal", "-2": "negabinary", "-10": "negadecimal"},
 		base_name_generic = "base #base#",
 		base_suggestions = {
 			proposed: "2 8 10 12 16".split(" "),
@@ -58,7 +58,7 @@
 	}
 
 	function get_validator(base) {
-		var chars = "[" + dictionary.substr(0, base) + "]*";
+		var chars = "[" + dictionary.substr(0, Math.abs(base)) + "]*";
 		return (valid_number[base] = new RegExp("^\\-?"+chars+"\\.?"+chars+"$", "i"));
 	}
 	function standard_get_name(base) {
@@ -72,12 +72,13 @@
 		var i, j, tmp, number, bases,
 			matches = {proposed: []},
 			all = {};
-		number = /(\d+)/.exec(base);
+		number = /(\-?\d+)/.exec(base);
 		if (number) {
 			number = number[1];
-			if (number > 1) {
+			if (number < -1 || 1 < number) {
 				matches.match = [[number, standard_get_name(number)]];
-				all[number] = true;
+				matches.proposed.push([-number, standard_get_name(-number)]);
+				all[number] = all[-number] = true;
 			}
 			for (i in base_suggestions) {
 				tmp = base_suggestions[i];
@@ -101,6 +102,26 @@
 		}
 		return matches;
 	}
+	function standard_from_internal_generic_negative(to_base, number) {
+		var digits = [];
+		var count = 0;
+
+		while (!number.equals(ZERO)) {
+			var remainder = Number.mod(number, -to_base).valueOf();
+			number = number.sub(remainder).div(to_base);
+
+			if (remainder < 0) {
+				remainder += -to_base;
+				number.add(1);
+			}
+
+			digits.push(remainder);
+			count++;
+		}
+
+		digits.reverse();
+		return digits;
+	}
 	function standard_from_internal_generic(to_base, number) {
 		if (number.equals(ZERO)) {
 			return {
@@ -110,6 +131,15 @@
 			};
 		}
 		number = number.clone(); // we must work on a copy
+
+		if (to_base < 0) {
+			return {
+				digits: standard_from_internal_generic_negative(to_base, number),
+				neg: false,
+				pt: false
+			};
+		}
+
 		var tmp, i, integer_length,
 			digits = [],
 			is_negative = number.cmp(0) < 0,
@@ -196,17 +226,19 @@
 		name: "standard",
 		/* bool valid_base(string) */
 		valid_base: function standard_valid_base(base) {
-			return 2 <= base && base <= 36 && parseInt(base, 10)+"" === base;
+			var abs = Math.abs(base);
+			return 2 <= abs && abs <= 36 && parseInt(base, 10)+"" === base;
 		},
 		/* bool valid_from(int, string) */
 		valid_from: function standard_valid_from(base, number) {
+			var abs = Math.abs(base);
 			number = number.replace(/ /g, '');
 			return (
 				// eliminate the strings that the RegExp can't handle
 				number !== "" && number !== "." && number !== "-." && number !== "-" &&
 
 				// valid base
-				2 <= base && base <= 36 &&
+				2 <= abs && abs <= 36 &&
 				parseInt(base, 10)+"" === base &&
 
 				// get the validator RegExp
@@ -217,10 +249,20 @@
 		},
 		/* bool valid_to(int, internal_number) */
 		valid_to: function standard_valid_to(base, number) {
+			var abs = Math.abs(base);
 			return (
-				// any real number is fine
+				// for negative bases, require integer values, and within range (since we cannot round)
+				(
+					base > 0 ||
+					(
+						number.is_int() &&
+						number.cmp(-9007199254740991) > 0 &&
+						number.cmp(9007199254740991) < 0
+					)
+				) &&
+
 				// valid base
-				2 <= base && base <= 36 &&
+				2 <= abs && abs <= 36 &&
 				parseInt(base, 10)+"" === base
 			);
 		},
@@ -275,10 +317,12 @@
 			}
 			var int_part = (pt ? digits.slice(0, pt) : digits).join(""),
 				fract_part = pt ? digits.slice(pt).join("") : "";
-			if (spacing[to_base]) {
-				int_part = spacer(int_part, spacing[to_base]);
-				if (!only_integer[to_base]) {
-					fract_part = fract_part && spacer(fract_part, spacing[to_base], true);
+
+			var abs_base = Math.abs(to_base);
+			if (spacing[abs_base]) {
+				int_part = spacer(int_part, spacing[abs_base]);
+				if (!only_integer[abs_base]) {
+					fract_part = fract_part && spacer(fract_part, spacing[abs_base], true);
 				}
 			}
 
@@ -301,25 +345,26 @@
 		name: "standard_big",
 		/* bool valid_base(string) */
 		valid_base: function standard_big_valid_base(base) {
-			return 36 < base && parseInt(base, 10)+"" === base;
+			var abs = Math.abs(base);
+			return 36 < abs && parseInt(base, 10)+"" === base;
 		},
 		/* bool valid_from(string, string)*/
 		valid_from: function standard_big_valid_from(base, number) {
+			var abs = Math.abs(base);
 			number = number.replace(/ /g, '');
 			if (
 				// eliminate the strings that the RegExp can't handle
 				number !== "" && number !== "." && number !== "-." && number !== "-" &&
 
 				// valid base
-				36 < base &&
+				36 < abs &&
 				parseInt(base, 10)+"" === base &&
 
 				valid_number_big.test(number)
 			) {
 				number = number.split(/[\-\.\:]/);
-				base = parseInt(base, 10);
 				for (var i = number.length - 1; i >= 0; i--) {
-					if (number[i] >= base) {
+					if (number[i] >= abs) {
 						return false;
 					}
 				}
@@ -329,10 +374,20 @@
 		},
 		/* bool valid_to(string, internal_number) */
 		valid_to: function standard_big_valid_to(base, number) {
+			var abs = Math.abs(base);
 			return (
-				// any real number is fine
+				// for negative bases, require integer values, and within range (since we cannot round)
+				(
+					base > 0 ||
+					(
+						number.is_int() &&
+						number.cmp(-9007199254740991) > 0 &&
+						number.cmp(9007199254740991) < 0
+					)
+				) &&
+
 				// valid base
-				36 < base &&
+				36 < abs &&
 				parseInt(base, 10)+"" === base
 			);
 		},

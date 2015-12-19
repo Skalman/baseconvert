@@ -113,8 +113,6 @@
 			other = getvalue(other);
 			if (other === 0) {
 				throw "dividend can't be zero";
-			} else if (this.value < 0 || other < 0) {
-				throw "operators in mod can't be negative";
 			} else {
 				this.value %= other;
 				return this;
