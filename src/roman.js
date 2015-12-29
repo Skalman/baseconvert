@@ -1,26 +1,14 @@
 (function (Base) {
 	"use strict";
 	var undefined,
-		Number = Base.Number,
-
 		message_bad_order = "Found unexpected sorting order: '$1' followed by '$2' (using strict sorting order).",
 		message_bad_order_nonstrict = "Found unexpected sorting order: '$1' followed by '$2' (using non-strict sorting order)",
 		message_bad_repetition = "Found unexpected repetition: '$1' $2 times in a row",
 
-		global_replace = "aa".replace("a", "", "g") === "" ?
-			function global_replace(str, search, replace) {
-				return str.replace(search, replace, "g");
-			} :
-			function global_replace(str, search, replace) {
-				while (str !== (str = str.replace(search, replace))) {
-				}
-				return str;
-			},
 		language = function language(str) {
-			var i,
-				args = arguments;
-			for (i = 1; i < args.length; i++) {
-				str = global_replace(str, "$"+i, args[i]);
+			var i;
+			for (i = 1; i < arguments.length; i++) {
+				str = str.replace("$"+i, arguments[i]);
 			}
 			return str;
 		},
@@ -73,8 +61,11 @@
 			return valid;
 		},
 		valid_to: function roman_valid_to(base, number) {
-			// TODO remove number.is_int() when core supports fractional:false
-			return base === "roman" && number.is_int() && number.cmp(0) > 0 && number.cmp(4000) < 0;
+			return base === "roman" &&
+				// TODO remove is int check when core supports fractional:false
+				number.eq(number.round(0, 0)) && // is int
+				number.gt(0) &&
+				number.lt(4000);
 		},
 
 		// from_base will always be "roman"
@@ -149,13 +140,13 @@
 				last_class = klass;
 				last_class2 = class2;
 			}
-			return Number(result);
+			return Base.Big(result);
 		},
 
 		// to_base will always be "roman"
 		from_internal: function roman_from_internal(to_base, number) {
 			// the primitive value will always be sufficient for roman numerals
-			number = number.valueOf();
+			number = +number.valueOf();
 			var i, result = "";
 			for (i in strict_conversions) {
 				while (number >= strict_conversions[i]) {

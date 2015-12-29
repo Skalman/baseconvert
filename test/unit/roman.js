@@ -13,7 +13,7 @@ test("All roman numerals", function () {
 	for (i = 1; i <= 3999; i++) {
 		roman = Base.to("roman", i);
 		internal = Base.from("roman", roman);
-		if (!internal || !internal.equals(i)) {
+		if (!internal || !internal.eq(i)) {
 			ok(false, "Conversion error: "+i+" > "+roman+" > "+internal);
 			return;
 		}

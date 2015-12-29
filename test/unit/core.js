@@ -1,6 +1,7 @@
 module("core");
 
 test("Basic requirements", function () {
-	expect(1);
+	expect(2);
 	ok(Base, "Base");
+	ok(Base.Big, "Base.Big");
 });

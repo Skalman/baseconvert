@@ -8,8 +8,8 @@ var fs = require("fs"),
 
 	base = path.normalize(__dirname + "/..") + "/",
 	files = [
+		"lib/big.min.js",
 		"src/core.js",
-		"src/number.js",
 		"src/standard.js",
 		"src/roman.js",
 		"src/leet.js",

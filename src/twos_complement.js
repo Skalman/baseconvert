@@ -30,26 +30,25 @@
 				var integer_length = number.indexOf(".");
 				if (integer_length === -1)
 					integer_length = number.length;
-				return new Base.Number(-Math.pow(2, integer_length) + Base.from("2", number).value);
+				return Base.Big(2).pow(integer_length).mul(-1).add( Base.from("2", number) );
 			}
 		},
 		from_internal: function twos_complement_from_internal(to_base, number) {
-			number = number.value;
 			var sign;
-			if (number >= 0) {
+			if (number.gte(0)) {
 				number = Base.to("2", number).replace(/ /g, "");
 				sign = "0";
 			} else {
 				var decimal_places = 0;
-				while (number % 1) {
-					number *= 2;
+				while (!number.mod(1).eq(0)) {
+					number = number.mul(2);
 					decimal_places++;
 				}
 
-				var minimum_digits = Math.floor(log2(-number)) + 1;
+				var minimum_digits = Math.floor(log2(number.mul(-1).valueOf())) + 1;
 
 				number = Base.to("2",
-					Math.pow(2, minimum_digits) + number
+					Math.pow(2, minimum_digits) + +number.valueOf()
 				).replace(/ /g, "");
 
 				while (number.length < minimum_digits) {

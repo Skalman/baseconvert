@@ -57,6 +57,7 @@
 					}
 				}
 			} catch (e) {
+				console.error(e);
 			}
 			return undefined;
 		},
@@ -72,6 +73,7 @@
 					}
 				}
 			} catch (e) {
+				console.error(e);
 			}
 			return undefined;
 		},
@@ -163,7 +165,7 @@
 		Base.to = function Base_to(to_base, number) {
 			return from_internal(
 				to_base,
-				(number != null && Base.Number ? Base.Number(number) : number)
+				(number != null ? Big(number) : number)
 			);
 		};
 		Base.from = function Base_from(from_base, number) {
@@ -264,6 +266,11 @@
 				a = {};
 			}
 		};
+
+		// Settings
+		var Big = Base.Big = window.Big();
+		Base.FRACTION_PRECISION = Math.floor(Big.DP * Math.log(10) / Math.log(2));
+
 			/*
 			add_conversion: function Base_add_conversion(conv) {
 				Base.add_conversion({
