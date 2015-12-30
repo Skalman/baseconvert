@@ -58,17 +58,6 @@ module.exports = function (grunt) {
 				}],
 			},
 
-			appcache: {
-				files: {
-					'dist/': 'app.appcache',
-				},
-				options: {
-					process: function (src, filepath) {
-						return grunt.template.process(src, initConfig);
-					},
-				}
-			},
-
 			logs: {
 				files: {
 					'dist/logs/human_access.log': 'logs/human_access.log.example',
@@ -84,9 +73,6 @@ module.exports = function (grunt) {
 				options: {
 					process: function (src, filepath) {
 						src = src
-							// Add manifest.
-							.replace('<html ', '<html manifest="app.appcache" ')
-
 							// Replace scripts with a single script.
 							.replace(/(<script[^>]+><\/script>\s*)+/, '<script src="app.min.js" defer></script>\n')
 
