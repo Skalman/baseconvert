@@ -144,7 +144,7 @@ module.exports = function (grunt) {
 		uglify: {
 			options: {
 				preserveComments: function (node, comment) {
-					return /^!|License:/i.test(comment.value);
+					return /^!|License:|\/LICENCE/i.test(comment.value);
 				},
 			},
 			app: {
