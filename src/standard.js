@@ -16,7 +16,8 @@
 		base_name_specified = "#name# (base #base#)",
 		spacer_re = {
 			3: /.../g,
-			4: /..../g
+			4: /..../g,
+			5: /...../g
 		},
 		spacing = {
 			2: 4,
@@ -25,8 +26,12 @@
 			16: 4,
 			10: 3
 		},
-		only_integer = {
-			10: true
+		spacing_fraction = {
+			2: 4,
+			4: 4,
+			8: 4,
+			16: 4,
+			10: 5
 		};
 
 	function floor(num) {
@@ -221,7 +226,7 @@
 		/* bool valid_from(int, string) */
 		valid_from: function standard_valid_from(base, number) {
 			var abs = Math.abs(base);
-			number = number.replace(/ /g, '');
+			number = number.replace(/ /g, "").replace(",", ".");
 			return (
 				// eliminate the strings that the RegExp can't handle
 				number !== "" && number !== "." && number !== "-." && number !== "-" &&
@@ -231,7 +236,7 @@
 				parseInt(base, 10)+"" === base &&
 
 				// get the validator RegExp
-				(valid_number[base] ? valid_number[base] : get_validator(base))
+				(valid_number[base] || get_validator(base))
 					// and test the number on that RegExp
 					.test(number)
 			);
@@ -259,7 +264,8 @@
 				number += "";
 			}
 			number = number
-				.replace(/ /g, '')
+				.replace(/ /g, "")
+				.replace(",", ".")
 				.toUpperCase()
 				.split(".");
 			var i, fract_result,
@@ -305,8 +311,8 @@
 			var abs_base = Math.abs(to_base);
 			if (spacing[abs_base]) {
 				int_part = spacer(int_part, spacing[abs_base]);
-				if (!only_integer[abs_base]) {
-					fract_part = fract_part && spacer(fract_part, spacing[abs_base], true);
+				if (fract_part && spacing_fraction[abs_base]) {
+					fract_part = spacer(fract_part, spacing_fraction[abs_base], true);
 				}
 			}
 
@@ -335,7 +341,7 @@
 		/* bool valid_from(string, string)*/
 		valid_from: function standard_big_valid_from(base, number) {
 			var abs = Math.abs(base);
-			number = number.replace(/ /g, '');
+			number = number.replace(/ /g, "").replace(",", ".");
 			if (
 				// eliminate the strings that the RegExp can't handle
 				number !== "" && number !== "." && number !== "-." && number !== "-" &&
@@ -375,7 +381,7 @@
 		// parameters number and base
 		to_internal: function standard_big_to_internal(from_base, number) {
 			from_base = +from_base;
-			number = number.split(".");
+			number = number.split(/[.,]/);
 			
 			var i, fract_result,
 				positive = (number[0].charAt(0) !== "-"),

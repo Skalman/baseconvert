@@ -49,3 +49,9 @@ test("Convert between bases", function () {
 			conversions[i][2] + " <-> " + conversions[i]["2-compl"]);
 	}
 });
+
+test("Decimal comma", function () {
+	expect(1);
+
+	strictEqual(Base("2-compl", 2, " 1 0 0 1 , 1 1 0 1 "), "-110.0011", "1 0 0 1 , 1 1 0 1")
+});

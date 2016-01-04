@@ -10,7 +10,7 @@
 			return base === "2-compl";
 		},
 		valid_from: function twos_complement_valid_from(base, number) {
-			return base === "2-compl" && /^[01]+\.?[01]*$/.test(number.replace(/ /g, ''));
+			return base === "2-compl" && /^[01]+[.,]?[01]*$/.test(number.replace(/ /g, ""));
 		},
 		valid_to: function twos_complement_valid_to(base, number) {
 			return base === "2-compl";
@@ -20,6 +20,7 @@
 		to_internal: function twos_complement_to_internal(from_base, number) {
 			number = number
 				.replace(/ /g, "")
+				.replace(",", ".")
 				// Multiples of the same digit in the beginning of the number don't change anything.
 				.replace(/^(.)\1+/, "$1");
 
@@ -69,7 +70,7 @@
 				sign = "1";
 			}
 
-			var parts = number.split(".");
+			var parts = number.split(/[.,]/);
 			var integer = parts[0];
 			var fraction = parts[1];
 
@@ -83,8 +84,8 @@
 			while (fraction && fraction.length % 4 !== 0)
 				fraction += "0";
 
-			integer = integer.replace(/[01]{4}(?=[01])/g, '$& ');
-			fraction = fraction && fraction.replace(/[01]{4}(?=[01])/g, '$& ');
+			integer = integer.replace(/[01]{4}(?=[01])/g, "$& ");
+			fraction = fraction && fraction.replace(/[01]{4}(?=[01])/g, "$& ");
 
 			return integer + (fraction ? "." + fraction : "");
 		},
