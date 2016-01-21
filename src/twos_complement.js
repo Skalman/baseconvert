@@ -41,10 +41,11 @@
 				sign = "0";
 			} else {
 				var decimal_places = 0;
-				while (!number.mod(1).eq(0)) {
+				for (var i = 0; i < Base.FRACTION_PRECISION && !number.mod(1).eq(0); i++) {
 					number = number.mul(2);
 					decimal_places++;
 				}
+				number = number.round();
 
 				var minimum_digits = Math.floor(log2(number.mul(-1).valueOf())) + 1;
 
