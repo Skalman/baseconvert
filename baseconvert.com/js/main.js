@@ -1,7 +1,7 @@
 var app = angular.module('baseconvertApp', []);
 
-app.controller('ConversionController', ['$scope', '$window', '$document', '$http', '$timeout', 'focus', 'scrollIntoView',
-function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView) {
+app.controller('ConversionController', ['$scope', '$window', '$document', '$http', '$timeout', 'focus', 'scrollIntoView', 'DebouncedBase',
+function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView, DebouncedBase) {
 	$scope.bases = [
 		{
 			id: '2',
@@ -61,7 +61,7 @@ function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView) {
 			// If the user stays on the page for 10 seconds, they are interested.
 			setTimeout(track.bind(null, 'interested'), 10e3);
 		} else if (action === 'use') {
-			// Wait for 10 seconds to get a more interesting state. The use will
+			// Wait for 10 seconds to get a more interesting state. The user will
 			// probably use it for longer than 10 seconds anyway, if they are
 			// interested in the result.
 			setTimeout(track.bind(null, 'use'), 10e3);
@@ -219,10 +219,12 @@ function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView) {
 		});
 
 		// Base(from, to, number)
-		Base(originBase.id, notOriginIds, originBase.number)
-			.forEach(function (number, index) {
-				notOrigin[index].hasError = false;
-				notOrigin[index].number = number;
+		DebouncedBase(originBase.id, notOriginIds, originBase.number)
+			.then(function (results) {
+				results.forEach(function (number, index) {
+					notOrigin[index].hasError = false;
+					notOrigin[index].number = number;
+				});
 			});
 	};
 

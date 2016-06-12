@@ -161,4 +161,37 @@ app
 	return function (scope, elem, attr) {
 		elem.removeClass('no-js').addClass('js');
 	};
-});
+})
+
+
+// Debounced and cached version of Base()
+.service('DebouncedBase', ['$timeout', '$q', function ($timeout, $q) {
+	var lastTimeout;
+	var debounceTime = 50;
+
+	function DebouncedBase(from, to, number) {
+		// This call supersedes any previous call within the debounce time.
+		$timeout.cancel(lastTimeout);
+
+		// If we have a cached result, always return it immediately.
+		var cacheKey = from + '|' + to + '|' + number;
+		if (DebouncedBase.cache[cacheKey]) {
+			return $q.when(DebouncedBase.cache[cacheKey]);
+		}
+
+		// Run the calculation in a little while.
+		lastTimeout = $timeout(function () {
+			var before = Date.now();
+			var result = Base(from, to, number);
+			DebouncedBase.cache[cacheKey] = result;
+			debounceTime = Date.now() - before;
+			return result;
+		}, debounceTime);
+
+		return lastTimeout;
+	}
+
+	DebouncedBase.cache = {};
+
+	return DebouncedBase;
+}]);

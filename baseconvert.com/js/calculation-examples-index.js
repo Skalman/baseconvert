@@ -1,17 +1,19 @@
 var CALCULATION_EXAMPLES_DEFAULT = [
 	{ name: 'fractional binary', number: '1100.0101', baseId: '2' },
 	{ name: 'hexadecimal', number: '8BA53', baseId: '16' },
-	{ name: 'fractions', number: '3.14', baseId: '10' },
+	{ name: 'fractions', numberDisplay: '3.14', number: '3.14159 26535 89793 23846', baseId: '10' },
 	{ name: 'any base', number: '45 : 1 . 76 : 15', baseId: '85' },
 ];
 
-var CALCULATION_EXAMPLES = [];
+
+var CALCULATION_EXAMPLES = [
+	{ name: 'fractions', numberDisplay: '1.618', number: '1.61803 39887 49894 84820', baseId: '10' },
+	{ name: 'fractions', numberDisplay: '-1.4142', number: '-1.41421 35623 73095 04880', baseId: '10' },
+	// More examples added below
+];
 
 (function () {
 	var examples = {
-		fractions: {
-			10: ['1.618', '-1.4142'],
-		},
 		'fractional binary': {
 			2: ['-0.0111 0110 11', '100.1', '1001.101'],
 		},

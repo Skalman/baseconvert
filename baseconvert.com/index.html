@@ -139,7 +139,7 @@
 				<li ng-show="true"
 					ng-repeat="(i, example) in examples"
 					ng-class="{'hidden-xs': i >= 1, 'hidden-sm': i >= 3, active: example.running}">
-					<a href="" class="btn btn-default" ng-click="runExample(example)"><strong>{{example.name}}:</strong> {{example.number|nospace}}</a>
+					<a href="" class="btn btn-default" ng-click="runExample(example)"><strong>{{example.name}}:</strong> {{example.numberDisplay||example.number|nospace}}</a>
 				</li>
 			</ul>
 
