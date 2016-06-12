@@ -268,8 +268,21 @@
 		};
 
 		// Settings
-		var Big = Base.Big = window.Big();
-		Base.FRACTION_PRECISION = Math.floor(Big.DP * Math.log(10) / Math.log(2));
+		var Big;
+		if (window.Big) {
+			// Used for low precision
+			Big = window.Big();
+			Base.FRACTION_PRECISION = Math.floor(Big.DP * Math.log(10) / Math.log(2));
+			Big.prototype.floor = function () {
+				return this.round(0, 0);
+			};
+		} else {
+			// Used for high precision
+			Big = window.BigNumber.another({ DECIMAL_PLACES: 1000, POW_PRECISION: 1000, ERRORS: false });
+			Base.FRACTION_PRECISION = Math.floor(1000 * Math.log(10) / Math.log(2));
+		}
+
+		Base.Big = Big;
 
 			/*
 			add_conversion: function Base_add_conversion(conv) {

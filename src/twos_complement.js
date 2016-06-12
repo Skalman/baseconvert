@@ -1,8 +1,5 @@
 (function (Base) {
 	"use strict";
-	var log2 = Math.log2 || function (number) {
-		return Math.log(number) / Math.log(2);
-	};
 
 	Base.extend({
 		name: "twos_complement",
@@ -47,10 +44,10 @@
 				}
 				number = number.round();
 
-				var minimum_digits = Math.floor(log2(number.mul(-1).valueOf())) + 1;
+				var minimum_digits = Base.to("2", number).replace(/[ \.\-]/g, "").length;
 
 				number = Base.to("2",
-					Math.pow(2, minimum_digits) + +number.valueOf()
+					Base.Big(2).pow(minimum_digits).add(number)
 				).replace(/ /g, "");
 
 				while (number.length < minimum_digits) {

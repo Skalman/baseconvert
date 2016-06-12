@@ -4,7 +4,8 @@
 body {
 	margin: 0;
 }
-header {
+header,
+nav {
 	display: block;
 }
 
@@ -14,6 +15,7 @@ header {
 
 @link-color: #009;
 @image-base-url: "../images";
+@input-group-addon-bg: #f5f5f5;
 
 // Core CSS
 @import "../node_modules/bootstrap/less/scaffolding.less";
@@ -47,18 +49,18 @@ header {
 header {
 	background: #f5f5ff;
 	background: linear-gradient(135deg,
-		rgba(183,222,237,0.2) 0%,
-		rgba(113,206,239,0.2) 50%,
-		rgba(33,180,226,0.2) 50.3%,
-		rgba(183,222,237,0.2) 100%);
-	margin-bottom: 1em;
+		rgba(183,222,237,0.4) 0%,
+		rgba(113,206,239,0.4) 50%,
+		rgba(33,180,226,0.4) 50.3%,
+		rgba(183,222,237,0.4) 100%);
+	margin-bottom: 2em;
 	box-shadow: 0 0 1em rgba(0, 0, 0, 0.05) inset;
 	text-shadow: 0 0 1em #fff;
 }
 
 .has-feedback .form-control-feedback {
 	top: 0 !important;
-	z-index: 2;
+	z-index: 3;
 	pointer-events: auto;
 }
 
@@ -83,7 +85,7 @@ header {
 
 .isten {
 	.input-group-addon {
-		border-color: #cc6;
+		border-color: #ec6;
 		box-shadow: 0 0 0.5em #ff0;
 		font-weight: bold;
 	}
@@ -111,8 +113,8 @@ header {
 
 	> span {
 		position: absolute;
-		background: #f6d9d9;
-		border-left: 1px solid rgba(0, 0, 0, 0.1);
+		background: #ffd9d9;
+		border-left: 1px solid rgba(200, 0, 0, 0.2);
 		color: #333;
 		width: 100%;
 		height: 100%;
@@ -146,7 +148,7 @@ header {
 		border-color: #600;
 
 		> span {
-			background: #c33;
+			background: #e44;
 			color: #fff;
 		}
 	}
@@ -158,6 +160,35 @@ header {
 	}
 }
 
+.expand {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: inherit;
+	display: none;
+	padding: 6px;
+
+	> img {
+		width: 18px;
+		height: 18px;
+		opacity: 0.5;
+	}
+
+	.form-group:hover &,
+	.form-group.focus &,
+	&:focus {
+		display: block;
+	}
+
+	&:focus {
+		outline: 1px solid #000;
+	}
+
+	&:focus > img,
+	&:hover > img {
+		opacity: 1;
+	}
+}
 
 .input-group-addon,
 .form-control {
@@ -165,6 +196,10 @@ header {
 		border-color 0.15s ease-in-out 0s,
 		box-shadow 0.15s ease-in-out 0s,
 		background-color 0.15s ease-in-out 0s;
+}
+
+.form-control {
+	max-width: 100%;
 }
 
 .newbase {
@@ -202,6 +237,8 @@ header {
 }
 
 .examples {
+	margin-top: 2em;
+
 	.btn:hover,
 	.btn:focus,
 	.btn:active {
@@ -215,19 +252,24 @@ header {
 }
 
 .base.example {
-	input:focus {
+	input:focus,
+	textarea:focus {
 		background-color: #cf9;
 	}
 
 	.input-group-addon,
-	input {
+	input,
+	textarea {
 		border-color: #6c3;
 	}
 }
 
+nav {
+	margin: 2em 0;
+}
 
 footer {
-	margin: 3em 0;
+	margin: 6em 0;
 
 	.list-inline {
 		position: relative;
@@ -237,6 +279,26 @@ footer {
 			padding-left: 20px;
 			padding-right: 20px;
 		}
+	}
+}
+
+.divider {
+    font-size: .5em;
+    text-align: center;
+    margin: 40px 0;
+    opacity: .4;
+
+
+	&.divider-line {
+		border-top: 1px solid #999;
+	}
+
+	> span {
+		position: relative;
+		top: -1em;
+		line-height: 2;
+		background: #fff;
+		padding: 0 5em;
 	}
 }
 

@@ -2,19 +2,18 @@
 <html lang="en" ng-app="baseconvertApp" ng-strict-di class="no-js" has-js>
 <head>
 		<meta charset="utf-8">
-		<title>Base Convert: the simple floating point base calculator</title>
+		<title>Base Convert: High Precision</title>
 
-		<script src="../lib/big.min.js" defer></script>
+		<script src="../lib/bignumber.min.js" defer></script>
 		<script src="js/lib/angular.min.js" defer></script>
 		<script src="../src/core.js" defer></script>
-		<script src="../src/roman.js" defer></script>
 		<script src="../src/twos_complement.js" defer></script>
 		<script src="../src/standard.js" defer></script>
 		<script src="../src/leet.js" defer></script>
 
 		<script src="js/polyfills.js" defer></script>
 		<script src="js/constants.js" defer></script>
-		<script src="js/calculation-examples-index.js" defer></script>
+		<script src="js/calculation-examples-high-precision.js" defer></script>
 		<script src="js/main.js" defer></script>
 		<script src="js/share.js" defer></script>
 		<script src="js/directives.js" defer></script>
@@ -24,14 +23,14 @@
 		<link rel="stylesheet" href="css/main.css">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-		<meta name="description" content="Online base converter. Convert from any base, to any base (binary, hexadecimal, even roman numerals!)">
+		<meta name="description" content="Online base converter. Convert binary, hexadecimal, and other bases in high precision">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 </head>
 <body>
 
 <header>
 	<div class="container">
-		<h1>Base Convert</h1>
+		<h1>Base Convert: High Precision</h1>
 	</div>
 </header>
 
@@ -61,20 +60,37 @@
 			<label class="input-group">
 				<div class="input-group-addon">
 					{{base.name|ucFirst}} <small class="hidden-xs" ng-if="base.explanation">({{base.explanation}})</small>
+					<a href="" class="expand" title="{{base !== expanded ? 'Expand' : 'Close'}}" ng-class="{expanded: base === expanded}" ng-click="baseExpand(base)">
+						<img src="images/expand.png" alt="Expand" ng-if="base !== expanded">
+						<img src="images/up.png" alt="Close" ng-if="base === expanded">
+					</a>
 				</div>
 				<input
 					class="form-control"
 					ng-model="base.number"
+					ng-if="base !== expanded"
 					ng-focus="numberFocus(base)"
 					ng-blur="numberBlur(base)"
 					focus-on="{{base.id}}"
 					ng-change="numberChange(base)"
 					ng-keydown="numberKeydown(base, $event)">
+				<textarea
+					class="form-control"
+					ng-model="expanded.number"
+					ng-if="base === expanded"
+					ng-focus="numberFocus(base)"
+					ng-blur="numberBlur(base)"
+					focus-on="{{base.id}}"
+					ng-change="numberChange(base)"
+					ng-keydown="numberExpandedKeydown(base, $event)"
+					rows="5"
+					></textarea>
 			</label>
 			<a href=""
 				class="delete form-control-feedback"
 				ng-click="baseDeleteClick(base)"
 				focus-on="{{base.id}}-delete"
+				ng-show="base !== expanded"
 				ng-keydown="baseDeleteKeydown(base, $event)"><span><span>Delete</span></span></a>
 		</div>
 
@@ -139,7 +155,7 @@
 				<li ng-show="true"
 					ng-repeat="(i, example) in examples"
 					ng-class="{'hidden-xs': i >= 1, 'hidden-sm': i >= 3, active: example.running}">
-					<a href="" class="btn btn-default" ng-click="runExample(example)"><strong>{{example.name}}:</strong> {{example.number|nospace}}</a>
+					<a href="" class="btn btn-default" ng-click="runExample(example, true)"><strong>{{example.name}}:</strong> {{example.numberDisplay|nospace}}</a>
 				</li>
 			</ul>
 
@@ -155,8 +171,8 @@
 	<nav>
 		<ul class="list-inline">
 			<li>More tools:</li>
-			<li><b>Standard</b></li>
-			<li><a href="./high-precision">High precision</a></li>
+			<li><a href="./">Standard</a></li>
+			<li><b>High precision</b></li>
 		</ul>
 	</nav>
 
@@ -183,7 +199,7 @@
 								share-mouseenter="mouseenter()"
 								share-mouseleave="mouseleave(2000)"
 								class="share-button g-plusone disabled"
-								data-size="medium" data-href="http://baseconvert.com/"></div>
+								data-size="medium" data-href="http://baseconvert.com/high-precision"></div>
 						</li>
 						<li>
 							<div
@@ -191,7 +207,7 @@
 								share="fb-like"
 								share-enable-on-click
 								class="share-button fb-like disabled"
-								data-href="http://baseconvert.com/" data-width="90" data-layout="button_count" data-show-faces="false" data-send="false"></div>
+								data-href="http://baseconvert.com/high-precision" data-width="90" data-layout="button_count" data-show-faces="false" data-send="false"></div>
 							<div id="fb-root"></div>
 						</li>
 					</ul>

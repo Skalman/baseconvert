@@ -1,14 +1,15 @@
 {
   "author": "Dan Wolff (http://danwolff.se/)",
-  "name": "baseconvert-ui",
+  "name": "baseconvert",
   "description": "Online base converter. Convert from any base, to any base (binary, hexadecimal, even roman numerals!)",
-  "version": "2.2.0",
+  "version": "2.3.0",
+  "copyright": "(c) 2016 Dan Wolff",
   "repository": {
     "type": "git",
-    "url": "git@github.com:Skalman/baseconvert-ui.git"
+    "url": "git@github.com:Skalman/baseconvert.git"
   },
   "bugs": {
-    "url": "https://github.com/Skalman/baseconvert-ui/issues"
+    "url": "https://github.com/Skalman/baseconvert/issues"
   },
   "licenses": [
     {

@@ -2,9 +2,14 @@
 <html>
 	<head>
 		<meta charset="utf-8"/>
-		<title>Testing Base (minified version)</title>
+		<title>Testing Base (minified)</title>
 		<link rel="stylesheet" href="qunit.css" media="screen"/>
 		<link rel="shortcut icon" href="../docs/favicon.png" type="image/png"/>
+	</head>
+	<body>
+		<div id="qunit"></div>
+		<div id="qunit-fixture"></div>
+
 		<script src="qunit.js"></script>
 		<script src="qunit.extensions.js"></script>
 		<script src="../lib/big.min.js"></script>
@@ -25,19 +30,7 @@
 
 		<!-- check that the only new global variable is Base -->
 		<script src="unit/globals.js"></script>
-	</head>
-	<body>
-		<p style="position:absolute; top:0;">
-			<a href="index.html">Source version</a>
-			• <a href="index.min.html">All</a>
-			- <a href="index.min.html?filter=core">core</a>
-			- <a href="index.min.html?filter=standard:">Standard (2-36)</a>
-			- <a href="index.min.html?filter=standard_big">Standard (&gt; 36)</a>
-			- <a href="index.min.html?filter=roman">Roman numerals</a>
-			- <a href="index.min.html?filter=leet">Leet</a>
-			- <a href="index.min.html?filter=twos_complement">Two's complement</a>
-		</p>
-		<div id="qunit"></div>
-		<div id="qunit-fixture"></div>
+
+		<script src="menu.js"></script>
 	</body>
 </html>

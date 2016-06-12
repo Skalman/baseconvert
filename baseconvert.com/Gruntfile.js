@@ -9,12 +9,6 @@ module.exports = function (grunt) {
 		'uglify',
 	]);
 
-	var jsFiles = grunt.file.read('index.html', 'utf-8')
-		.match(/<script src="[^"]+" defer>/g)
-		.map(function (x) {
-			return x.replace(/^<script src="|" defer>$/g, '');
-		});
-
 	// Set common initConfig.
 	var initConfig = {
 		pkg: grunt.file.readJSON('package.json'),
@@ -68,13 +62,13 @@ module.exports = function (grunt) {
 
 			html: {
 				files: {
-					'dist/': 'index.html',
+					'dist/': ['index.html', 'high-precision.html'],
 				},
 				options: {
 					process: function (src, filepath) {
 						src = src
 							// Replace scripts with a single script.
-							.replace(/(<script[^>]+><\/script>\s*)+/, '<script src="app.min.js" defer></script>\n')
+							.replace(/(<script[^>]+><\/script>\s*)+/, '<script src="' + filepath.replace(/^(.+)\.html$/, '$1.min.js') + '" defer></script>\n')
 
 							// Inline styles.
 							.replace(
@@ -103,14 +97,15 @@ module.exports = function (grunt) {
 		concat: {
 			js: {
 				files: {
-					'dist/app.js': jsFiles,
+					'dist/index.js': getJsFiles(grunt.file.read('index.html', 'utf-8')),
+					'dist/high-precision.js': getJsFiles(grunt.file.read('high-precision.html', 'utf-8')),
 				},
 				options: {
 					// The content of the banner and the footer. Everything before 'MAIN;'
 					// is the banner, everything after it is the footer.
 					surround: (function () {
 
-						/* Base Convert <%= pkg.version %> (built <%= grunt.template.today("yyyy-mm-dd") %>) | (c) 2014 Dan Wolff | License: <%= pkg.licenses[0].type %> | baseconvert.com */
+						/* Base Convert <%= pkg.version %> (built <%= grunt.template.today("yyyy-mm-dd") %>) | <%= pkg.copyright %> | License: <%= pkg.licenses[0].type %> | baseconvert.com */
 						(function (window, undefined) {
 							MAIN;
 
@@ -135,7 +130,8 @@ module.exports = function (grunt) {
 			},
 			app: {
 				files: {
-					'dist/app.min.js': ['dist/app.js'],
+					'dist/index.min.js': ['dist/index.js'],
+					'dist/high-precision.min.js': ['dist/high-precision.js'],
 				}
 			},
 		},
@@ -159,3 +155,12 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
 };
+
+function getJsFiles(html) {
+	return html
+		.match(/<script src="[^"]+" defer>/g)
+		.map(function (x) {
+			return x.replace(/^<script src="|" defer>$/g, '');
+		});
+
+}

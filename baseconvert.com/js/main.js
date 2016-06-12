@@ -72,6 +72,7 @@ function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView) {
 	$scope.selectedSuggestion = undefined;
 	$scope.newBaseName = '';
 	$scope.suggestions = [];
+	$scope.expanded = undefined;
 
 	$scope.$watch('newBaseName', calculateSuggestions);
 
@@ -255,6 +256,13 @@ function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView) {
 		}
 	};
 
+	$scope.numberExpandedKeydown = function (base, e) {
+		if (e.keyCode === KEY_ESC) {
+			$scope.expanded = undefined;
+			focus(base.id);
+		}
+	}
+
 	$scope.baseDeleteKeydown = function (base, e) {
 		if (e.keyCode === KEY_DEL || e.keyCode === KEY_BACKSPACE) {
 			e.preventDefault();
@@ -285,68 +293,23 @@ function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView) {
 			focus('new');
 	};
 
-
-	// Examples TODO
-	var examples = {
-		fractions: {
-			10: ['1.618', '-1.4142'],
-		},
-		'fractional binary': {
-			2: ['-0.0111 0110 11', '100.1', '1001.101'],
-		},
-		binary: {
-			2: ['10 1010', '101', '1111 1111', '-1000', '1 0000 1110 1010'],
-		},
-		octal: {
-			8: ['644'],
-		},
-		hexadecimal: {
-			16: ['1B45E'],
-		},
-		duodecimal: {
-			12: ['100.A'],
-		},
-		'roman numerals': {
-			roman: [
-				'IV', 'IIII', 'MCMLXXXVIII', 'LXII', 'XII', 'MDCCLXXVI',
-				Base('10', 'roman', new Date().getFullYear()),
-			],
-		},
-		'any base': {
-			13: ['42.0009c3'],
-			36: ['CON.VERT', '333'],
-			100: ['4 : 9', '12 : 95'],
-			1337: ['6 : 1294 . 126'],
+	$scope.baseExpand = function (base) {
+		if ($scope.expanded === base) {
+			$scope.expanded = undefined;
+		} else {
+			$scope.expanded = base;
 		}
 	};
 
-	var exampleList = [];
-	angular.forEach(examples, function (value, name) {
-		angular.forEach(value, function (value, baseId) {
-			value.forEach(function (number) {
-				exampleList.push({
-					name: name,
-					baseId: baseId,
-					number: number,
-				});
-			});
-		});
-	});
 
-	$scope.examples = [
-		{ name: 'fractional binary', number: '1100.0101', baseId: '2' },
-		{ name: 'hexadecimal', number: '8BA53', baseId: '16' },
-		{ name: 'fractions', number: '3.14', baseId: '10' },
-		{ name: 'any base', number: '45 : 1 . 76 : 15', baseId: '85' },
-	];
+	$scope.examples = CALCULATION_EXAMPLES_DEFAULT;
 
 	var lastExampleTimeout;
-	$scope.runExample = function (example) {
+	$scope.runExample = function (example, enterAllAtOnce) {
 		// Cancel any currently running example.
 		$timeout.cancel(lastExampleTimeout);
 
 		example.running = true;
-		// var timeout = $timeout.bind(null, angular.noop);
 		function timeout(ms) {
 			lastExampleTimeout = $timeout(angular.noop, ms);
 			return lastExampleTimeout;
@@ -387,20 +350,31 @@ function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView) {
 			return timeout(800);
 		}).then(function () {
 			base.number = '';
-			return example.number.split('').reduce(function (promise, char) {
-				return promise.then(function () {
-					base.number += char;
+			if (enterAllAtOnce) {
+				// Enter the whole number.
+				$scope.numberChange(base);
+				return timeout(100).then(function () {
+					base.number = example.number;
 					$scope.numberChange(base);
-					return timeout(800 / example.number.length);
 				});
-			}, timeout());
+			} else {
+				// Enter a digit at a time.
+				return example.number.split('').reduce(function (promise, char) {
+					return promise.then(function () {
+						base.number += char;
+						$scope.numberChange(base);
+						return timeout(800 / example.number.length);
+					});
+				}, timeout());
+			}
 		}).then(function () {
 			return timeout(3000);
 		}).then(function () {
 			// Set a new example.
-			var newExample = exampleList[Math.floor(Math.random() * exampleList.length)];
+			var newExample = CALCULATION_EXAMPLES[Math.floor(Math.random() * CALCULATION_EXAMPLES.length)];
 			example.name = newExample.name;
 			example.number = newExample.number;
+			example.numberDisplay = newExample.numberDisplay;
 			example.baseId = newExample.baseId;			
 		}).finally(function () {
 			// Reset the state.

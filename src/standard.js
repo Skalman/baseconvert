@@ -34,12 +34,9 @@
 			10: 5
 		};
 
-	function floor(num) {
-		return num.round(0, 0);
-	}
 
 	function is_int(num) {
-		return num.eq(floor(num)) &&
+		return num.eq(num.floor()) &&
 			num.gte(-9007199254740991) &&
 			num.lte(9007199254740991);
 	}
@@ -155,7 +152,7 @@
 		var tmp, i, integer_length,
 			digits = [],
 			is_negative = number.lt(0),
-			integ = floor(number.abs()), // the integer part; make the number non-negative
+			integ = number.abs().floor(), // the integer part; make the number non-negative
 			fract = number.abs().mod(1), // the fractional part; we don't need the 'number' variable any more
 			significant_digits = 0,
 
@@ -174,7 +171,7 @@
 		// find the fractional part of the result
 		for (; significant_digits < max_significant_fraction_digits && !fract.eq(0); significant_digits++) {
 			fract = fract.mul(to_base);
-			tmp = floor(fract);
+			tmp = fract.floor();
 			fract = fract.sub(tmp);
 			digits.push(+tmp.valueOf()); // sufficiently small
 		}
