@@ -19,6 +19,7 @@
 		{ name: 'e', numberDisplay: '2.718', number: e },
 		{ name: 'golden ratio (φ)', numberDisplay: '1.618', number: golden },
 		{ name: '√2', numberDisplay: '1.414', number: sqrt2 },
+		{ name: 'tau (τ = 2π)', numberDisplay: '6.28', number: tau },
 	];
 
 
@@ -27,6 +28,7 @@
 		{ name: 'e', numberDisplay: '2.718', number: e },
 		{ name: 'golden ratio (φ)', numberDisplay: '1.618', number: golden },
 		{ name: '√2', numberDisplay: '1.414', number: sqrt2 },
+		{ name: 'tau (τ = 2π)', numberDisplay: '6.28', number: tau },
 
 		{ name: '√½', numberDisplay: '0.707', number: sqrt1_2 },
 		{ name: '√⅓', numberDisplay: '0.577', number: sqrt1_3 },
@@ -34,7 +36,6 @@
 		{ name: '√5', numberDisplay: '2.236', number: sqrt5 },
 		{ name: '√7', numberDisplay: '2.646', number: sqrt7 },
 		{ name: 'pi squared (π²)', numberDisplay: '9.87', number: pi_2 },
-		{ name: 'tau (τ = 2π)', numberDisplay: '6.28', number: tau },
 		{ name: 'ln 2', numberDisplay: '0.693', number: ln2 },
 	];
 
