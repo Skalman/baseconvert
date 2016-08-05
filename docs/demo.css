@@ -48,4 +48,5 @@ p {
 }
 output {
 	font-weight:bold;
+	white-space: pre-wrap;
 }

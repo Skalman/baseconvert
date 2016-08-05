@@ -32,7 +32,7 @@ var CALCULATION_EXAMPLES = [
 		'roman numerals': {
 			roman: [
 				'IV', 'IIII', 'MCMLXXXVIII', 'LXII', 'XII', 'MDCCLXXVI',
-				Base('10', 'roman', new Date().getFullYear()),
+				converter.convert('10', 'roman', new Date().getFullYear()),
 			],
 		},
 		'any base': {
@@ -55,4 +55,3 @@ var CALCULATION_EXAMPLES = [
 		});
 	});
 }());
-

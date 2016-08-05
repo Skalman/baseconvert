@@ -1,40 +1,68 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="utf-8"/>
+		<meta charset="utf-8">
 		<title>Testing Base</title>
-		<link rel="stylesheet" href="qunit.css" media="screen"/>
-		<link rel="shortcut icon" href="../docs/favicon.png" type="image/png"/>
+		<link rel="stylesheet" href="qunit.css">
+		<link rel="shortcut icon" href="../docs/favicon.png">
 	</head>
 	<body>
+		<p style="position: absolute; top: 0px;">
+			<a href="index.html">All</a>
+			- <a href="index.html?filter=core:">Core</a>
+			- <a href="index.html?filter=leet:">Leet</a>
+			- <a href="index.html?filter=standard:">Standard (2-36)</a>
+			- <a href="index.html?filter=standard-big:">Standard (&gt; 36)</a>
+			- <a href="index.html?filter=twos-complement:">Two's complement</a>
+			- <a href="index.html?filter=roman:">Roman numerals</a>
+		</p>
+
 		<div id="qunit"></div>
 		<div id="qunit-fixture"></div>
 
 		<script src="qunit.js"></script>
 		<script src="qunit.extensions.js"></script>
-		<script src="../lib/big.min.js"></script>
 
-		<!-- save the current list of global variables  -->
-		<script src="unit/globals_init.js"></script>
+		<!-- check global variables -->
+		<script src="unit/globals.js"></script>
+
+		<script src="../lib/big.min.js" data-expected-globals="Big"></script>
+		<script src="../lib/bignumber.min.js" data-expected-globals="BigNumber"></script>
 
 		<!-- source code to be checked -->
-		<script src="../src/core.js"></script>
-		<script src="../src/standard.js"></script>
-		<script src="../src/roman.js"></script>
-		<script src="../src/leet.js"></script>
-		<script src="../src/twos_complement.js"></script>
+		<script src="../src/core.js" data-expected-globals="Base"></script>
+		<script src="../src/leet.js" data-expected-globals="extLeet"></script>
+		<script src="../src/standard.js" data-expected-globals="extStandard"></script>
+		<script src="../src/twos-complement.js" data-expected-globals="extTwosComplement"></script>
+		<script src="../src/roman.js" data-expected-globals="extRoman"></script>
+		<script data-expected-globals="srcGlobals">
+			var srcGlobals = {
+				Base: Base,
+				extLeet: extLeet,
+				extStandard: extStandard,
+				extTwosComplement: extTwosComplement,
+				extRoman: extRoman
+			};
+		</script>
+
+		<!-- source code minified -->
+		<script src="../dist/base-convert.min.js" data-expected-globals="Base,extLeet,extStandard,extTwosComplement,extRoman"></script>
+		<script data-expected-globals="minGlobals">
+			var minGlobals = {
+				Base: Base,
+				extLeet: extLeet,
+				extStandard: extStandard,
+				extTwosComplement: extTwosComplement,
+				extRoman: extRoman
+			};
+		</script>
 
 		<!-- tests -->
 		<script src="unit/core.js"></script>
-		<script src="unit/standard.js"></script>
-		<script src="unit/standard_big.js"></script>
-		<script src="unit/roman.js"></script>
 		<script src="unit/leet.js"></script>
-		<script src="unit/twos_complement.js"></script>
-
-		<!-- check that the only new global variable is Base -->
-		<script src="unit/globals.js"></script>
-
-		<script src="menu.js"></script>
+		<script src="unit/standard.js"></script>
+		<script src="unit/standard-big.js"></script>
+		<script src="unit/twos-complement.js"></script>
+		<script src="unit/roman.js"></script>
 	</body>
 </html>

@@ -1,41 +1,41 @@
 #!/usr/bin/env node
 
-var fs = require("fs"),
-	path = require("path"),
-	util = require("util"),
-	qs = require("querystring"),
-	http = require("http"),
+var fs = require('fs');
+var path = require('path');
+var util = require('util');
+var qs = require('querystring');
+var http = require('http');
 
-	base = path.normalize(__dirname + "/..") + "/",
-	files = [
-		"src/core.js",
-		"src/standard.js",
-		"src/roman.js",
-		"src/leet.js",
-		"src/twos_complement.js"
-	],
-	options = {
-		compilation_level: "SIMPLE_OPTIMIZATIONS",
-	},
-	dist = "dist/",
-	output = dist + "base_convert.js",
-	output_min = dist + "base_convert.min.js";
+var base = path.normalize(__dirname + '/..') + '/';
+var files = [
+	'src/core.js',
+	'src/leet.js',
+	'src/standard.js',
+	'src/twos-complement.js',
+	'src/roman.js',
+];
+var options = {
+	compilation_level: 'SIMPLE_OPTIMIZATIONS',
+};
+var dist = 'dist/';
+var output = dist + 'base-convert.js';
+var output_min = dist + 'base-convert.min.js';
 
 main();
 
 // Build files to dist
 function main() {
-	var i, code = "";
+	var i, code = '';
 
 	if (!fs.existsSync(base + dist)) {
-		console.log("Create directory %s", dist);
+		console.log('Create directory %s', dist);
 		fs.mkdirSync(base + dist, 0755);
 	}
 	for (i = 0; i < files.length; i++) {
 		code += fs.readFileSync(base + files[i]);
 	}
 
-	console.log("Write %s (concatenated source)", output);
+	console.log('Write %s (concatenated source)', output);
 	fs.writeFileSync(base + output, code);
 	fs.chmodSync(base + output, 0644);
 
@@ -43,13 +43,12 @@ function main() {
 		if (err) throw err;
 
 		var savings = Math.round((1 - (code_min.length / code.length)) * 10000) / 100;
-		console.log("Write %s (minified, saved %d%)", output_min, savings);
+		console.log('Write %s (minified, saved %d%)', output_min, savings);
 
 		fs.writeFileSync(base + output_min, code_min);
 		fs.chmodSync(base + output_min, 0644);
 	});
 }
-
 
 // https://github.com/weaver/scribbles/tree/master/node/google-closure
 
@@ -61,14 +60,14 @@ function main() {
 function compile(code, next) {
 	try {
 		var body, post_data, req,
-			host = "closure-compiler.appspot.com";
+			host = 'closure-compiler.appspot.com';
 
 		post_data = {
-			js_code: code.toString("utf-8"),
-			compilation_level: options.compilation_level ? options.compilation_level : "ADVANCED_OPTIMIZATIONS",
-			output_format: "json",
-			output_info: "compiled_code",
-			warning_level: options.warning_level ? options.warning_level : "DEFAULT",
+			js_code: code.toString('utf-8'),
+			compilation_level: options.compilation_level ? options.compilation_level : 'ADVANCED_OPTIMIZATIONS',
+			output_format: 'json',
+			output_info: 'compiled_code',
+			warning_level: options.warning_level ? options.warning_level : 'DEFAULT',
 		};
 		if (options.formatting) post_data.formatting = options.formatting;
 		if (options.js_externs) post_data.js_externs = options.js_externs;
@@ -77,19 +76,19 @@ function compile(code, next) {
 
 		req = http.request({
 			host: host,
-			path: "/compile",
-			method: "POST",
+			path: '/compile',
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/x-www-form-urlencoded"
+				'Content-Type': 'application/x-www-form-urlencoded'
 			}
 		});
-		req.on("error", next);
+		req.on('error', next);
 
-		req.on("response", function(res) {
+		req.on('response', function(res) {
 			if (res.statusCode != 200)
-				next(new Error("Unexpected HTTP response: " + res.statusCode));
+				next(new Error('Unexpected HTTP response: ' + res.statusCode));
 			else
-				capture(res, "utf-8", parseResponse);
+				capture(res, 'utf-8', parseResponse);
 		});
 
 		req.end(body);
@@ -100,9 +99,9 @@ function compile(code, next) {
 				if (err)
 					next(err);
 				else if ((error = obj.errors || obj.serverErrors || obj.warnings))
-					next(new Error("Failed to compile: " + util.inspect(error)));
+					next(new Error('Failed to compile: ' + util.inspect(error)));
 				else if (obj.compiledCode.length === 0)
-					next(new Error("Empty result: " + data));
+					next(new Error('Empty result: ' + data));
 				else
 					next(null, obj.compiledCode);
 			});
@@ -118,17 +117,17 @@ function compile(code, next) {
 // + encoding - String input encoding
 // + next - Function error/success callback
 function capture(input, encoding, next) {
-	var buffer = "";
+	var buffer = '';
 
-	input.on("data", function(chunk) {
+	input.on('data', function(chunk) {
 		buffer += chunk.toString(encoding);
 	});
 
-	input.on("end", function() {
+	input.on('end', function() {
 		next(null, buffer);
 	});
 
-	input.on("error", next);
+	input.on('error', next);
 }
 
 // Convert JSON.load() to callback-style.

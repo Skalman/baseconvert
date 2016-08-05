@@ -164,26 +164,26 @@ app
 })
 
 
-// Debounced and cached version of Base()
-.service('DebouncedBase', ['$timeout', '$q', function ($timeout, $q) {
+// Debounced and cached version of converter
+.service('debouncedConvert', ['$timeout', '$q', function ($timeout, $q) {
 	var lastTimeout;
 	var debounceTime = 50;
 
-	function DebouncedBase(from, to, number) {
+	function debouncedConvert(from, to, number) {
 		// This call supersedes any previous call within the debounce time.
 		$timeout.cancel(lastTimeout);
 
 		// If we have a cached result, always return it immediately.
 		var cacheKey = from + '|' + to + '|' + number;
-		if (DebouncedBase.cache[cacheKey]) {
-			return $q.when(DebouncedBase.cache[cacheKey]);
+		if (debouncedConvert.cache[cacheKey]) {
+			return $q.when(debouncedConvert.cache[cacheKey]);
 		}
 
 		// Run the calculation in a little while.
 		lastTimeout = $timeout(function () {
 			var before = Date.now();
-			var result = Base(from, to, number);
-			DebouncedBase.cache[cacheKey] = result;
+			var result = converter.convertToMultiple(from, to, number);
+			debouncedConvert.cache[cacheKey] = result;
 			debounceTime = Date.now() - before;
 			return result;
 		}, debounceTime);
@@ -191,7 +191,7 @@ app
 		return lastTimeout;
 	}
 
-	DebouncedBase.cache = {};
+	debouncedConvert.cache = {};
 
-	return DebouncedBase;
+	return debouncedConvert;
 }]);

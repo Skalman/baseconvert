@@ -1,7 +1,7 @@
 var app = angular.module('baseconvertApp', []);
 
-app.controller('ConversionController', ['$scope', '$window', '$document', '$http', '$timeout', 'focus', 'scrollIntoView', 'DebouncedBase',
-function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView, DebouncedBase) {
+app.controller('ConversionController', ['$scope', '$window', '$document', '$http', '$timeout', 'focus', 'scrollIntoView', 'debouncedConvert',
+function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView, debouncedConvert) {
 	$scope.bases = [
 		{
 			id: '2',
@@ -22,7 +22,7 @@ function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView, De
 			id: '16',
 			name: 'hexadecimal',
 			explanation: 'base 16',
-		}
+		},
 	];
 
 	$scope.originBase = undefined;
@@ -81,7 +81,7 @@ function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView, De
 			// No actual change.
 			return;
 		}
-		var sug = Base.suggest($scope.newBaseName || '', true);
+		var sug = converter.suggest($scope.newBaseName || '', true);
 		var existing = {};
 		$scope.bases.forEach(function (base) {
 			existing[base.id] = true;
@@ -115,7 +115,7 @@ function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView, De
 		var existingBase = $scope.bases.find(isAddedBase);
 		if (!existingBase) {
 			if ($scope.originBase) {
-				base.number = Base($scope.originBase.id, base.id, $scope.originBase.number);
+				base.number = converter.convert($scope.originBase.id, base.id, $scope.originBase.number);
 			}
 			$scope.bases.push(base);
 			$scope.bases.sort(function (a, b) {
@@ -192,7 +192,7 @@ function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView, De
 			}
 		} else if ($scope.showSuggestions && (key === KEY_ENTER || (key === KEY_TAB && !e.shiftKey))) {
 			if ($scope.suggestions.length) {
-				$scope.addBase($scope.selectedSuggestion);				
+				$scope.addBase($scope.selectedSuggestion);
 			} else if (e.shiftKey) {
 				focus($scope.bases[$scope.bases.length - 1].id);
 			}
@@ -209,7 +209,7 @@ function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView, De
 		}
 		$scope.originBase = originBase;
 
-		originBase.hasError = originBase.number && !Base.valid(originBase.id, originBase.number);
+		originBase.hasError = originBase.number && !converter.valid(originBase.id, originBase.number);
 
 		var notOrigin = $scope.bases.filter(function (base) {
 			return base !== originBase;
@@ -218,8 +218,8 @@ function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView, De
 			return base.id;
 		});
 
-		// Base(from, to, number)
-		DebouncedBase(originBase.id, notOriginIds, originBase.number)
+		// base.convert(from, to, number)
+		debouncedConvert(originBase.id, notOriginIds, originBase.number)
 			.then(function (results) {
 				results.forEach(function (number, index) {
 					notOrigin[index].hasError = false;
@@ -377,7 +377,7 @@ function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView, De
 			example.name = newExample.name;
 			example.number = newExample.number;
 			example.numberDisplay = newExample.numberDisplay;
-			example.baseId = newExample.baseId;			
+			example.baseId = newExample.baseId;
 		}).finally(function () {
 			// Reset the state.
 			example.running = false;

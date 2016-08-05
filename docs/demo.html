@@ -11,41 +11,47 @@
 		<script src="../src/standard.js" defer></script>
 		<script src="../src/roman.js" defer></script>
 		<script src="../src/leet.js" defer></script>
-		<script src="../src/twos_complement.js" defer></script>
+		<script src="../src/twos-complement.js" defer></script>
 		<script src="demo.js" defer></script>
 	</head>
 	<body>
 		<h1>Base Convert: Demo</h1>
-		<p>Comma-separated inputs will be treated as arrays.</p>
+
+<pre>
+var bc = new Base({
+	Big: Big,
+	extensions: [extRoman, extTwosComplement, extStandard, extLeet]
+});
+</pre>
 
 		<h2>
-			Base(
+			bc.convert(
 				<label>
-					from_base
-					<input type="text" id="base_from" value="36"/>
+					fromBase
+					<input type="text" id="convert_from" value="36">
 				</label>,
 				<label>
-					to_base
-					<input type="text" id="base_to" value="2"/>
+					toBase
+					<input type="text" id="convert_to" value="2">
 				</label>,
 				<label>
 					number
-					<input type="text" id="base_number" class="number" value="LOV.EMI"/>
+					<input type="text" id="convert_number" class="number" value="LOV.EMI">
 				</label>
 			)
 		</h2>
-		<p class="result">Result: <output id="base_result"></output></p>
+		<p class="result">Result: <output id="convert_result"></output></p>
 
 
 		<h2>
-			Base.to(
+			bc.to(
 				<label>
-					to_base
-					<input type="text" id="to_to" value="100"/>
+					toBase
+					<input type="text" id="to_to" value="100">
 				</label>,
 				<label>
 					number
-					<input type="text" id="to_number" class="number" value="3.1415927"/>
+					<input type="text" id="to_number" class="number" value="3.1415927">
 				</label>
 			)
 		</h2>
@@ -53,34 +59,34 @@
 
 
 		<h2>
-			Base.from(
+			bc.from(
 				<label>
-					from_base
-					<input type="text" id="from_from" value="roman"/>
+					fromBase
+					<input type="text" id="from_from" value="roman">
 				</label>,
 				<label>
 					number
-					<input type="text" id="from_number" class="number" value="MMLXVIII"/>
+					<input type="text" id="from_number" class="number" value="MMLXVIII">
 				</label>
 			)
 		</h2>
 		<p class="result">Result: <output id="from_result"></output></p>
 
 		<h2>
-			Base.get_name(
+			bc.getName(
 				<label>
 					base
-					<input type="text" id="get_name_base" value="12"/>
+					<input type="text" id="getName_base" value="12">
 				</label>
 			)
 		</h2>
-		<p class="result">Result: <output id="get_name_result"></output></p>
+		<p class="result">Result: <output id="getName_result"></output></p>
 
 		<h2>
-			Base.suggest(
+			bc.suggest(
 				<label>
 					base
-					<input type="text" id="suggest_base" value="2"/>
+					<input type="text" id="suggest_base" value="2">
 				</label>
 			)
 		</h2>

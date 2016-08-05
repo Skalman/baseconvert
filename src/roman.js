@@ -1,74 +1,67 @@
-(function (Base) {
-	"use strict";
-	var undefined,
-		message_bad_order = "Found unexpected sorting order: '$1' followed by '$2' (using strict sorting order).",
-		message_bad_order_nonstrict = "Found unexpected sorting order: '$1' followed by '$2' (using non-strict sorting order)",
-		message_bad_repetition = "Found unexpected repetition: '$1' $2 times in a row",
+function extRoman() {
+	'use strict';
 
-		language = function language(str) {
-			var i;
-			for (i = 1; i < arguments.length; i++) {
-				str = str.replace("$"+i, arguments[i]);
-			}
-			return str;
-		},
+	var converter = this;
+	var optionUppercase = true;
+	var optionStrict = true;
 
-		strict_conversions = {
-			M: 1000, CM: 900, D: 500, CD: 400,
-			C: 100, XC: 90, L: 50, XL: 40,
-			X: 10, IX: 9, V: 5, IV: 4, I: 1
-		},
-		repetition_allowed = {
-			M: 3, C: 4, X: 4, I: 4
-		},
-		classes = {
-			M: 6,
-			D: 5, C: 5,
-			CM: 4, CD: 4,
-			LM: 3, LD: 3, L: 3, X: 3,
-			XM: 2, XD: 2, XC: 2, XL: 2,
-			VM: 1, VD: 1, VC: 1, VL: 1, V: 1, I: 1,
-			IM: 0, ID: 0, IC: 0, IL: 0, IX: 0, IV: 0
-		},
-		classes2 = {
-			D: 3, CD: 3,
-			L: 2, XL: 2,
-			V: 1, IV: 1
-		},
-		nonstrict_conversions = {
-			M: 1000, IM: 999, VM: 995, XM: 990, LM: 950, CM: 900,
-			D: 500, ID: 499, VD: 495, XD: 490, LD: 450, CD: 400,
-			C: 100, IC: 99, VC: 95, XC: 90,
-			L: 50, IL: 49, VL: 45, XL: 40,
-			X: 10, IX: 9, V: 5, IV: 4, I: 1
-		};
-	Base.extend({
-		name: "roman",
-		fractional: false,
-		valid_base: function roman_valid_base(base) {
-			return base === "roman";
-		},
-		valid_from: function roman_valid_from(base, number) {
-			var valid = base === "roman" && /^[IVXLCDM]+$/i.test(number);
-			if (valid) {
-				try {
-					// TODO is there a quicker way to do this? a regexp?
-					Base.extensions.roman.to_internal("roman", number);
-				} catch (e) {
-					valid = false;
-				}
-			}
-			return valid;
-		},
-		valid_to: function roman_valid_to(base, number) {
-			return base === "roman" &&
-				// TODO remove is int check when core supports fractional:false
-				number.eq(number.round(0, 0)) && // is int
-				number.gt(0) &&
-				number.lt(4000);
-		},
 
-		// from_base will always be "roman"
+	var undefined;
+	var messageBadOrder = "Found unexpected sorting order: '$1' followed by '$2' (using strict sorting order).";
+	var messageBadOrderNonstrict = "Found unexpected sorting order: '$1' followed by '$2' (using non-strict sorting order)";
+	var messageBadRepetition = "Found unexpected repetition: '$1' $2 times in a row";
+
+	var strictConversions = {
+		M: 1000, CM: 900, D: 500, CD: 400,
+		C: 100, XC: 90, L: 50, XL: 40,
+		X: 10, IX: 9, V: 5, IV: 4, I: 1,
+	};
+	var repetitionAllowed = {
+		M: 3, C: 4, X: 4, I: 4,
+	};
+	var classes = {
+		M: 6,
+		D: 5, C: 5,
+		CM: 4, CD: 4,
+		LM: 3, LD: 3, L: 3, X: 3,
+		XM: 2, XD: 2, XC: 2, XL: 2,
+		VM: 1, VD: 1, VC: 1, VL: 1, V: 1, I: 1,
+		IM: 0, ID: 0, IC: 0, IL: 0, IX: 0, IV: 0,
+	};
+	var classes2 = {
+		D: 3, CD: 3,
+		L: 2, XL: 2,
+		V: 1, IV: 1,
+	};
+	var nonstrictConversions = {
+		M: 1000, IM: 999, VM: 995, XM: 990, LM: 950, CM: 900,
+		D: 500, ID: 499, VD: 495, XD: 490, LD: 450, CD: 400,
+		C: 100, IC: 99, VC: 95, XC: 90,
+		L: 50, IL: 49, VL: 45, XL: 40,
+		X: 10, IX: 9, V: 5, IV: 4, I: 1,
+	};
+
+
+	function isValidTo(toBase, number) {
+		return (
+			toBase === 'roman'
+			&& number instanceof converter.Big
+			&& number.gt(0)
+			&& number.lt(4000)
+			&& number.eq(number.floor()) // Is integer.
+		);
+	}
+
+	function log(message, $1, $2) {
+		console.log(
+			'[Base:roman]',
+			message
+				.replace('$1', $1)
+				.replace('$2', $2)
+		);
+	}
+
+	return {
 		/*
 			always accept
 				IIII = 4
@@ -77,31 +70,33 @@
 				IXIX = 18
 				IXIV = 13
 		*/
-		to_internal: function roman_to_internal(from_base, number) {
+		from: function (fromBase, number) {
+			if (fromBase !== 'roman' || !/^[IVXLCDM]+$/i.test(number)) {
+				return;
+			}
+
 			// inspiration taken from Netzreport (http://netzreport.googlepages.com/index_en.html)
 			number = number.toUpperCase();
 			var
 				result = 0, // we know that it's sufficient to use JavaScript's own numbers
-				i,
-				length = number.length,
-				conv = this.options.strict ? strict_conversions : nonstrict_conversions,
+				conv = optionStrict ? strictConversions : nonstrictConversions,
 				token,
 				next,
 				value,
 				klass,
 				class2,
-				last_token,
-				last_value = 1001, // something greater than M = 1000
-				last_class = 7, // something greater than the greatest class, M: 6
-				last_class2 = 4, // something greater than the greatest class, D: 3
-				repetition_count;
+				lastToken,
+				lastValue = 10000, // something greater than M = 1000
+				lastClass = 7, // something greater than the greatest class, M: 6
+				lastClass2 = 4, // something greater than the greatest class, D: 3
+				repetitionCount;
 
 			// tokenize
-			for (i = 0; i < length; i++) {
+			for (var i = 0; i < number.length; i++) {
 				token = number.charAt(i);
 				next = number.charAt(i+1);
 				// lookahead one character to find this token's value
-				if (i+1 < length && conv[token+next]) { // there's another character to look at
+				if (i+1 < number.length && conv[token+next]) { // there's another character to look at
 					// yep, this is a token: let's add the next character to i
 					token += next;
 
@@ -111,69 +106,73 @@
 				value = conv[token];
 				klass = classes[token];
 				class2 = classes2[token];
-				last_value === value ?
-					repetition_count++ :
-					repetition_count = 1;
+				if (lastValue === value) {
+					repetitionCount++;
+				} else {
+					repetitionCount = 1;
+				}
 
-				if (last_value < value || last_class < klass) {
-					throw language(this.options.strict ? message_bad_order : message_bad_order_nonstrict,
-						last_token,
+				if (lastValue < value || lastClass < klass) {
+					return log(optionStrict ? messageBadOrder : messageBadOrderNonstrict,
+						lastToken,
 						token);
-				} else if (last_class === klass) {
-					if (!repetition_allowed[token]) {
-						throw language(this.options.strict ? message_bad_order : message_bad_order_nonstrict,
-							last_token,
+				} else if (lastClass === klass) {
+					if (!repetitionAllowed[token]) {
+						return log(optionStrict ? messageBadOrder : messageBadOrderNonstrict,
+							lastToken,
 							token);
-					} else if (last_value === value) {
-						 if (repetition_count > repetition_allowed[token]) {
-							// we accept repetition 4 times (as in IIII instead of IV), but not 5
-							throw language(message_bad_repetition, token, repetition_count);
-						}
+					} else if (lastValue === value && repetitionCount > repetitionAllowed[token]) {
+						// We accept repetition 4 times (as in IIII instead of IV), but not 5.
+						return log(messageBadRepetition, token, repetitionCount);
 					}
-				} else if (class2 !== undefined && last_class2 === class2) {
-					throw language(this.options.strict ? message_bad_order : message_bad_order_nonstrict,
-						last_token,
+				} else if (class2 !== undefined && lastClass2 === class2) {
+					return log(optionStrict ? messageBadOrder : messageBadOrderNonstrict,
+						lastToken,
 						token);
 				}
 				result += value;
-				last_value = value;
-				last_class = klass;
-				last_class2 = class2;
+				lastValue = value;
+				lastClass = klass;
+				lastClass2 = class2;
 			}
-			return Base.Big(result);
+			return converter.Big(result);
 		},
 
-		// to_base will always be "roman"
-		from_internal: function roman_from_internal(to_base, number) {
+		// toBase will always be 'roman'
+		to: function (toBase, number) {
+			if (!isValidTo(toBase, number)) {
+				return;
+			}
+
 			// the primitive value will always be sufficient for roman numerals
 			number = +number.valueOf();
-			var i, result = "";
-			for (i in strict_conversions) {
-				while (number >= strict_conversions[i]) {
-					number -= strict_conversions[i];
+			var i, result = '';
+			for (i in strictConversions) {
+				while (number >= strictConversions[i]) {
+					number -= strictConversions[i];
 					result += i;
 				}
 			}
-			return (this.options.uppercase ?
+			return (optionUppercase ?
 				result :
 				result.toLowerCase());
 		},
-		get_name: function roman_get_name(base) {
-			return "roman numerals";
+
+		getName: function (base) {
+			if (base === 'roman') {
+				return 'roman numerals';
+			}
 		},
-		suggest_base: function roman_suggest_base(base, tester) {
-			if (/^rom/i.test(base)) {
-				// close enough match
-				return { match: [["roman", "roman numerals"]] };
-			} else if (tester.test("roman numerals")) {
-				return { proposed: [["roman", "roman numerals"]] };
+
+		suggest: function (baseText, reBaseText) {
+			if (/^rom/i.test(baseText)) {
+				// Close enough match.
+				return { match: [['roman', 'roman numerals']] };
+			} else if (reBaseText.test('roman numerals')) {
+				return { proposed: [['roman', 'roman numerals']] };
 			} else {
 				return {};
 			}
 		},
-		options: {
-			uppercase: true,
-			strict: true
-		}
-	});
-})(Base);
+	};
+}

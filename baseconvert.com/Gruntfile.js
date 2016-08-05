@@ -54,9 +54,9 @@ module.exports = function (grunt) {
 
 			logs: {
 				files: {
-					'dist/logs/human_access.log': 'logs/human_access.log.example',
-					'dist/logs/interested_access.log': 'logs/interested_access.log.example',
-					'dist/logs/use_access.log': 'logs/use_access.log.example',
+					'dist/logs/human-access.log': 'logs/human-access.log.example',
+					'dist/logs/interested-access.log': 'logs/interested-access.log.example',
+					'dist/logs/use-access.log': 'logs/use-access.log.example',
 				},
 			},
 
