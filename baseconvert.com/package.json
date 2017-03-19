@@ -2,7 +2,7 @@
   "author": "Dan Wolff (https://danwolff.se/)",
   "name": "baseconvert",
   "description": "Online base converter. Convert from any base, to any base (binary, hexadecimal, even roman numerals!)",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "copyright": "(c) 2017 Dan Wolff",
   "repository": {
     "type": "git",

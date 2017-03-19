@@ -305,15 +305,23 @@ function extStandard() {
 			getName: getName,
 
 			suggest: function (baseText, reBaseText) {
-				var i, j, tmp, number,
-					matches = { proposed: [] },
-					all = {};
-				number = /(\-?\d+)/.exec(baseText);
+				var i, j, tmp;
+				var matches = {
+					match: [],
+					proposed: []
+				};
+				var all = {};
+				var numberMatch = /(\-?\d+)(i?)/i.exec(baseText);
 
-				if (number) {
-					number = number[1];
+				if (numberMatch) {
+					var number = numberMatch[1];
 					if (number < -1 || 1 < number) {
-						matches.match = [[number, getName(number)]];
+						if (numberMatch[2] === 'i') {
+							// E.g. "2i" isn't an exact match.
+							matches.proposed.push([number, getName(number)]);
+						} else {
+							matches.match.push([number, getName(number)]);
+						}
 						matches.proposed.push([-number + '', getName(-number + '')]);
 						all[number] = all[-number] = true;
 					}

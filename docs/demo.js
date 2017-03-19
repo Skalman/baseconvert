@@ -1,6 +1,6 @@
 var bc = new Base({
 	Big: Big,
-	extensions: [extRoman, extTwosComplement, extStandard, extLeet]
+	extensions: [extRoman, extTwosComplement, extStandard, extLeet, extImaginary]
 });
 
 function id(id) {

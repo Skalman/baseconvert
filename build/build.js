@@ -12,6 +12,7 @@ var files = [
 	'src/leet.js',
 	'src/standard.js',
 	'src/twos-complement.js',
+	'src/imaginary.js',
 	'src/roman.js',
 ];
 var options = {
