@@ -1,5 +1,5 @@
-[Base Convert](http://baseconvert.com/) - A library for easy conversion between numerical systems
-=================================================================================================
+[Base Convert](https://baseconvert.com/) - A library for easy conversion between numerical systems
+==================================================================================================
 
 Base Convert is an extensible JavaScript library to enable easy conversion between numerical systems, such as different
 bases (binary, decimal, hexadecimal) or roman numerals.
@@ -16,4 +16,4 @@ Examples
 Demo
 ----
 
-Either visit [baseconvert.com](http://baseconvert.com/) or check out `docs/demo.html`.
+Either visit [baseconvert.com](https://baseconvert.com/) or check out `docs/demo.html`.
