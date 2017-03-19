@@ -16,18 +16,18 @@ function testConverters(name, extensionNames, fn) {
 	});
 
 	test(name + ' (src; Big.js)', function () {
-		fn(convSrcBig);
+		fn(convSrcBig, srcGlobals.Base);
 	});
 
 	test(name + ' (src; BigNumber.js)', function () {
-		fn(convSrcBNo);
+		fn(convSrcBNo, srcGlobals.Base);
 	});
 
 	test(name + ' (min; Big.js)', function () {
-		fn(convMinBig);
+		fn(convMinBig, minGlobals.Base);
 	});
 
 	test(name + ' (min; BigNumber.js)', function () {
-		fn(convMinBNo);
+		fn(convMinBNo, minGlobals.Base);
 	});
 }

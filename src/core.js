@@ -207,6 +207,24 @@
 	};
 
 
+	// Public utilities.
+	Base.addSpaces = function (input, numCharsInGroup, fromBeginning) {
+		var parts = [];
+		var index = 0;
+		var remainderChars = input.length % numCharsInGroup;
+		if (!fromBeginning && remainderChars) {
+			parts.push(input.substr(0, remainderChars));
+			index = remainderChars;
+		}
+
+		for (; index < input.length; index += numCharsInGroup) {
+			parts.push(input.substr(index, numCharsInGroup));
+		}
+
+		return parts.join(' ');
+	};
+
+
 	// Utilities.
 
 	function append(array, arrayToAppend) {

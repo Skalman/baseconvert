@@ -2,6 +2,7 @@ function extStandard() {
 	'use strict';
 	var undefined;
 	var converter = this;
+	var Base = converter.constructor;
 	var dictionary = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 	var dictionaryArr = dictionary.split('');
 
@@ -13,11 +14,6 @@ function extStandard() {
 		proposed: '2 8 10 12 16'.split(' '),
 		good: '20 36 60 100'.split(' '),
 		other: '11 13 14 15 18 30 40 50 70 80 90'.split(' '),
-	};
-	var reSpacer = {
-		3: /.../g,
-		4: /..../g,
-		5: /...../g,
 	};
 	var spacing = {
 		2: 4,
@@ -37,33 +33,6 @@ function extStandard() {
 
 	function isInt(num) {
 		return num.eq(num.floor());
-	}
-
-	function spacer(input, numChars, fromBeginning) {
-		var edge;
-		var diff = input.length % numChars;
-
-		if (diff) {
-			if (fromBeginning) {
-				edge = input.substr(-diff);
-				input = input.substr(0, input.length - diff);
-			} else {
-				edge = input.substr(0, diff);
-				input = input.substr(diff);
-			}
-		}
-
-		input = input.match(reSpacer[numChars]) || [];
-
-		if (diff) {
-			if (fromBeginning) {
-				input.push(edge);
-			} else {
-				input.unshift(edge);
-			}
-		}
-
-		return input.join(' ');
 	}
 
 	function getValidator(base) {
@@ -320,9 +289,9 @@ function extStandard() {
 
 				var absBase = Math.abs(toBase);
 				if (spacing[absBase]) {
-					intPart = spacer(intPart, spacing[absBase]);
+					intPart = Base.addSpaces(intPart, spacing[absBase]);
 					if (fractPart && spacingFraction[absBase]) {
-						fractPart = spacer(fractPart, spacingFraction[absBase], true);
+						fractPart = Base.addSpaces(fractPart, spacingFraction[absBase], true);
 					}
 				}
 
