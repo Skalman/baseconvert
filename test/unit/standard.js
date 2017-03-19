@@ -51,7 +51,8 @@ testConverters('Convert between bases', ['extStandard'], function (converter) {
 			{ from: 10, to: -10,
 				'1234': '19 374',
 				'-1234': '2 846',
-				'1234.5': undefined
+				'1234.5': undefined,
+				'-12345678901234567890': '28 466 482 902 846 648 290'
 			}
 		];
 

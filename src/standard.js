@@ -36,9 +36,7 @@ function extStandard() {
 
 
 	function isInt(num) {
-		return num.eq(num.floor()) &&
-			num.gte(-9007199254740991) &&
-			num.lte(9007199254740991);
+		return num.eq(num.floor());
 	}
 
 	function spacer(input, numChars, fromBeginning) {
