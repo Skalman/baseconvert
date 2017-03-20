@@ -37,24 +37,34 @@
 		<script src="../src/roman.js" data-expected-globals="extRoman"></script>
 		<script data-expected-globals="srcGlobals">
 			var srcGlobals = {
-				Base: Base,
-				extLeet: extLeet,
-				extStandard: extStandard,
-				extTwosComplement: extTwosComplement,
-				extRoman: extRoman
+				Base: window.Base,
+				extLeet: window.extLeet,
+				extStandard: window.extStandard,
+				extTwosComplement: window.extTwosComplement,
+				extRoman: window.extRoman
 			};
+			Base = undefined;
+			extLeet = undefined;
+			extStandard = undefined;
+			extTwosComplement = undefined;
+			extRoman = undefined;
 		</script>
 
 		<!-- source code minified -->
 		<script src="../dist/base-convert.min.js" data-expected-globals="Base,extLeet,extStandard,extTwosComplement,extRoman"></script>
 		<script data-expected-globals="minGlobals">
 			var minGlobals = {
-				Base: Base,
-				extLeet: extLeet,
-				extStandard: extStandard,
-				extTwosComplement: extTwosComplement,
-				extRoman: extRoman
+				Base: window.Base,
+				extLeet: window.extLeet,
+				extStandard: window.extStandard,
+				extTwosComplement: window.extTwosComplement,
+				extRoman: window.extRoman
 			};
+			Base = undefined;
+			extLeet = undefined;
+			extStandard = undefined;
+			extTwosComplement = undefined;
+			extRoman = undefined;
 		</script>
 
 		<!-- tests -->
