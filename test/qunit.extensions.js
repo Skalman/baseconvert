@@ -31,3 +31,27 @@ function testConverters(name, extensionNames, fn) {
 		fn(convMinBNo, minGlobals.Base);
 	});
 }
+
+function testConvertersOpts(opts) {
+	var name = opts.name;
+	var extensionNames = opts.extensionNames;
+	var Big = opts.Big;
+	var fn = opts.fn;
+
+	var convSrc = new srcGlobals.Base({ Big: Big });
+	var convMin = new minGlobals.Base({ Big: Big });
+
+	extensionNames.forEach(function (extension) {
+		convSrc.extend(srcGlobals[extension]);
+		convMin.extend(minGlobals[extension]);
+	});
+
+	test(name + ' (src)', function () {
+		fn(convSrc, srcGlobals.Base);
+	});
+
+	test(name + ' (min)', function () {
+		fn(convMin, minGlobals.Base);
+	});
+}
+

@@ -214,3 +214,12 @@ testConverters('Edge cases - rounded results accepted', ['extStandard'], functio
 		}
 	}
 });
+
+testConvertersOpts({
+	name: 'Regression test: BigNumber errors enabled',
+	extensionNames: ['extStandard'],
+	Big: BigNumber.another({ ERRORS: true }),
+	fn: function (converter) {
+		equal(converter.to('2', 5), '101', 'to(): allow raw JavaScript numbers');
+	},
+});

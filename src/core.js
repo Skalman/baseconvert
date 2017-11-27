@@ -148,7 +148,7 @@
 
 		toBase += '';
 		if (typeof number === 'number' || typeof number === 'string') {
-			number = this.Big(number);
+			number = new this.Big(number);
 		}
 
 		return notUndefined(this.ext.to, function (fn) {

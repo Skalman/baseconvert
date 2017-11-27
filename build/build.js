@@ -4,7 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var util = require('util');
 var qs = require('querystring');
-var http = require('http');
+var https = require('https');
 
 var base = path.normalize(__dirname + '/..') + '/';
 var files = [
@@ -75,7 +75,7 @@ function compile(code, next) {
 
 		body = qs.stringify(post_data);
 
-		req = http.request({
+		req = https.request({
 			host: host,
 			path: '/compile',
 			method: 'POST',
