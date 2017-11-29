@@ -16,6 +16,7 @@
 			- <a href="index.html?filter=twos-complement:">Two's complement</a>
 			- <a href="index.html?filter=imaginary:">Imaginary</a>
 			- <a href="index.html?filter=roman:">Roman numerals</a>
+			- <a href="index.html?filter=ieee-754:">IEEE 754</a>
 		</p>
 
 		<div id="qunit"></div>
@@ -37,6 +38,7 @@
 		<script src="../src/twos-complement.js" data-expected-globals="extTwosComplement"></script>
 		<script src="../src/imaginary.js" data-expected-globals="extImaginary"></script>
 		<script src="../src/roman.js" data-expected-globals="extRoman"></script>
+		<script src="../src/ieee-754.js" data-expected-globals="extIeee754"></script>
 		<script data-expected-globals="srcGlobals">
 			var srcGlobals = {
 				Base: window.Base,
@@ -44,7 +46,8 @@
 				extStandard: window.extStandard,
 				extTwosComplement: window.extTwosComplement,
 				extImaginary: window.extImaginary,
-				extRoman: window.extRoman
+				extRoman: window.extRoman,
+				extIeee754: window.extIeee754,
 			};
 			Base = undefined;
 			extLeet = undefined;
@@ -52,10 +55,11 @@
 			extTwosComplement = undefined;
 			extImaginary = undefined;
 			extRoman = undefined;
+			extIeee754 = undefined;
 		</script>
 
 		<!-- source code minified -->
-		<script src="../dist/base-convert.min.js" data-expected-globals="Base,extLeet,extStandard,extTwosComplement,extRoman"></script>
+		<script src="../dist/base-convert.min.js" data-expected-globals="Base,extLeet,extStandard,extTwosComplement,extRoman,extIeee754"></script>
 		<script data-expected-globals="minGlobals">
 			var minGlobals = {
 				Base: window.Base,
@@ -63,7 +67,8 @@
 				extStandard: window.extStandard,
 				extTwosComplement: window.extTwosComplement,
 				extImaginary: window.extImaginary,
-				extRoman: window.extRoman
+				extRoman: window.extRoman,
+				extIeee754: window.extIeee754,
 			};
 			Base = undefined;
 			extLeet = undefined;
@@ -71,6 +76,7 @@
 			extTwosComplement = undefined;
 			extImaginary = undefined;
 			extRoman = undefined;
+			extIeee754 = undefined;
 		</script>
 
 		<!-- tests -->
@@ -81,5 +87,6 @@
 		<script src="unit/twos-complement.js"></script>
 		<script src="unit/imaginary.js"></script>
 		<script src="unit/roman.js"></script>
+		<script src="unit/ieee-754.js"></script>
 	</body>
 </html>

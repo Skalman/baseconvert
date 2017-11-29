@@ -136,9 +136,9 @@
 		fromBase += '';
 		number += '';
 
-		return notUndefined(this.ext.from, function (fn) {
+		return this.toBig(notUndefined(this.ext.from, function (fn) {
 			return fn(fromBase, number);
-		});
+		}));
 	};
 
 	Base.prototype.to = function (toBase, number) {
@@ -147,9 +147,7 @@
 		}
 
 		toBase += '';
-		if (typeof number === 'number' || typeof number === 'string') {
-			number = new this.Big(number);
-		}
+		number = this.toBig(number);
 
 		return notUndefined(this.ext.to, function (fn) {
 			return fn(toBase, number);
@@ -206,6 +204,18 @@
 		return result;
 	};
 
+	Base.prototype.toBig = function (number) {
+		if (typeof number === 'number' || typeof number === 'string') {
+			return new this.Big(
+				number === 0 && 1/number < 0
+					? '-0'
+					: '' + number
+			);
+		} else {
+			return number;
+		}
+	};
+
 
 	// Public utilities.
 	Base.addSpaces = function (input, numCharsInGroup, fromBeginning) {
@@ -239,6 +249,12 @@
 			if (result !== undefined) {
 				return result;
 			}
+		}
+	}
+
+	function toBig(number) {
+		if (typeof number === 'number' || typeof number === 'string') {
+
 		}
 	}
 

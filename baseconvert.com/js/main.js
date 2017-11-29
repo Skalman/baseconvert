@@ -2,28 +2,7 @@ var app = angular.module('baseconvertApp', []);
 
 app.controller('ConversionController', ['$scope', '$window', '$document', '$http', '$timeout', 'focus', 'scrollIntoView', 'debouncedConvert',
 function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView, debouncedConvert) {
-	$scope.bases = [
-		{
-			id: '2',
-			name: 'binary',
-			explanation: 'base 2',
-		},
-		{
-			id: '8',
-			name: 'octal',
-			explanation: 'base 8',
-		},
-		{
-			id: '10',
-			name: 'decimal',
-			explanation: 'base 10',
-		},
-		{
-			id: '16',
-			name: 'hexadecimal',
-			explanation: 'base 16',
-		},
-	];
+	$scope.bases = initialBases;
 
 	$scope.originBase = undefined;
 
@@ -301,6 +280,26 @@ function ($scope, $window, $document, $http, $timeout, focus, scrollIntoView, de
 		} else {
 			$scope.expanded = base;
 		}
+	};
+
+	// Collect base groups only once.
+	var baseGroups;
+	$scope.getBaseGroups = function () {
+		if (!baseGroups) {
+			baseGroups = [];
+			var lastGroupId;
+
+			$scope.bases.forEach(function (base) {
+				if (lastGroupId === base.group) {
+					baseGroups[baseGroups.length - 1].push(base);
+				} else {
+					baseGroups.push([base]);
+					lastGroupId = base.group;
+				}
+			});
+		}
+
+		return baseGroups;
 	};
 
 

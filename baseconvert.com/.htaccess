@@ -3,9 +3,9 @@ RewriteEngine on
 RewriteCond %{HTTP_HOST} www.baseconvert.com
 	RewriteRule (.*) http://baseconvert.com/$1 [redirect=301,last,qsappend]
 
-RewriteRule ^(track|high\-precision)/$ $1 [redirect=301,last,qsappend]
+RewriteRule ^(track|high\-precision|ieee\-754\-floating\-point)/$ $1 [redirect=301,last,qsappend]
 RewriteRule ^(track)$ $1.php [last,qsappend]
 
-RewriteRule ^(high\-precision)$ $1.html [last,qsappend]
+RewriteRule ^(high\-precision|ieee\-754\-floating\-point)$ $1.html [last,qsappend]
 
 RewriteRule .log$ / [r=403]

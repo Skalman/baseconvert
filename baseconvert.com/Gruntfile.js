@@ -62,7 +62,11 @@ module.exports = function (grunt) {
 
 			html: {
 				files: {
-					'dist/': ['index.html', 'high-precision.html'],
+					'dist/': [
+						'index.html',
+						'high-precision.html',
+						'ieee-754-floating-point.html',
+					],
 				},
 				options: {
 					process: function (src, filepath) {
@@ -99,6 +103,7 @@ module.exports = function (grunt) {
 				files: {
 					'dist/index.js': getJsFiles(grunt.file.read('index.html', 'utf-8')),
 					'dist/high-precision.js': getJsFiles(grunt.file.read('high-precision.html', 'utf-8')),
+					'dist/ieee-754-floating-point.js': getJsFiles(grunt.file.read('ieee-754-floating-point.html', 'utf-8')),
 				},
 				options: {
 					// The content of the banner and the footer. Everything before 'MAIN;'
@@ -132,6 +137,7 @@ module.exports = function (grunt) {
 				files: {
 					'dist/index.min.js': ['dist/index.js'],
 					'dist/high-precision.min.js': ['dist/high-precision.js'],
+					'dist/ieee-754-floating-point.min.js': ['dist/ieee-754-floating-point.js'],
 				}
 			},
 		},

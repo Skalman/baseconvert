@@ -9,7 +9,7 @@ var CALCULATION_EXAMPLES_DEFAULT = [
 var CALCULATION_EXAMPLES = [
 	{ name: 'fractions', numberDisplay: '1.618', number: '1.61803 39887 49894 84820', baseId: '10' },
 	{ name: 'fractions', numberDisplay: '-1.4142', number: '-1.41421 35623 73095 04880', baseId: '10' },
-	// More examples added below
+	// More examples added below.
 ];
 
 (function () {

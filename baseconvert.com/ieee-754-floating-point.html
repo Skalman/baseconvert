@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="baseconvertApp" ng-strict-di class="no-js" has-js>
+<head>
+		<meta charset="utf-8">
+		<title>Base Convert: IEEE 754 Floating Point</title>
+
+		<script src="../lib/bignumber.min.js" defer></script>
+		<script src="js/lib/angular.min.js" defer></script>
+		<script src="../src/core.js" defer></script>
+		<script src="../src/ieee-754.js" defer></script>
+
+		<script src="js/converter-init-ieee-754.js" defer></script>
+		<script src="js/polyfills.js" defer></script>
+		<script src="js/constants.js" defer></script>
+		<script src="js/calculation-examples-ieee-754.js" defer></script>
+		<script src="js/main.js" defer></script>
+		<script src="js/share.js" defer></script>
+		<script src="js/directives.js" defer></script>
+		<script src="js/filters.js" defer></script>
+
+		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="stylesheet" href="css/main.css">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="description" content="Online IEEE 754 floating point converter and analysis. Convert between decimal, binary and hexadecimal">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+
+<header>
+	<div class="container">
+		<h1>Base Convert: IEEE 754 Floating Point</h1>
+	</div>
+</header>
+
+<div class="container">
+	<!--[if lt IE 9]>
+		<div class="alert alert-danger">
+			You are using an <strong>old browser</strong>. Please upgrade, or download another browser, like <a href="https://mozilla.org/firefox/">Firefox</a>.
+		</div>
+	<![endif]-->
+	<noscript>
+		<div class="alert alert-danger">
+			Please <strong>enable JavaScript</strong> to use this site.
+		</div>
+	</noscript>
+
+	<div class="conversions" ng-controller="ConversionController" is-human="track('human')">
+		<div ng-repeat="group in getBaseGroups()" class="js-only">
+			<h2 ng-if="group[0].group === '32'">32 bit &ndash; float</h2>
+			<h2 ng-if="group[0].group === '64'">64 bit &ndash; double</h2>
+			<div
+				class="form-group base"
+				ng-class="{
+					isten: base.id === 'dec',
+					example: base === curExample,
+					focus: base.hasFocus,
+					'has-error': base.hasError
+				}"
+				ng-repeat="base in group"
+				ng-mouseenter="baseMouseenter(base)">
+				<label ang-if="false" class="input-group">
+					<div class="input-group-addon">
+						{{base.name|ucFirst}} <small class="hidden-xs" ng-if="base.explanation">({{base.explanation}})</small>
+						<a href="" class="expand" title="{{base !== expanded ? 'Expand' : 'Close'}}" ng-class="{expanded: base === expanded}" ng-click="baseExpand(base)">
+							<img src="images/expand.png" alt="Expand" ng-if="base !== expanded">
+							<img src="images/up.png" alt="Close" ng-if="base === expanded">
+						</a>
+					</div>
+					<input
+						class="form-control"
+						ng-model="base.number"
+						ng-if="base !== expanded"
+						ng-focus="numberFocus(base)"
+						ng-blur="numberBlur(base)"
+						focus-on="{{base.id}}"
+						ng-change="numberChange(base)"
+						ng-keydown="numberKeydown(base, $event)"
+						ng-readonly="base.readonly">
+					<textarea
+						class="form-control"
+						ng-model="expanded.number"
+						ng-if="base === expanded"
+						ng-focus="numberFocus(base)"
+						ng-blur="numberBlur(base)"
+						focus-on="{{base.id}}"
+						ng-change="numberChange(base)"
+						ng-keydown="numberExpandedKeydown(base, $event)"
+						ng-readonly="base.readonly"
+						rows="5"
+						></textarea>
+				</label>
+			</div>
+		</div>
+
+		<div class="no-js">
+			<div class="form-group base isten">
+				<label class="input-group">
+					<div class="input-group-addon">Decimal</div>
+					<input class="form-control">
+				</label>
+			</div>
+
+			<h2>32 bit &ndash; float</h2>
+
+			<div class="form-group base">
+				<label class="input-group">
+					<div class="input-group-addon">Decimal <small class="hidden-xs">(exact)</small></div>
+					<input class="form-control" readonly>
+				</label>
+			</div>
+
+			<div class="form-group base">
+				<label class="input-group">
+					<div class="input-group-addon">Binary</div>
+					<input class="form-control">
+				</label>
+			</div>
+
+			<div class="form-group base">
+				<label class="input-group">
+					<div class="input-group-addon">Hexadecimal</div>
+					<input class="form-control">
+				</label>
+			</div>
+
+			<h2>64 bit &ndash; double</h2>
+
+			<div class="form-group base">
+				<label class="input-group">
+					<div class="input-group-addon">Decimal <small class="hidden-xs">(exact)</small></div>
+					<input class="form-control" readonly>
+				</label>
+			</div>
+
+			<div class="form-group base">
+				<label class="input-group">
+					<div class="input-group-addon">Binary</div>
+					<input class="form-control">
+				</label>
+			</div>
+
+			<div class="form-group base">
+				<label class="input-group">
+					<div class="input-group-addon">Hexadecimal</div>
+					<input class="form-control">
+				</label>
+			</div>
+		</div>
+
+		<aside class="examples">
+			<p class="hidden-xs">Calculation examples:</p>
+			<p class="visible-xs-block" role="presentation">Calculation example:</p>
+			<ul class="list-inline js-only">
+				<li ng-show="true"
+					ng-repeat="(i, example) in examples"
+					ng-class="{'hidden-xs': i >= 1, 'hidden-sm': i >= 3, active: example.running}">
+					<a href="" class="btn btn-default" ng-click="runExample(example, true)"><strong>{{example.name}}:</strong> {{example.numberDisplay||example.number|nospace}}</a>
+				</li>
+			</ul>
+
+			<ul class="list-inline no-js">
+				<li><a href="" class="btn btn-default"><strong>decimal:</strong> -0.1</a></li><!--
+				--><li class=" hidden-xs"><a href="" class="btn btn-default"><strong>decimal:</strong> 1e+100</a></li><!--
+				--><li class=" hidden-xs"><a href="" class="btn btn-default"><strong>decimal:</strong> NaN</a></li><!--
+				--><li class=" hidden-xs hidden-sm"><a href="" class="btn btn-default"><strong>decimal:</strong> ∞</a></li>
+			</ul>
+		</aside>
+	</div>
+
+	<nav>
+		<ul class="list-inline">
+			<li>More tools:</li>
+			<li><a href="./">Standard</a></li>
+			<li><a href="high-precision">High precision</a></li>
+			<li><b>IEEE 754 floating point</b></li>
+		</ul>
+	</nav>
+
+	<footer>
+		<div class="divider visible-xs-block" role="separator">
+			10010010110001100101111100010000001100110111001110001001
+		</div>
+		<div class="divider divider-line hidden-xs" role="separator">
+			<span>1010011100001100100110000110000110011101011111111110110111001101011110011001100111100100001100000110010100101101000010001011111010000110101010101010010010001111110000</span>
+		</div>
+
+		<ul class="list-inline">
+			<li>Base Convert by <a href="https://danwolff.se/" title="Website of Dan Wolff">Dan Wolff</a> <small>(2011–2017)</small></li>
+			<li ng-controller="ShareController" class="share">
+				If you enjoy this site, <span class="share-text" title="Tell a friend or write about it" ng-mouseenter="mouseenter()" ng-mouseleave="mouseleave()">spread the word</span>
+				<div class="share-links" ng-class="{'force-show': forceShow}" ng-mouseenter="mouseenter()" ng-mouseleave="mouseleave()"><div>
+					<ul class="list-unstyled" ng-init="count=0">
+						<li class="activate" ng-class="{'all-activated': count === 2}">Click to activate</li>
+						<li>
+							<div
+								ng-click="count=count+1"
+								share="g-plusone"
+								share-enable-on-click
+								share-mouseenter="mouseenter()"
+								share-mouseleave="mouseleave(2000)"
+								class="share-button g-plusone disabled"
+								data-size="medium" data-href="https://baseconvert.com/ieee-754-floating-point"></div>
+						</li>
+						<li>
+							<div
+								ng-click="count=count+1"
+								share="fb-like"
+								share-enable-on-click
+								class="share-button fb-like disabled"
+								data-href="https://baseconvert.com/ieee-754-floating-point" data-width="90" data-layout="button_count" data-show-faces="false" data-send="false"></div>
+							<div id="fb-root"></div>
+						</li>
+					</ul>
+				</div></div>
+			</li>
+			<li><a href="https://github.com/Skalman/baseconvert">Source code</a></li>
+		</ul>
+	</footer>
+</div>
+
+</body>
+</html>

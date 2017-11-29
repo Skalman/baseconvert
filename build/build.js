@@ -14,6 +14,7 @@ var files = [
 	'src/twos-complement.js',
 	'src/imaginary.js',
 	'src/roman.js',
+	'src/ieee-754.js',
 ];
 var options = {
 	compilation_level: 'SIMPLE_OPTIMIZATIONS',
