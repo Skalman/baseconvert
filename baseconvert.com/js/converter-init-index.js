@@ -6,7 +6,7 @@ var converter = new Base({
 
 var initialBases = [
 	{
-		id: 'dec',
+		id: '2',
 		name: 'binary',
 		explanation: 'base 2',
 	},
