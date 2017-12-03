@@ -1,8 +1,6 @@
 module('standard');
 
 testConverters('Valid base', ['extStandard'], function (converter) {
-	expect(6);
-
 	strictEqual(converter.valid(2, '1'), true, '2');
 	strictEqual(converter.valid(' 6', '1'), false, 'preceding space');
 	strictEqual(converter.valid('36', '1'), true, '36');
@@ -56,9 +54,7 @@ testConverters('Convert between bases', ['extStandard'], function (converter) {
 			}
 		];
 
-	expect(conversions.length);
-
-	function keys_and_values(obj) {
+	function keysAndValues(obj) {
 		var k = [], v = [], i;
 		for (i in obj) {
 			if (i === 'to' || i === 'from') {
@@ -71,7 +67,7 @@ testConverters('Convert between bases', ['extStandard'], function (converter) {
 	}
 
 	for (i = 0; i < conversions.length; i++) {
-		kv = keys_and_values(conversions[i]);
+		kv = keysAndValues(conversions[i]);
 		to = conversions[i].to;
 		from = conversions[i].from;
 
@@ -194,7 +190,7 @@ testConverters('Edge cases - rounded results accepted', ['extStandard'], functio
 				]
 			}
 		];
-	function in_array(elem, arr) {
+	function inArray(elem, arr) {
 		for (var i = 0; i < arr.length; i++) {
 			if (arr[i] === elem) {
 				return true;
@@ -208,11 +204,22 @@ testConverters('Edge cases - rounded results accepted', ['extStandard'], functio
 				continue;
 			}
 			result = converter.convert(conversions[i].from, conversions[i].to, j);
-			good = in_array(result, conversions[i][j]);
+			good = inArray(result, conversions[i][j]);
 			equal(result, good ? result : conversions[i][j][0],
 				'converting "' + j + '" (' + conversions[i].from + ' > ' + conversions[i].to + '; rounded results accepted)');
 		}
 	}
+});
+
+testConverters('Binary and hexadecimal prefixes', ['extStandard'], function (converter) {
+	strictEqual(converter.convert('2', '10', '0b101'), '5', 'binary: 0b prefix');
+	strictEqual(converter.convert('2', '10', '0B101'), '5', 'binary: 0B prefix');
+	strictEqual(converter.convert('16', '10', '0x101'), '257', 'hexadecimal: 0x prefix');
+	strictEqual(converter.convert('16', '10', '0X101'), '257', 'hexadecimal: 0X prefix');
+	strictEqual(converter.convert('16', '10', '0b1'), '177', 'hexadecimal: 0b is not a prefix');
+	strictEqual(converter.convert('2', '10', '0b'), undefined, 'binary: 0b is not a number');
+	strictEqual(converter.convert('16', '10', '0x'), undefined, 'hexadecimal: 0x is not a number');
+	strictEqual(converter.convert('16', '10', '0x.1'), undefined, 'hexadecimal: 0x.1 is not a number');
 });
 
 testConvertersOpts({

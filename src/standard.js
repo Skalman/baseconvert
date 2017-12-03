@@ -7,7 +7,11 @@ function extStandard() {
 	var dictionaryArr = dictionary.split('');
 
 
-	var resValidNumber = [];
+	var reValidNumber = {
+		// allow binary and hexadecimal numbers to begin with 0b and 0x respectively
+		2: /^(\-?[01]*\.?[01]*|\-?0b[01]+\.?[01]*)$/i,
+		16: /^(\-?[0-9a-f]*\.?[0-9a-f]*|\-?0x[0-9a-f]+\.?[0-9a-f]*)$/i,
+	};
 	var reValidNumberBig = /^\-?(\d+(\:\d+)*)?\.?(\d+(\:\d+)*)?$/;
 	var baseNames = { 2: 'binary', 8: 'octal', 10: 'decimal', 12: 'duodecimal', 16: 'hexadecimal', '-2': 'negabinary', '-10': 'negadecimal' };
 	var baseSuggestions = {
@@ -37,7 +41,7 @@ function extStandard() {
 
 	function getValidator(base) {
 		var chars = '[' + dictionary.substr(0, Math.abs(base)) + ']*';
-		return (resValidNumber[base] = new RegExp('^\\-?' + chars + '\\.?' + chars + '$', 'i'));
+		return (reValidNumber[base] = new RegExp('^\\-?' + chars + '\\.?' + chars + '$', 'i'));
 	}
 	function getName(base) {
 		if (parseInt(base, 10) + '' === base && base < -1 || base > 1) {
@@ -160,7 +164,7 @@ function extStandard() {
 			parseInt(fromBase, 10) + '' === fromBase &&
 
 			// get the validator RegExp
-			(resValidNumber[fromBase] || getValidator(fromBase))
+			(reValidNumber[fromBase] || getValidator(fromBase))
 				// and test the number on that RegExp
 				.test(number)
 		);
@@ -250,6 +254,14 @@ function extStandard() {
 						number[0] :
 						number[0].substr(1)),
 					fract = number[1];
+
+				// allow binary and hexadecimal prefixes
+				if (
+					(fromBase === 2 && /^0b/i.test(integ)) ||
+					(fromBase === 16 && /^0x/i.test(integ))
+					) {
+					integ = integ.substr(2);
+				}
 
 				// find the integer part of the result
 				for (i = 0; i < integ.length; i++) {

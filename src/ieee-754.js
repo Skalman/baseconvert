@@ -12,6 +12,10 @@ function extIeee754() {
 	}
 
 	function parseToView(digitsPerByte, fromBase, number) {
+		if (/^0[bx]/i.test(number)) {
+			number = number.substr(2);
+		}
+
 		var arr = new Uint8Array(number.length / digitsPerByte);
 
 		for (var i = 0; i < arr.length; i++) {
@@ -69,13 +73,13 @@ function extIeee754() {
 			if (base === 'dec') {
 				return number === 'NaN' || !isNaN(+number);
 			} else if (base === 'bin32') {
-				return /^[01]{32}$/.test(number);
+				return /^(0b)?[01]{32}$/i.test(number);
 			} else if (base === 'bin64') {
-				return /^[01]{64}$/.test(number);
+				return /^(0b)?[01]{64}$/i.test(number);
 			} else if (base === 'hex32') {
-				return /^[0-9a-f]{8}$/i.test(number);
+				return /^(0x)?[0-9a-f]{8}$/i.test(number);
 			} else if (base === 'hex64') {
-				return /^[0-9a-f]{16}$/i.test(number);
+				return /^(0x)?[0-9a-f]{16}$/i.test(number);
 			}
 		}
 

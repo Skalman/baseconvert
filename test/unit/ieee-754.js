@@ -250,6 +250,8 @@
 			deepEqual(converter.convert('dec', 'dec', 'abc'), undefined, 'abc > undefined');
 			deepEqual(converter.convert('dec', 'dec', ''), undefined, 'empty string > undefined');
 			deepEqual(converter.convert('dec', 'dec', ' '), undefined, 'space > undefined');
+			deepEqual(converter.convert('bin32', 'dec', '0b0 01111111 00000000000000000000000'), '1', 'binary: 0b prefix');
+			deepEqual(converter.convert('hex32', 'dec', '0x3F800000'), '1', 'hexadecimal: 0x prefix');
 
 		},
 	});
