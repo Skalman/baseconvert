@@ -96,6 +96,19 @@ module.exports = function (grunt) {
 					},
 				}
 			},
+
+			php: {
+				files: {
+					'dist/index.php': 'dist/index.html',
+					'dist/high-precision.php': 'dist/high-precision.html',
+					'dist/ieee-754-floating-point.php': 'dist/ieee-754-floating-point.html',
+				},
+				options: {
+					process: function (src, filepath) {
+						return src.replace(/(2011–)20\d\d/, "$1<?php echo date('Y'); ?>");
+					},
+				},
+			},
 		},
 
 		concat: {
