@@ -46,18 +46,11 @@ module.exports = function (grunt) {
 						'images/*',
 						'favicon.ico',
 						'*.php',
-						'.htaccess'
+						'.htaccess',
+						'logs/*',
 					],
-					dest: 'dist/'
+					dest: 'dist/',
 				}],
-			},
-
-			logs: {
-				files: {
-					'dist/logs/human-access.log': 'logs/human-access.log.example',
-					'dist/logs/interested-access.log': 'logs/interested-access.log.example',
-					'dist/logs/use-access.log': 'logs/use-access.log.example',
-				},
 			},
 
 			html: {

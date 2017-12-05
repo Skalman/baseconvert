@@ -4,9 +4,9 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 $actions = array(
-	'human' => 'human_access.log',
-	'interested' => 'interested_access.log',
-	'use' => 'use_access.log',
+	'human' => 'human-access.log',
+	'interested' => 'interested-access.log',
+	'use' => 'use-access.log',
 );
 
 $data = file_get_contents('php://input');
