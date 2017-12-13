@@ -116,7 +116,7 @@ module.exports = function (grunt) {
 					// is the banner, everything after it is the footer.
 					surround: (function () {
 
-						/* Base Convert <%= pkg.version %> (built <%= grunt.template.today("yyyy-mm-dd") %>) | <%= pkg.copyright %> | License: <%= pkg.licenses[0].type %> | baseconvert.com */
+						/* Base Convert <%= pkg.version %> (built <%= grunt.template.today("yyyy-mm-dd") %>) | <%= pkg.copyright %> | License: <%= pkg.license %> | baseconvert.com */
 						(function (window, undefined) {
 							MAIN;
 
